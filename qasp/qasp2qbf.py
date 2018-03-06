@@ -80,6 +80,7 @@ Get help/report bugs via : https://potassco.org/support
         # return
         return options
 
+
 #
 # TRANSLATOR
 #
@@ -169,6 +170,10 @@ class Translator:
         prefix = dict()
         for line in fd:
             if state == START:
+                match = re.match( r"p cnf (\d+) (\d+)", line)
+                if match:
+                    vars = int(match.group(1))
+                quantified = [False] * (vars + 1)
                 print(line, end='')
                 state = COMMENTS
                 continue
@@ -180,19 +185,27 @@ class Translator:
                     level = match.group(3)
                     atoms = prefix.setdefault(level, [])
                     atoms.append(number)
+                    quantified[int(number)] = True
                     #logging.info("{}:{}:{}".format(number, predicate, level))
                     continue
+                # add non quantified variables
+                keys = prefix.keys()
+                len_keys, max_keys = len(keys), max(keys)
+                extra = [ str(idx) for idx, item in enumerate(quantified) if not item ][1:]
+                if extra:
+                    if len_keys == 0:
+                        prefix["1"] = extra
+                    elif len_keys % 2 == 0:
+                        prefix[str(int(max_keys)+1)] = extra
+                    else:
+                        prefix[max_keys] += extra
+                # print prefix
                 q = "e"
                 for level in sorted(prefix.keys()):
                     print("{} {}".format(q, " ".join(prefix[level])))
                     q = "a" if q == "e" else "e"
                 state = END
             print(line, end='')
-
-                    
-
-
-
 
     def translate(self, fd):
         if not self.options['cnf']:
@@ -207,7 +220,6 @@ class Translator:
         if self.options['read_stdin']:
             self.translate(sys.stdin)
 
-
 #
 # MAIN
 #
@@ -216,5 +228,4 @@ if __name__ == "__main__":
     #logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
     options = QaspArgumentParser().run()
     Translator(options).run()
-
 
