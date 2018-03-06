@@ -31,7 +31,7 @@ class QaspArgumentParser:
 
     epilog = """
 Default command-line:
-qasp2qbf.py
+clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs > output.qdimacs
 
 qasp2qbf is part of plasp in Potassco: https://potassco.org/
 Get help/report bugs via : https://potassco.org/support
@@ -66,6 +66,9 @@ Get help/report bugs via : https://potassco.org/support
         basic.add_argument(
             '--stats',dest='stats',action="store_true",help="Print statistics"
         )
+        basic.add_argument(
+            '--cnf2qdimacs',dest='cnf',action="store_true",help="Parse cnf input"
+        )
 
         # parse
         options, files = cmd_parser.parse_known_args()
@@ -73,9 +76,6 @@ Get help/report bugs via : https://potassco.org/support
         options['files'] = files
         if options['files'] == []:
             options['read_stdin'] = True
-
-        # print version
-        print(_version)
 
         # return
         return options
@@ -87,6 +87,7 @@ Get help/report bugs via : https://potassco.org/support
 START = 0 
 SHOW = 1
 END = 2
+COMMENTS = 1
 SHOW_START = "0\n"
 ERROR_REQUANTIFIED_ATOM = "Atom {} is quantified more than once."
 
@@ -98,7 +99,7 @@ class Translator:
     def __init__(self, options):
         self.options = options
 
-    def parse(self, fd):
+    def smodels2smodels(self, fd):
         state = START
         atoms = dict()
         for line in fd:
@@ -163,12 +164,48 @@ class Translator:
             print(line, end='')
             state = END
 
+    def cnf2qdimacs(self, fd):
+        state = START
+        prefix = dict()
+        for line in fd:
+            if state == START:
+                print(line, end='')
+                state = COMMENTS
+                continue
+            if state == COMMENTS:
+                match = re.match( r"c (\d+) (.*)\((\d+)(,.*)?\)", line)
+                if match:
+                    number = match.group(1)
+                    predicate = match.group(2)
+                    level = match.group(3)
+                    atoms = prefix.setdefault(level, [])
+                    atoms.append(number)
+                    #logging.info("{}:{}:{}".format(number, predicate, level))
+                    continue
+                q = "e"
+                for level in sorted(prefix.keys()):
+                    print("{} {}".format(q, " ".join(prefix[level])))
+                    q = "a" if q == "e" else "e"
+                state = END
+            print(line, end='')
+
+                    
+
+
+
+
+    def translate(self, fd):
+        if not self.options['cnf']:
+            self.smodels2smodels(fd)
+        else:
+            self.cnf2qdimacs(fd)
+
     def run(self):
         for f in self.options['files']:
             with open(f) as fd:
-                self.parse(fd)
+                self.translate(fd)
         if self.options['read_stdin']:
-            self.parse(sys.stdin)
+            self.translate(sys.stdin)
 
 
 #
