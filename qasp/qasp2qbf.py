@@ -1,23 +1,29 @@
 #!/usr/bin/python
 
-
 #
 # IMPORTS
 #
 from __future__ import print_function
 import argparse
 import re
-import os
+#import os
 import sys
 import logging
 
-# 
+#
 # DEFINES
 #
 
-ERROR = "*** ERROR: (qasp2qbf): {}"
-ERROR_INFO = "*** Info : (qasp2qbf): Try '--help' for usage information"
-
+ERROR = "*** ERROR: (qasp2qbf): {}\n"
+WARNING = "*** WARNING: (qasp2qbf): {}\n"
+ERROR_INFO = "*** Info : (qasp2qbf): Try '--help' for usage information\n"
+MAX_MESSAGES = 3
+START = 0 
+SHOW = 1
+END = 2
+COMMENTS = 1
+SHOW_START = "0\n"
+ERROR_REQUANTIFY = False
 
 #
 # ARGUMENT PARSER
@@ -67,7 +73,10 @@ Get help/report bugs via : https://potassco.org/support
             '--stats',dest='stats',action="store_true",help="Print statistics"
         )
         basic.add_argument(
-            '--cnf2qdimacs',dest='cnf',action="store_true",help="Parse cnf input"
+            '--cnf2qdimacs',dest='cnf',action="store_true",help="Translate from cnf to qdimacs"
+        )
+        basic.add_argument(
+            '--no-warnings',dest='no_warnings',action="store_true",help="Consider warnings as errors"
         )
 
         # parse
@@ -85,20 +94,30 @@ Get help/report bugs via : https://potassco.org/support
 # TRANSLATOR
 #
 
-START = 0 
-SHOW = 1
-END = 2
-COMMENTS = 1
-SHOW_START = "0\n"
-ERROR_REQUANTIFIED_ATOM = "Atom {} is quantified more than once."
-
-class TranslatorException(Exception):
-    pass
-
 class Translator:
 
     def __init__(self, options):
         self.options = options
+        self.errors = False
+        self.messages = 0
+        self.unsat = False
+
+    def error(self, string):
+        self.errors = True
+        if self.messages < MAX_MESSAGES:
+            print(ERROR.format(string), file=sys.stderr)
+            self.messages += 1
+
+    def warning(self, string):
+        if self.options['no_warnings']:
+            self.error(string)
+            return
+        elif self.messages < MAX_MESSAGES:
+            print(WARNING.format(string), file=sys.stderr)
+            self.messages += 1
+        if self.messages == MAX_MESSAGES:
+            print(ERROR.format("Too many messages."), file=sys.stderr)
+            self.errors = True
 
     def smodels2smodels(self, fd):
         state = START
@@ -119,7 +138,7 @@ class Translator:
             
             # if at SHOW with exists or forall atom
             match = re.match(
-                r"\d+ _(exists|forall)\((\d+),(.*)\)", 
+                r"\d+ _(quantify|exists|forall)\((\d+),(.*)\)", 
                 line
             )
             if match:
@@ -127,10 +146,24 @@ class Translator:
                 level = int(match.group(2))
                 atom = match.group(3)
                 logging.info("{}:{}:{}".format(quant, level, atom))
+                if level <= 0:
+                    self.error("Quantifier level smaller than 1: {}.".format(atom))
+                if quant == "exists" and level%2 == 0:
+                    self.error("Exists quantifier with even level: {}.".format(atom))
+                if quant == "forall" and level%2 == 1:
+                    self.error("Forall quantifier with odd level: {}.".format(atom))
                 pair = atoms.get(atom)
                 if pair is not None:
-                    #if pair[0] != 0:
-                    #    raise TranslatorException(ERROR_REQUANTIFIED_ATOM.format(atom))
+                    if pair[0] != 0:
+                        if ERROR_REQUANTIFY:
+                            self.error("Atom quantified at two levels: {}.".format(atom))
+                        else:
+                            self.warning("Atom quantified at two levels: {}.".format(atom))
+                            inner = level if level > pair[0] else pair[0]
+                            if inner % 2 == 0:
+                                self.unsat = True
+                            elif level > pair[0]:
+                                level = pair[0]
                     atoms[atom] = (level, pair[1])
                 else:
                     atoms[atom] = (level, 0)
@@ -147,23 +180,38 @@ class Translator:
                 logging.info("{}:{}".format(number, atom))
                 pair = atoms.get(atom)
                 if pair is not None:
-                    #if pair[0] != 0:
-                    #    raise TranslatorException(ERROR_REQUANTIFIED_ATOM.format(atom))
                     atoms[atom] = (pair[0], number)
                 else:
                     atoms[atom] = (0, number)
                 continue
-            
-            # if at end of SHOW: print new show, line, and change to END
+
+            # if at end of SHOW: print new show
+            levels = dict()
             for key, (level, number) in atoms.items():
-                if level != 0 and number != 0:
+                if level == 0:
+                    self.warning("Atom #shown but not quantified, it will not be shown: {}.".format(key))
+                elif number == 0:
+                    if level % 2 == 0:
+                        self.unsat = True
+                    # nothing happens if existential
+                else:
                     if "(" in key:
                         key = key.replace("(","({},".format(level),1)
                     else:
                         key = "{}({})".format(key, level)
                     print("{} {}".format(number, key))
+
+            # print line and change state to END
             print(line, end='')
             state = END
+
+            # errors and unsat
+            if self.errors:
+                print(ERROR_INFO, file=sys.stderr)
+                sys.exit(1)
+            if self.unsat:
+                print("UNSAT")
+                sys.exit(0)
 
     def cnf2qdimacs(self, fd):
         state = START
@@ -178,31 +226,29 @@ class Translator:
                 state = COMMENTS
                 continue
             if state == COMMENTS:
-                match = re.match( r"c (\d+) (.*)\((\d+)(,.*)?\)", line)
+                match = re.match(r"c (\d+) (.*)\((\d+)(,.*)?\)", line)
                 if match:
                     number = match.group(1)
-                    predicate = match.group(2)
                     level = match.group(3)
                     atoms = prefix.setdefault(level, [])
                     atoms.append(number)
                     quantified[int(number)] = True
-                    #logging.info("{}:{}:{}".format(number, predicate, level))
                     continue
                 # add non quantified variables
                 keys = prefix.keys()
-                len_keys, max_keys = len(keys), max(keys)
+                len_keys, max_keys = len(keys), max([int(i) for i in keys])
                 extra = [ str(idx) for idx, item in enumerate(quantified) if not item ][1:]
                 if extra:
                     if len_keys == 0:
                         prefix["1"] = extra
                     elif len_keys % 2 == 0:
-                        prefix[str(int(max_keys)+1)] = extra
+                        prefix[str(max_keys+1)] = extra
                     else:
-                        prefix[max_keys] += extra
+                        prefix[str(max_keys)] += extra
                 # print prefix
                 q = "e"
                 for level in sorted(prefix.keys()):
-                    print("{} {}".format(q, " ".join(prefix[level])))
+                    print("{} {} 0".format(q, " ".join(prefix[level])))
                     q = "a" if q == "e" else "e"
                 state = END
             print(line, end='')
@@ -228,4 +274,5 @@ if __name__ == "__main__":
     #logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
     options = QaspArgumentParser().run()
     Translator(options).run()
+    sys.exit(0)
 
