@@ -34,7 +34,7 @@ VERSION = "0.0.1"
 
 class QaspArgumentParser:
 
-    usage = "qasp2qbf.py [options] [files]"
+    usage = "qasp2qbf.py [options] [file]"
 
     epilog = """
 Default command-line:
@@ -91,7 +91,13 @@ Get help/report bugs via : https://potassco.org/support
         options['files'] = files
         if options['files'] == []:
             options['read_stdin'] = True
-
+        if len(options['files']) > 1:
+            print(
+                ERROR.format("Too many input files, at most one is allowed."),
+                file=sys.stderr
+            )
+            print(ERROR_INFO, file=sys.stderr)
+            sys.exit(1)
         # return
         return options
 
@@ -117,6 +123,7 @@ class Translator:
             print(ERROR.format(string), file=sys.stderr)
             self.messages += 1
         if exit:
+            print(ERROR_INFO, file=sys.stderr)
             sys.exit(1)
 
     def warning(self, string):
@@ -229,6 +236,9 @@ class Translator:
                 sys.exit(1)
             if self.unsat:
                 print("UNSAT")
+                print(WARNING.format(
+                    "The Quantified Logic Program is UNSAT.\nUNSAT"
+                ), file=sys.stderr)
                 sys.exit(0)
 
     def cnf2qdimacs(self, fd):
@@ -263,45 +273,51 @@ class Translator:
                     continue
 
                 # after COMMENTS: add non quantified variables
-                keys = [int(i) for i in prefix.keys()]
-                len_keys, min_keys, max_keys = len(keys), min(keys), max(keys)
+                keys = sorted([int(i) for i in prefix.keys()])
+                max_key = keys[-1] if len(keys) else 0
                 extra = [
                     str(idx) for idx, item in enumerate(quantified) if not item
                 ][1:]
                 if extra:
-                    if len_keys == 0:
+                    if len(keys) == 0:
                         prefix["1"] = extra
-                    elif max_keys % 2 == 0:
-                        prefix[str(max_keys+1)] = extra
+                    elif max_key % 2 == 0:
+                        max_key += 1
+                        prefix[str(max_key)] = extra
+                        keys.append(max_key)
                     else:
-                        prefix[str(max_keys)] += extra
-                elif max_keys%2 == 0: # if max is not existential
+                        prefix[str(max_key)] += extra
+                # if max_key not existential, add existential var
+                elif len(keys) != 0 and max_key % 2 == 0: 
                     vars += 1
                     clauses += 1
+                    max_key += 1
                     extra_clause = True
-                    prefix[str(max_keys+1)] = [str(vars)]
+                    prefix[str(max_key)] = [str(vars)]
+                    keys.append(max_key)
 
                 # print preamble
                 print("p cnf {} {}".format(vars, clauses))
 
                 # print prefix
                 string, last_level = "", -1
-                for level in sorted(prefix.keys()):
-                    if level%2 != last_level: # new level
+                for level in keys:
+                    if level % 2 != last_level: # new level
                         if last_level != -1:  # not the first level
                             string += " 0\n"
-                        string += "a" if level%2 == 0 else "e"
-                    string += " " + " ".join(prefix[level])
-                    last_level = level%2
-                string += " 0"
-                print(string)
+                        string += "a" if level % 2 == 0 else "e"
+                    string += " " + " ".join(prefix[str(level)])
+                    last_level = level % 2
+                if string != "":
+                    string += " 0"
+                    print(string)
 
                 # change to END
                 state = END
 
             # state == END
             print(line, end='')
-        
+
         # before return
         if extra_clause:
             print("-{} 0".format(vars))
