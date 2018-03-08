@@ -45,7 +45,7 @@ Hence, its corresponding `interpret()` Python function has to be redefined for e
 
 If the smaller level defined is odd (i.e., existential)
 then the true atoms of that level should be printed at the output.
-However, sometimes this does not work correctly and no atoms are printed.
+However, in the current implementation sometimes this does not work correctly and no atoms are printed.
 
 
 Option `--help` prints help.
