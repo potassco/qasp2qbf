@@ -21,7 +21,7 @@ WARNING_SHOWN_NOT_QUANTIFIED = """Atom #shown but not quantified, \
 it will not be shown: {}."""
 UNSAT = """The Quantified Logic Program is UNSAT. \
 Please ignore the next messages."""
-MAX_MESSAGES = 3
+MAX_MESSAGES = 10
 START = 0
 SHOW = 1
 END = 2
