@@ -1,5 +1,5 @@
 # qasp2qbf
-> A traslator from quantified answer set programming to quantified boolean CNF formulalike
+> A traslator from quantified answer set programming to quantified boolean formula
 
 ## Description
 `qasp2qbf` is a translator from quantified answer set programming (QASP) 
