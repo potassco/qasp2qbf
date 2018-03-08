@@ -15,9 +15,12 @@ import logging
 
 ERROR = "*** ERROR: (qasp2qbf): {}\n"
 WARNING = "*** WARNING: (qasp2qbf): {}\n"
+IMPORTANT = "*** IMPORTANT! (qasp2qbf): {}\n"
 ERROR_INFO = "*** Info : (qasp2qbf): Try '--help' for usage information\n"
 WARNING_SHOWN_NOT_QUANTIFIED = """Atom #shown but not quantified, \
 it will not be shown: {}."""
+UNSAT = """The Quantified Logic Program is UNSAT. \
+Please ignore the next messages."""
 MAX_MESSAGES = 3
 START = 0
 SHOW = 1
@@ -96,7 +99,7 @@ Get help/report bugs via : https://potassco.org/support
                 ERROR.format("Too many input files, at most one is allowed."),
                 file=sys.stderr
             )
-            print(ERROR_INFO, file=sys.stderr)
+            #print(ERROR_INFO, file=sys.stderr)
             sys.exit(1)
         # return
         return options
@@ -123,7 +126,7 @@ class Translator:
             print(ERROR.format(string), file=sys.stderr)
             self.messages += 1
         if exit:
-            print(ERROR_INFO, file=sys.stderr)
+            #print(ERROR_INFO, file=sys.stderr)
             sys.exit(1)
 
     def warning(self, string):
@@ -232,13 +235,11 @@ class Translator:
 
             # errors and unsat
             if self.errors:
-                print(ERROR_INFO, file=sys.stderr)
+                #print(ERROR_INFO, file=sys.stderr)
                 sys.exit(1)
             if self.unsat:
                 print("UNSAT")
-                print(WARNING.format(
-                    "The Quantified Logic Program is UNSAT.\nUNSAT"
-                ), file=sys.stderr)
+                print(IMPORTANT.format(UNSAT), file=sys.stderr)
                 sys.exit(0)
 
     def cnf2qdimacs(self, fd):
