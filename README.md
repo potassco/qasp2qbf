@@ -13,8 +13,8 @@ and even levels are universally quantified:
 * `_forall(n,a)` represents that atom `a` is universally quantified at level `n`, for some positive odd integer `n`
 * `_quantify(n,a)` represents that atom `a` is quantified at level `n` (existentially if `n` is even, universally if `n` is odd), for some positive integer `n`
 
-These must be domain predicates, i.e., they must be decided by the grounder, 
-and they and the atoms `a` inside them must be `#shown`. 
+These must be domain predicates, i.e., they must be decided by the grounder.
+Moreover, they and the atoms `a` inside them must be `#shown`. 
 
 The special atoms define a prefix `EX1 FX2 EX3 ...` of 
 alternating existential (`E`) and universal (`F`) quantifiers, 
