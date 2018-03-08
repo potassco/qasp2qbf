@@ -26,7 +26,7 @@ Informally, an answer set is a subset `M` of `X1` such that
 for all `X2'` subset of `X2` there is a subset `X3'` subset of `X3` such that 
 for all `...` there is an answer set of `P`
 where `M`, `X2'`, `X3'`, `...` are true, 
-and the rest of the atoms in `X1`, `X2`, `X2`, `...`, are false.
+and the rest of the atoms in `X1`, `X2`, `X3`, `...`, are false.
 
 ## Usage
 ```bash
