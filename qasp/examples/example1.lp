@@ -1,12 +1,10 @@
-{a}.{b}.
-:- a, not b.
-:- b, not a.
-c :- not b.
-d :- c.
-e :- b.
-_quantify(5,b).
-_quantify(5,e).
-_quantify(5,d).
-_quantify(5,c).
-_quantify(7,a).
+{a;b;c}.
 
+:-     b, not c,     a.
+:- not b,     c,     a.
+:-     b,     c, not a.
+:-     b, not c, not a.
+
+_exists(1,a).
+_forall(2,b).
+_exists(3,c).
