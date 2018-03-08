@@ -16,11 +16,14 @@ import logging
 ERROR = "*** ERROR: (qasp2qbf): {}\n"
 WARNING = "*** WARNING: (qasp2qbf): {}\n"
 IMPORTANT = "*** IMPORTANT! (qasp2qbf): {}\n"
-ERROR_INFO = "*** Info : (qasp2qbf): Try '--help' for usage information\n"
 WARNING_SHOWN_NOT_QUANTIFIED = """Atom #shown but not quantified, \
 it will not be shown: {}."""
 UNSAT = """The Quantified Logic Program is UNSAT. \
 Please ignore the next messages."""
+OUTPUT_FILE = "out.qasp2qbf"
+CNF_MESSAGE = """Translate from cnf to qdimacs. \
+Print show information to {}""".format(OUTPUT_FILE)
+INTERPRET_MESSAGE = "Interpret qbf solver output using {}".format(OUTPUT_FILE)
 MAX_MESSAGES = 10
 START = 0
 SHOW = 1
@@ -42,7 +45,7 @@ class QaspArgumentParser:
     epilog = """
 Default command-line:
 clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2sat | \
-qasp2qbf.py --cnf2qdimacs > output.qdimacs
+qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
 
 qasp2qbf is part of plasp in Potassco: https://potassco.org/
 Get help/report bugs via : https://potassco.org/support
@@ -81,25 +84,45 @@ Get help/report bugs via : https://potassco.org/support
         #)
         basic.add_argument(
             '--cnf2qdimacs', dest='cnf', action="store_true",
-            help="Translate from cnf to qdimacs"
+            help=CNF_MESSAGE
+        )
+        basic.add_argument(
+            '--interpret', dest='interpret', action="store_true",
+            help=INTERPRET_MESSAGE
+        )
+        basic.add_argument(
+            '--warnings-as-errors', dest='warn2err', action="store_true",
+            help="Consider warnings as errors"
         )
         basic.add_argument(
             '--no-warnings', dest='no_warnings', action="store_true",
-            help="Consider warnings as errors"
+            help="Do not print warnings"
         )
 
         # parse
         options, files = cmd_parser.parse_known_args()
         options = vars(options)
         options['files'] = files
+        for i in options['files']:
+            if i[0] == "-":
+                print(
+                    ERROR.format("Unrecognized option {}.".format(i)),
+                    file=sys.stderr
+                )
+                sys.exit(1)
         if options['files'] == []:
             options['read_stdin'] = True
+        elif options['read_stdin']:
+            print(
+                ERROR.format("Option '-' is only allowed without files."),
+                file=sys.stderr
+            )
+            sys.exit(1)
         if len(options['files']) > 1:
             print(
                 ERROR.format("Too many input files, at most one is allowed."),
                 file=sys.stderr
             )
-            #print(ERROR_INFO, file=sys.stderr)
             sys.exit(1)
         # return
         return options
@@ -126,11 +149,12 @@ class Translator:
             print(ERROR.format(string), file=sys.stderr)
             self.messages += 1
         if exit:
-            #print(ERROR_INFO, file=sys.stderr)
             sys.exit(1)
 
     def warning(self, string):
-        if self.options['no_warnings'] or self.messages == MAX_MESSAGES:
+        if self.options['no_warnings']:
+            return
+        if self.options['warn2err'] or self.messages == MAX_MESSAGES:
             self.error(string)
             return
         elif self.messages < MAX_MESSAGES:
@@ -235,7 +259,6 @@ class Translator:
 
             # errors and unsat
             if self.errors:
-                #print(ERROR_INFO, file=sys.stderr)
                 sys.exit(1)
             if self.unsat:
                 print("UNSAT")
@@ -246,19 +269,21 @@ class Translator:
         state = START
         extra_clause = False
         prefix = dict()
+        min_level = None
+        shown = None
         for line in fd:
 
             # START
             if state == START:
                 match = re.match(r"p cnf (\d+) (\d+)", line)
                 if match:
-                    vars = int(match.group(1))
+                    nvars = int(match.group(1))
                     clauses = int(match.group(2))
                 else:
                     self.error(
                         "No problem line (p cnf vars clauses) in input.", True
                     )
-                quantified = [False] * (vars + 1)
+                quantified = [False] * (nvars + 1)
                 state = COMMENTS
                 continue
 
@@ -269,9 +294,27 @@ class Translator:
                     number = match.group(1)
                     level = match.group(3)
                     atoms = prefix.setdefault(level, [])
+                    level = int(level)
                     atoms.append(number)
                     quantified[int(number)] = True
+                    if min_level is None or level < min_level:
+                        min_level = level
+                        shown = dict()
+                    if level % 2 == 1 and level == min_level:
+                        predicate = match.group(2)
+                        if match.group(4) is not None:
+                            shown[number] = "{}({})".format(
+                                predicate, match.group(4)[1:]
+                            )
+                        else:
+                            shown[number] = "{}".format(predicate)
                     continue
+
+                # print shown
+                with open(OUTPUT_FILE, 'w') as f:
+                    for number, atom in shown.items():
+                        f.write("{} {}\n".format(number, atom))
+                shown = None
 
                 # after COMMENTS: add non quantified variables
                 keys = sorted([int(i) for i in prefix.keys()])
@@ -288,17 +331,18 @@ class Translator:
                         keys.append(max_key)
                     else:
                         prefix[str(max_key)] += extra
+                    extra = None
                 # if max_key not existential, add existential var
                 elif len(keys) != 0 and max_key % 2 == 0: 
-                    vars += 1
+                    nvars += 1
                     clauses += 1
                     max_key += 1
                     extra_clause = True
-                    prefix[str(max_key)] = [str(vars)]
+                    prefix[str(max_key)] = [str(nvars)]
                     keys.append(max_key)
 
                 # print preamble
-                print("p cnf {} {}".format(vars, clauses))
+                print("p cnf {} {}".format(nvars, clauses))
 
                 # print prefix
                 string, last_level = "", -1
@@ -312,6 +356,7 @@ class Translator:
                 if string != "":
                     string += " 0"
                     print(string)
+                prefix, keys = None, None
 
                 # change to END
                 state = END
@@ -321,13 +366,32 @@ class Translator:
 
         # before return
         if extra_clause:
-            print("-{} 0".format(vars))
+            print("-{} 0".format(nvars))
+
+    def interpret(self, fd):
+        for line in fd:
+            print(line, end='')
+            if line[0:2] == "V ":
+                shown = dict()
+                with open(OUTPUT_FILE) as show_fd:
+                    for show_line in show_fd:
+                        match = re.match(r'(.*) (.*)', show_line)
+                        if match:
+                            shown[match.group(1)] = match.group(2)
+                out = "Answer:\n"
+                for number in line[2:].split():
+                    atom = shown.get(number)
+                    if atom is not None:
+                        out += atom + " "
+                print(out)
 
     def translate(self, fd):
-        if not self.options['cnf']:
-            self.smodels2smodels(fd)
-        else:
+        if self.options['cnf']:
             self.cnf2qdimacs(fd)
+        elif self.options['interpret']:
+            self.interpret(fd)
+        else:
+            self.smodels2smodels(fd)
 
     def run(self):
         for f in self.options['files']:
