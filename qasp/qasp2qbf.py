@@ -6,7 +6,6 @@
 from __future__ import print_function
 import argparse
 import re
-#import os
 import sys
 import logging
 
@@ -17,8 +16,10 @@ import logging
 ERROR = "*** ERROR: (qasp2qbf): {}\n"
 WARNING = "*** WARNING: (qasp2qbf): {}\n"
 ERROR_INFO = "*** Info : (qasp2qbf): Try '--help' for usage information\n"
+WARNING_SHOWN_NOT_QUANTIFIED = """Atom #shown but not quantified, \
+it will not be shown: {}."""
 MAX_MESSAGES = 3
-START = 0 
+START = 0
 SHOW = 1
 END = 2
 COMMENTS = 1
@@ -37,7 +38,8 @@ class QaspArgumentParser:
 
     epilog = """
 Default command-line:
-clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs > output.qdimacs
+clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2sat | \
+qasp2qbf.py --cnf2qdimacs > output.qdimacs
 
 qasp2qbf is part of plasp in Potassco: https://potassco.org/
 Get help/report bugs via : https://potassco.org/support
@@ -52,7 +54,8 @@ Get help/report bugs via : https://potassco.org/support
         _epilog = "\nusage: " + self.usage + self.epilog
         cmd_parser = argparse.ArgumentParser(
             description="A Translator from QASP to QBF",
-            usage=self.usage, epilog=_epilog,
+            usage=self.usage,
+            epilog=_epilog,
             formatter_class=argparse.RawDescriptionHelpFormatter,
             add_help=False
         )
@@ -60,23 +63,26 @@ Get help/report bugs via : https://potassco.org/support
         # basic
         basic = cmd_parser.add_argument_group('Basic Options')
         basic.add_argument(
-            '-h','--help',action='help',help='Print help and exit'
+            '-h', '--help', action='help', help='Print help and exit'
         )
         basic.add_argument(
-            '-',dest='read_stdin',action='store_true',help=argparse.SUPPRESS
+            '-', dest='read_stdin', action='store_true', help=argparse.SUPPRESS
+        )
+        #basic.add_argument(
+        #    '-v', '--verbose', dest='verbose', action="store_true",
+        #    help="Be a bit more verbose"
+        #)
+        #basic.add_argument(
+        #    '--stats', dest='stats', action="store_true",
+        #    help="Print statistics"
+        #)
+        basic.add_argument(
+            '--cnf2qdimacs', dest='cnf', action="store_true",
+            help="Translate from cnf to qdimacs"
         )
         basic.add_argument(
-            '-v','--verbose',dest='verbose',action="store_true",
-            help="Be a bit more verbose"
-        )
-        basic.add_argument(
-            '--stats',dest='stats',action="store_true",help="Print statistics"
-        )
-        basic.add_argument(
-            '--cnf2qdimacs',dest='cnf',action="store_true",help="Translate from cnf to qdimacs"
-        )
-        basic.add_argument(
-            '--no-warnings',dest='no_warnings',action="store_true",help="Consider warnings as errors"
+            '--no-warnings', dest='no_warnings', action="store_true",
+            help="Consider warnings as errors"
         )
 
         # parse
@@ -98,47 +104,49 @@ class Translator:
 
     def __init__(self, options):
         self.options = options
-        self.errors = False
         self.messages = 0
+        self.errors = False
         self.unsat = False
 
-    def error(self, string):
+    def error(self, string, exit=False):
         self.errors = True
-        if self.messages < MAX_MESSAGES:
+        if self.messages == MAX_MESSAGES:
+            print(ERROR.format("Too many messages."), file=sys.stderr)
+            self.messages += 1
+        elif self.messages < MAX_MESSAGES:
             print(ERROR.format(string), file=sys.stderr)
             self.messages += 1
+        if exit:
+            sys.exit(1)
 
     def warning(self, string):
-        if self.options['no_warnings']:
+        if self.options['no_warnings'] or self.messages == MAX_MESSAGES:
             self.error(string)
             return
         elif self.messages < MAX_MESSAGES:
             print(WARNING.format(string), file=sys.stderr)
             self.messages += 1
-        if self.messages == MAX_MESSAGES:
-            print(ERROR.format("Too many messages."), file=sys.stderr)
-            self.errors = True
 
     def smodels2smodels(self, fd):
         state = START
         atoms = dict()
         for line in fd:
-            
+
             # if at START: print and possibly change to SHOW
             if state == START:
                 print(line, end='')
                 if line == SHOW_START:
                     state = SHOW
                 continue
-            
+
             # if at END: print
             if state == END:
                 print(line, end='')
                 continue
-            
+
             # if at SHOW with exists or forall atom
             match = re.match(
-                r"\d+ _(quantify|exists|forall)\((\d+),(.*)\)", 
+                r"\d+ _(quantify|exists|forall)\((\d+),(.*)\)",
                 line
             )
             if match:
@@ -147,18 +155,28 @@ class Translator:
                 atom = match.group(3)
                 logging.info("{}:{}:{}".format(quant, level, atom))
                 if level <= 0:
-                    self.error("Quantifier level smaller than 1: {}.".format(atom))
+                    self.error(
+                        "Quantifier level smaller than 1: {}.".format(atom)
+                    )
                 if quant == "exists" and level%2 == 0:
-                    self.error("Exists quantifier with even level: {}.".format(atom))
+                    self.error(
+                        "Exists quantifier with even level: {}.".format(atom)
+                    )
                 if quant == "forall" and level%2 == 1:
-                    self.error("Forall quantifier with odd level: {}.".format(atom))
+                    self.error(
+                        "Forall quantifier with odd level: {}.".format(atom)
+                    )
                 pair = atoms.get(atom)
                 if pair is not None:
-                    if pair[0] != 0:
+                    if pair[0] != 0 and level != pair[0]:
                         if ERROR_REQUANTIFY:
-                            self.error("Atom quantified at two levels: {}.".format(atom))
+                            self.error(
+                                "Atom quantified at two levels: {}.".format(atom)
+                            )
                         else:
-                            self.warning("Atom quantified at two levels: {}.".format(atom))
+                            self.warning(
+                                "Atom quantified at two levels: {}.".format(atom)
+                            )
                             inner = level if level > pair[0] else pair[0]
                             if inner % 2 == 0:
                                 self.unsat = True
@@ -168,10 +186,10 @@ class Translator:
                 else:
                     atoms[atom] = (level, 0)
                 continue
-            
+
             # if at SHOW and other atom
             match = re.match(
-                r"(\d+) (.*)", 
+                r"(\d+) (.*)",
                 line
             )
             if match:
@@ -189,7 +207,7 @@ class Translator:
             levels = dict()
             for key, (level, number) in atoms.items():
                 if level == 0:
-                    self.warning("Atom #shown but not quantified, it will not be shown: {}.".format(key))
+                    self.warning(WARNING_SHOWN_NOT_QUANTIFIED.format(key))
                 elif number == 0:
                     if level % 2 == 0:
                         self.unsat = True
@@ -215,16 +233,25 @@ class Translator:
 
     def cnf2qdimacs(self, fd):
         state = START
+        extra_clause = False
         prefix = dict()
         for line in fd:
+
+            # START
             if state == START:
-                match = re.match( r"p cnf (\d+) (\d+)", line)
+                match = re.match(r"p cnf (\d+) (\d+)", line)
                 if match:
                     vars = int(match.group(1))
+                    clauses = int(match.group(2))
+                else:
+                    self.error(
+                        "No problem line (p cnf vars clauses) in input.", True
+                    )
                 quantified = [False] * (vars + 1)
-                print(line, end='')
                 state = COMMENTS
                 continue
+
+            # show COMMENTS
             if state == COMMENTS:
                 match = re.match(r"c (\d+) (.*)\((\d+)(,.*)?\)", line)
                 if match:
@@ -234,24 +261,50 @@ class Translator:
                     atoms.append(number)
                     quantified[int(number)] = True
                     continue
-                # add non quantified variables
-                keys = prefix.keys()
-                len_keys, max_keys = len(keys), max([int(i) for i in keys])
-                extra = [ str(idx) for idx, item in enumerate(quantified) if not item ][1:]
+
+                # after COMMENTS: add non quantified variables
+                keys = [int(i) for i in prefix.keys()]
+                len_keys, min_keys, max_keys = len(keys), min(keys), max(keys)
+                extra = [
+                    str(idx) for idx, item in enumerate(quantified) if not item
+                ][1:]
                 if extra:
                     if len_keys == 0:
                         prefix["1"] = extra
-                    elif len_keys % 2 == 0:
+                    elif max_keys % 2 == 0:
                         prefix[str(max_keys+1)] = extra
                     else:
                         prefix[str(max_keys)] += extra
+                elif max_keys%2 == 0: # if max is not existential
+                    vars += 1
+                    clauses += 1
+                    extra_clause = True
+                    prefix[str(max_keys+1)] = [str(vars)]
+
+                # print preamble
+                print("p cnf {} {}".format(vars, clauses))
+
                 # print prefix
-                q = "e"
+                string, last_level = "", -1
                 for level in sorted(prefix.keys()):
-                    print("{} {} 0".format(q, " ".join(prefix[level])))
-                    q = "a" if q == "e" else "e"
+                    if level%2 != last_level: # new level
+                        if last_level != -1:  # not the first level
+                            string += " 0\n"
+                        string += "a" if level%2 == 0 else "e"
+                    string += " " + " ".join(prefix[level])
+                    last_level = level%2
+                string += " 0"
+                print(string)
+
+                # change to END
                 state = END
+
+            # state == END
             print(line, end='')
+        
+        # before return
+        if extra_clause:
+            print("-{} 0".format(vars))
 
     def translate(self, fd):
         if not self.options['cnf']:
@@ -271,7 +324,6 @@ class Translator:
 #
 
 if __name__ == "__main__":
-    #logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
     options = QaspArgumentParser().run()
     Translator(options).run()
     sys.exit(0)
