@@ -11,8 +11,8 @@ We have different levels of quantifiers, and we assume that odd levels are exist
 and even levels are universally quantified:
 * `_exists(n,a)` represents that atom `a` is existentially quantified at level `n`, for some positive even integer `n`
 * `_forall(n,a)` represents that atom `a` is universally quantified at level `n`, for some positive odd integer `n`
-* `_quantify(n,a)` represents that atom `a` is quantified at level `n` (existentially if ´n´ is even, universally if `n` is odd), for some positive integer `n`
-
+* `_quantify(n,a)` represents that atom `a` is quantified at level `n` (existentially if `n` is even, universally if `n` is odd), for some positive integer `n`
+`
 These must be domain predicates, i.e., they must be decided by the grounder.
 
 The special atoms define a prefix `EX1 FX2 EX3 ...` of 
