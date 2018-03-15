@@ -289,7 +289,7 @@ class Translator:
 
             # show COMMENTS
             if state == COMMENTS:
-                match = re.match(r"c (\d+) (.*)\((\d+)(,.*)?\)", line)
+                match = re.match(r"c (\d+) (.*)\((\d+)(,.*)?\)$", line)
                 if match:
                     number = match.group(1)
                     level = match.group(3)
@@ -312,8 +312,9 @@ class Translator:
 
                 # print shown
                 with open(OUTPUT_FILE, 'w') as f:
-                    for number, atom in shown.items():
-                        f.write("{} {}\n".format(number, atom))
+                    if shown:
+                        for number, atom in shown.items():
+                            f.write("{} {}\n".format(number, atom))
                 shown = None
 
                 # after COMMENTS: add non quantified variables
