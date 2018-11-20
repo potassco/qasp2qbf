@@ -5,8 +5,8 @@
 %
 
 % includes
-#include "base.lp"
-#include "base_extension.lp"
+#include "base.lp".
+#include "base_extension.lp".
 #include "conditional_planning.lp".
 
 % sensing actions

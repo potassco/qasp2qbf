@@ -4,7 +4,7 @@
 %
 
 % includes
-#include "base.lp"
+#include "base.lp".
 
 % no bot/1
 :- bot(T).

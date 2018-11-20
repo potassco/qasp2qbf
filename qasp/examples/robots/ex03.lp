@@ -4,7 +4,7 @@
 %
 
 % includes
-#include "base.lp"
+#include "base.lp".
 #include "base_extension.lp".
 
 % no bot/1
