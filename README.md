@@ -54,16 +54,17 @@ Option `--help` prints help.
 ## Example
 ```bash
 $ cat examples/example1.lp
+
+_exists(1,a).
+_forall(2,b).
+_exists(3,c).
+
 {a;b;c}.
 
 :-     b, not c,     a.
 :- not b,     c,     a.
 :-     b,     c, not a.
 :-     b, not c, not a.
-
-_exists(1,a).
-_forall(2,b).
-_exists(3,c).
 
 $ clingo --output=smodels examples/example1.lp | qasp2qbf.py | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe-linux --partial-assignments | qasp2qbf.py --interpret
 V 5 -11 0
