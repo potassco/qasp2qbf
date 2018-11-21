@@ -1,6 +1,6 @@
 %
 % classical planning (using metaencoding)
-% * qasp2abf.py --pipe ex01_meta.lp -c n=2 -c s=0
+% * qasp2qbf.py --pipe ex01_meta.lp -c n=2 -c s=0
 % * caqe prints SAT and no atom number
 %
 

@@ -5,8 +5,8 @@
 
 Classical planning (direct encoding and metaencoding):
 ```bash
-qasp2abf.py --pipe ex01.lp      -c n=2
-qasp2abf.py --pipe ex01_meta.lp -c n=2 -c s=0
+qasp2qbf.py --pipe ex01.lp      -c n=2
+qasp2qbf.py --pipe ex01_meta.lp -c n=2 -c s=0
 ```
 
 Conformant planning solvable (direct encoding and metaencoding):
