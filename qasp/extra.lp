@@ -4,7 +4,7 @@
 %
 % no #show is needed at the input
 %
-% for every _exists'(n,X), _forall'(n,X) , or _quantify(n,X),
+% for every _exists'(n,X), _forall'(n,X) , or _quantify'(n,X),
 % we have a rule
 %   _holds(X) :- X.
 %
@@ -22,11 +22,11 @@ _assumable(X) :- _exists'(L,X), L > 1, not _not_assume(X).
 _assumable(X) :- _forall'(L,X),        not _not_assume(X).
 
 % new quantifications
+_exists(1,_assume(X))  :- _assumable(X).
 _exists(1,_holds'(X))  :- _assumable(X).
 _exists(L,_holds(X))   :- _exists'(L,X).
 _forall(L,_holds(X))   :- _forall'(L,X), not _assumable(X).
 _forall(L,_holds''(X)) :- _forall'(L,X),     _assumable(X).
-         {_holds''(X)} :- _forall'(L,X),     _assumable(X).
 
 % display
 #show _exists/2.
@@ -38,13 +38,21 @@ _forall(L,_holds''(X)) :- _forall'(L,X),     _assumable(X).
 % guess if we assume an atom
 { _assume(X) } :- _assumable(X).
 
-% if assumed, guess a value with _holds'/1 and inforce it
-{ _holds'(X) } :- _assume(X).
-:- _assume(X), 1 { _holds(X); _holds'(X) } 1.
+% if assumed, _holds'(X) is equivalent to _holds(X)
+_holds'(X) :- _assume(X), _holds(X).
 
-% if not assumed, assumable and universal, inforce the value of _holds''/1
-:- not _assume(X), _assumable(X), _forall'(L,X),
-   1 { _holds''(X); _holds(X) } 1.
+% forall assumables
+%
+% if assumed, choose true or false
+{ _holds''(X) } :- _forall'(L,X), _assumable(X),     _assume(X).
+%
+% if not assumed, _holds''(X) is equivalent to _holds(X)
+  _holds''(X)   :- _forall'(L,X), _assumable(X), not _assume(X), _holds(X).
+%
+% Alternative:
+% { _holds''(X) } :- _forall'(L,X), _assumable(X).
+%                 :- _forall'(L,X), _assumable(X), not _assume(X),
+%                    1 { _holds''(X); _holds(X) } 1.
 
 % knowledge
 kw(X) :- _assume(X),     _holds(X).
