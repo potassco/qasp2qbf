@@ -8,6 +8,7 @@ import argparse
 import re
 import sys
 import logging
+import os
 
 #
 # DEFINES
@@ -21,6 +22,12 @@ it will not be shown: {}."""
 UNSAT = """The Quantified Logic Program is UNSAT. \
 Please ignore the next messages."""
 OUTPUT_FILE = "out.qasp2qbf"
+PIPE_OPTION = "--pipe"
+PIPE_CMD = """clingo --output=smodels {} | qasp2qbf.py --no-warnings | \
+lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | \
+caqe-linux --partial-assignments | qasp2qbf.py --interpret"""
+PIPE_MESSAGE = """Run the pipeline calling clingo, lp2normal2, lp2sat \
+and caqe-linux"""
 CNF_MESSAGE = """Translate from cnf to qdimacs. \
 Print show information to {}""".format(OUTPUT_FILE)
 INTERPRET_MESSAGE = "Interpret qbf solver output using {}".format(OUTPUT_FILE)
@@ -82,6 +89,10 @@ Get help/report bugs via : https://potassco.org/support
         #    '--stats', dest='stats', action="store_true",
         #    help="Print statistics"
         #)
+        basic.add_argument(
+            PIPE_OPTION, dest='pipe', action="store_true",
+            help=PIPE_MESSAGE
+        )
         basic.add_argument(
             '--cnf2qdimacs', dest='cnf', action="store_true",
             help=CNF_MESSAGE
@@ -406,7 +417,12 @@ class Translator:
 #
 
 if __name__ == "__main__":
-    options = QaspArgumentParser().run()
-    Translator(options).run()
+    if PIPE_OPTION in sys.argv:
+        args = sys.argv[1:]
+        args.remove(PIPE_OPTION)
+        os.system(PIPE_CMD.format(" ".join(args)))
+    else:
+        options = QaspArgumentParser().run()
+        Translator(options).run()
     sys.exit(0)
 
