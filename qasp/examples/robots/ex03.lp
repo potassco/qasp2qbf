@@ -1,5 +1,6 @@
 %
-% conformant planning (unsolvable)
+% conformant planning (direct encoding, unsolvable)
+% * qasp2qbf.py --pipe ex03.lp -c n=5 -c r=2
 % * caqe returns UNSAT
 %
 

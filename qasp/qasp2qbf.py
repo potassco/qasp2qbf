@@ -420,7 +420,9 @@ if __name__ == "__main__":
     if PIPE_OPTION in sys.argv:
         args = sys.argv[1:]
         args.remove(PIPE_OPTION)
-        os.system(PIPE_CMD.format(" ".join(args)))
+        call = PIPE_CMD.format(" ".join(args))
+        print("Running: {}".format(call))
+        os.system(call)
     else:
         options = QaspArgumentParser().run()
         Translator(options).run()

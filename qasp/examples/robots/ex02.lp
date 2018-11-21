@@ -1,5 +1,6 @@
 %
-% conformant planning (solvable for n>=3)
+% conformant planning (direct encoding, solvable for n>=3)
+% * qasp2qbf.py --pipe ex02.lp -c n=3 -c r=2
 % * caqe returns SAT: occ(sweep,1) occ(go,2) occ(sweep,3)
 %
 

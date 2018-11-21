@@ -2,15 +2,35 @@
 % bounded conditional planning metaencoding
 %
 
-% fix max number of sensing occurrences (s=0 for conformant planning)
-#const s=1.
+%
+% Options:
+% *     s=0, mapping=1..2, unknown/1 undefined: classical planning, occ(sense(F),T) forbidden
+% *     s=0, mapping=1..2: conformant planning, occ(sense(F),T) forbidden
+% * 1<=s<=n, mapping=1..2: conditional planning with at most s sensing actions per branch
+% *     s=n, mapping=3   : conditional planning (corresponds to conditional_planning.lp)
+%
+#const s=0.
+#const mapping=1.
+%#const mapping=2.
+%#const mapping=3. % to be used with s=n (where n is the plan length)
+
+% sense occurrences from 1 to s
 sense_occ(1..s).
 
 % map(T,S) if time point T is mapped to sensing S
-map(1,  1).
-map(T,  S) :- map(T-1,  S), not occ(sense(_),T-1), time(T).
-map(T,1+S) :- map(T-1,  S),     occ(sense(_),T-1), time(T), S<=s.
-           :- map(T-1,s+1),     occ(sense(_),T-1).
+%
+% mapping=1
+map(1,  1) :-                                                      mapping=1.
+map(T,  S) :- map(T-1,  S), not occ(sense(_),T-1), time(T),        mapping=1.
+map(T,1+S) :- map(T-1,  S),     occ(sense(_),T-1), time(T), S<=s,  mapping=1.
+           :- map(T-1,s+1),     occ(sense(_),T-1),                 mapping=1.
+%
+% mapping=2
+map(T,1+S) :- time(T), S = #sum{ 1,TT: occ(sense(_),TT), TT < T }, mapping=2.
+:- map(T,S), S>s+1,                                                mapping=2.
+%
+% mapping=3
+map(T,T) :- time(T),                                               mapping=3.
 
 % occ(A,T,S) if occ(A,T) and T is mapped to S
 occ(A,T,S) :- occ(A,T), map(T,S), S<=s.
@@ -18,14 +38,14 @@ occ(A,T,S) :- occ(A,T), map(T,S), S<=s.
 % fix sensing results
 { sensed_true(S) } :- sense_occ(S).
 sat(T) :- occ(sense(F),T), { sensed_true(S); h(F,T) } = 1,
-          map(T,S). % added this
+          map(T,S).
 sat(T) :- sat(T-1), time(T).
 :- bot(T), not sat(T-1).
 
 % quantify
 _exists(2*S-1,    occ(A,T,S)) :- action(A), time(T), sense_occ(S).
 _forall(2*S  ,sensed_true(S)) :- sense_occ(S).
-_exists(2*s+1,      occ(A,T)) :- action(A), time(T).
+_exists(2*s+1,      occ(A,T)) :- action(A), time(T), mapping != 3.
 _forall(2*s+2,        h(F,0)) :- unknown(F).
 
 % display

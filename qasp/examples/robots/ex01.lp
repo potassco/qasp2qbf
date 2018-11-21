@@ -1,5 +1,6 @@
 %
-% classical planning
+% classical planning (direct encoding)
+% * qasp2abf.py --pipe ex01.lp -c n=2
 % * caqe prints SAT and no atom number
 %
 
