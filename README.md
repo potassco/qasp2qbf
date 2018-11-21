@@ -31,8 +31,10 @@ and the rest of the atoms in `X1`, `X2`, `X3`, `...`, are false.
 
 ## Usage
 ```bash
-$ clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
+$ clingo --output=smodels <files> <options> | qasp2qbf.py | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
 ```
+
+Option `--pipe` together with `<files>` and `<options>` runs the whole pipeline.
 
 `qasp2qbf` must be used with translators from ASP to CNF, like
 [lp2normal](http://research.ics.aalto.fi/software/asp/lp2normal/) and
