@@ -19,5 +19,10 @@
 %:- occ(sweep,1).
 %:- occ(sense(locked(1)),1).
 
-% with assumptions, allow only one
-:- 2 { _assumed(X) }, assumptions=1.
+% with assumptions over unknown fluents, allow only one assumption
+:- 2 { _assumed(X) },                              assumptions=1.
+:-     _assumed(h(F,0)), occ(sense(F),_),          assumptions=1.
+
+% with assumptions over action occurrences, inforce at least 5
+:- _assumed(occ(A,T)), not occ(A,T),               assumptions=2.
+:- #sum{ 1,A,T : _assumed(occ(A,T)), occ(A,T) } 4, assumptions=2.
