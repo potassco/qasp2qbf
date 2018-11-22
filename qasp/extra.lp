@@ -51,3 +51,8 @@ _holds'(X) :- _assumed(X), _holds(X).
 %                 :- _forall'(L,X), not _assumed(X),
 %                    1 { _holds''(X); _holds(X) } 1.
 
+% avoid warnings
+#defined _exists'/2.
+#defined _forall'/2.
+#defined _quantify'/2.
+#defined _holds/1.
