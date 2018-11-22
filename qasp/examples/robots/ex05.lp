@@ -14,7 +14,7 @@
 % * qasp2qbf.py --pipe ex05.lp -c n=5 -c r=3 -c s=1 -c assumptions=1
 %   returns: _assumed(h(clean(3),0)) occ(sense(locked(1)),1,1) _holds'(h(clean(3),0))
 % * qasp2qbf.py --pipe ex05.lp -c n=9 -c r=3 -c s=2 -c assumptions=2
-%   returns: _assumed(occ(go,4)) _assumed(occ(sweep,1)) _assumed(occ(sweep,7)) _assumed(occ(sweep,9)) _assumed(occ(sense(locked(1)),2)) occ(sweep,1,1) occ(sense(locked(1)),2,1) _holds'(occ(sweep,1)) _holds'(occ(sense(locked(1)),2)) _holds'(occ(go,4)) _holds'(occ(sweep,7)) _holds'(occ(sweep,9))
+%   returns: _assumed(occ(go,4)) _assumed(occ(sweep,3)) _assumed(occ(sweep,5)) _assumed(occ(sense(locked(1)),1)) _holds(occ(sense(locked(1)),1)) _holds'(occ(sense(locked(1)),1)) _holds'(occ(sweep,3)) _holds'(occ(go,4)) _holds'(occ(sweep,5))
 %
 
 % includes

@@ -15,7 +15,7 @@ _exists'(L,X) :- _quantify'(L,X), L \ 2 == 1.
 _forall'(L,X) :- _quantify'(L,X), L \ 2 == 0.
 
 % atoms that can be assumed
-_assumable(X) :- _exists'(L,X), L > 1.
+_assumable(X) :- _exists'(L,X).
 _assumable(X) :- _forall'(L,X).
 
 % new quantifications

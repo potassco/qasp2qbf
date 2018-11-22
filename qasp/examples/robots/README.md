@@ -28,6 +28,7 @@ qasp2qbf.py --pipe ex04.lp -c n=5 -c r=2
 qasp2qbf.py --pipe ex04.lp -c n=9 -c r=3
 qasp2qbf.py --pipe ex04.lp -c n=5 -c r=3
 qasp2qbf.py --pipe ex04.lp -c n=5 -c r=3 -c assumptions=1
+qasp2qbf.py --pipe ex04.lp -c n=5 -c r=2 -c assumptions=2
 ```
 
 Bounded conditional planning using `bounded_conditional_planning.lp`:
@@ -38,5 +39,6 @@ qasp2qbf.py --pipe ex05.lp -c n=5 -c r=2 -c s=5 -c mapping=3
 qasp2qbf.py --pipe ex05.lp -c n=9 -c r=3 -c s=9 -c mapping=3
 qasp2qbf.py --pipe ex05.lp -c n=5 -c r=3 -c s=1
 qasp2qbf.py --pipe ex05.lp -c n=5 -c r=3 -c s=1 -c assumptions=1
+qasp2qbf.py --pipe ex05.lp -c n=9 -c r=3 -c s=2 -c assumptions=2
 ```
 
