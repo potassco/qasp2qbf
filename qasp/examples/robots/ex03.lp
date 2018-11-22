@@ -23,11 +23,11 @@ _forall (2,h(F,0))  :- unknown(F), assumptions=0.
 _forall'(2,h(F,0))  :- unknown(F), assumptions=1.
 
 % with assumptions, define _holds/1
-_holds(h(F,0)) :- h(F,0), assumptions=1.
+_holds(h(F,0)) :- h(F,0),          assumptions=1.
 
 % constraints for assumptions
-:- 2 { _assumed(X) },       assumptions=1.
-:- _assumed(h(clean(R),0)), assumptions=1.
+:- 2 { _assumed(X) },              assumptions=1.
+:- _assumed(h(clean(R),0)),        assumptions=1.
 
 % display
 #show _exists/2.

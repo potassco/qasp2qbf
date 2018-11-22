@@ -9,10 +9,16 @@
 % * 1<=s<=n, mapping=1..2: conditional planning with at most s sensing actions per branch
 % *     s=n, mapping=3   : conditional planning (corresponds to conditional_planning.lp)
 %
+% * assumptions=1 activates assumptions over unknown fluents at 0
+%
 #const s=0.
 #const mapping=1.
 %#const mapping=2.
 %#const mapping=3. % to be used with s=n (where n is the plan length)
+#const assumptions=0.
+
+% includes
+#include "../../extra.lp".
 
 % sense occurrences from 1 to s
 sense_occ(1..s).
@@ -43,10 +49,14 @@ sat(T) :- sat(T-1), time(T).
 :- bot(T), not sat(T-1).
 
 % quantify
-_exists(2*S-1,    occ(A,T,S)) :- action(A), time(T), sense_occ(S).
-_forall(2*S  ,sensed_true(S)) :- sense_occ(S).
-_exists(2*s+1,      occ(A,T)) :- action(A), time(T), mapping != 3.
-_forall(2*s+2,        h(F,0)) :- unknown(F).
+_exists (2*S-1,    occ(A,T,S)) :- action(A), time(T), sense_occ(S).
+_forall (2*S  ,sensed_true(S)) :- sense_occ(S).
+_exists (2*s+1,      occ(A,T)) :- action(A), time(T), mapping != 3.
+_forall (2*s+2,        h(F,0)) :- unknown(F), assumptions=0.
+_forall'(2*s+2,        h(F,0)) :- unknown(F), assumptions=1.
+
+% with assumptions, define _holds/1
+_holds(h(F,0)) :- h(F,0),                     assumptions=1.
 
 % display
 #show _exists/2.
