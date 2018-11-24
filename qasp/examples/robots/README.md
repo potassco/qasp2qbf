@@ -42,3 +42,10 @@ qasp2qbf.py --pipe ex05.lp -c n=5 -c r=3 -c s=1 -c assumptions=1
 qasp2qbf.py --pipe ex05.lp -c n=9 -c r=3 -c s=2 -c assumptions=2
 ```
 
+Conformant planning with assertions and sensing actions using
+`conformant_planning_with_assertions_and_sensing.lp`:
+```bash
+qasp2qbf.py --pipe ex06.lp -c r=2 -c n=4
+qasp2qbf.py --pipe ex06.lp -c r=3 -c n=7
+```
+
