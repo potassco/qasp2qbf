@@ -49,3 +49,9 @@ qasp2qbf.py --pipe ex06.lp -c r=2 -c n=4
 qasp2qbf.py --pipe ex06.lp -c r=3 -c n=7
 ```
 
+Approximation to conformant planning with assertions and sensing actions:
+```bash
+qasp2qbf.py --pipe ex07.lp -c r=2 -c n=4
+qasp2qbf.py --pipe ex07.lp -c r=3 -c n=7
+```
+
