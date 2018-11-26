@@ -10,55 +10,56 @@
 #include "assertion.lp".  % assertion definition
 
 % inner quantification over h/2 to obtain _assumed/1
-_exists'(3,  h(F,T) ) :- fluent(F), time(T).
-_holds( h(F,T)) :-  h(F,T).
+%
+% atom/1
+atom(h(    F ,T)) :- fluent(F), time(T).
+atom(h(neg(F),T)) :- fluent(F), time(T).
+%
+_exists'(3,h(L,T)) :- atom(h(L,T)).
+_holds(    h(L,T)) :- atom(h(L,T)), h(L,T).
 
-% u/1 definition
+% define sensed/1
+sensed(h(F,T))      :- occ(sense(F),T), fluent(F).
+sensed(h(neg(F),T)) :-  sensed(h(F,T)), fluent(F).
+
+% define unknown atom
 u(h(F,0)) :- unknown(F).
-u(h(F,T)) :- not _assumed(h(F,T)),
-             not occ(sense(F),T),
-             ubody(h(F,T)).
+u(A) :- atom(A), not _assumed(A), not sensed(A), ubody(A).
 
-% assertion knowledge condition check
+% check the knowledge condition of assertions
 :- occ(A,T), assertion_kw(A,F), u(h(F,T-1)).
 
 % _assumedt/1 and _assumedf/1
-_assumedt( h(F,T)) :-     h(F,T), _assumed (h(F,T)).
-_assumedf( h(F,T)) :- not h(F,T), _assumed (h(F,T)).
-
-% extra for nh
-_assumedt(nh(F,T)) :-             _assumedf(h(F,T)).
-_assumedf(nh(F,T)) :-             _assumedt(h(F,T)).
-u(        nh(F,T)) :-                u(     h(F,T)).
-ubody(     h(F,T)) :-                ubody(nh(F,T)).
+assumedt(A) :- atom(A),     _holds(A), _assumed(A).
+assumedf(A) :- atom(A), not _holds(A), _assumed(A).
 
 %
 % ubody definition
 %
 
-ubody( h(F,T)) :- not _assumedf( h(F,T-1)),
-                  not _assumedt(nh(F,T  )),
-                  1 { u(h(F,T-1)); u(nh(F,T)) }, 
-                  fluent(F), time(T).
-ubody(nh(F,T)) :- not _assumedf(nh(F,T-1)),
-                  not _assumedt( h(F,T  )),
-                  1 { u(nh(F,T-1)); u(h(F,T)) }, 
-                  fluent(F), time(T).
+ubody(h(F,T)) :- not assumedf(h(F,T-1)),
+                 not assumedt(h(neg(F),T)),
+                 1 { u(h(F,T-1)); u(h(neg(F),T)) },
+                 fluent(F), time(T).
+ubody(h(neg(F),T)) :- not assumedf(h(neg(F),T-1)),
+                      not assumedt(h(F,T)),
+                      1 { u(h(neg(F),T-1)); u(h(F,T)) },
+                      fluent(F), time(T).
 
-ubody(h( at(R+1),T)) :- occ(   go,T), u(h(at(R),T-1)).
-ubody(h(clean(R),T)) :- occ(sweep,T), u(h(at(R),T-1)).
-ubody(nh(  at(R),T)) :- u(h(at(R'),T)), room(R), R!=R'.
+ubody(h(at(R+1),T))    :- occ(go,T), u(h(at(R),T-1)).
+ubody(h(clean(R),T))   :- occ(sweep,T), u(h(at(R),T-1)).
+ubody(h(neg(at(R)),T)) :- u(h(at(R'),T)), room(R), R!=R'.
 
 ubody(h(locked(R),T)) :- occ(flip,T), fluent(locked(R)),
-                         not _assumedf( h(    at(R),T-1)),
-                         not _assumedf(nh(locked(R),T-1)),
-                         1 { u(h(at(R),T-1)); u(nh(locked(R),T-1)) }.
-ubody(nh(locked(R),T)) :- occ(flip,T), fluent(locked(R)),
-                         not _assumedf(h(    at(R),T-1)),
-                         not _assumedf(h(locked(R),T-1)),
-                         1 { u(h(at(R),T-1)); u(h(locked(R),T-1)) }.
+                         not assumedf(h(at(R),T-1)),
+                         not assumedf(h(neg(locked(R)),T-1)),
+                         1 { u(h(at(R),T-1)); u(h(neg(locked(R)),T-1)) }.
+ubody(h(neg(locked(R)),T)) :- occ(flip,T), fluent(locked(R)),
+                              not assumedf(h(at(R),T-1)),
+                              not assumedf(h(locked(R),T-1)),
+                              1 { u(h(at(R),T-1)); u(h(locked(R),T-1)) }.
 
 % assertion leads to no u
-%nh(locked(R),T) :- occ(assertion(R),T).
-% h(  at(R+1),T) :- occ(assertion(R),T).
+%h(neg(locked(R)),T) :- occ(assertion(R),T).
+%h(  at(R+1),T)      :- occ(assertion(R),T).
 
