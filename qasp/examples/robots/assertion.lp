@@ -5,7 +5,7 @@ action(assertion(R))                 :- fluent(locked(R)).
 assertion_kw(assertion(R),locked(R)) :- fluent(locked(R)).
 
 % effects
-nh(locked(R),T) :- occ(assertion(R),T).
- h(  at(R+1),T) :- occ(assertion(R),T).
+h(neg(locked(R)),T) :- occ(assertion(R),T).
+h(       at(R+1),T) :- occ(assertion(R),T).
 % preconditions
-bot(T) :- occ(assertion(R),T), nh(at(R),T-1).
+bot(T) :- occ(assertion(R),T), h(neg(at(R)),T-1).

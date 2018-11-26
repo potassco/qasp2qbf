@@ -10,7 +10,7 @@
 
 % initial situation
 h(clean(1),0).
-nh(clean(2),0).
+h(neg(clean(2)),0).
 
 % uncomment to generate UNSAT
 %:- occ(sweep,T), h(at(2),T-1).

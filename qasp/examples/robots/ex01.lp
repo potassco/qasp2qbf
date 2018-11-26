@@ -5,14 +5,14 @@
 %
 
 % includes
-#include "base.lp".
+#include "mybase.lp".
 
 % no bot/1
 :- bot(T).
 
 % initial situation
 h(clean(1),0).
-nh(clean(2),0).
+h(neg(clean(2)),0).
 
 % quantification
 _exists(1,occ(A,T)) :- action(A), time(T).
