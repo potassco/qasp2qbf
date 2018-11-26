@@ -68,4 +68,4 @@ _holds(occ(A,T)) :- occ(A,T),                                       assumptions 
 #show sensed_true/1.
 #show occ/2.
 #show h/2.
-
+#defined unknown/1.
