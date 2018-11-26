@@ -44,10 +44,10 @@ occ(A,T,S) :- occ(A,T), map(T,S), S<=s.
 
 % fix sensing results
 { sensed_true(S) } :- sense_occ(S).
-sat(T) :- occ(sense(F),T), { sensed_true(S); h(F,T) } = 1,
+top(T) :- occ(sense(F),T), { sensed_true(S); h(F,T) } = 1,
           map(T,S).
-sat(T) :- sat(T-1), time(T).
-:- bot(T), not sat(T-1).
+top(T) :- top(T-1), time(T).
+:- bot(T), not top(T-1).
 
 % quantify
 _exists (2*S-1,    occ(A,T,S)) :- action(A), time(T), sense_occ(S).
