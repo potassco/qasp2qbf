@@ -1,10 +1,11 @@
-% GENERATE
-{ holds(X) : exists(X) }.
-{ holds(X) : forall(X) }.
+% choose _assumed(X) is X universal assumable
+{ _assumed(X) } :-   _forall'(2,X).
+{ _assumed(X) } :- _quantify'(2,X).
 
-% DISPLAY
-#show holds/1.
-#show forall/1.
-#show exists/1.
-#show query/0.
+% show _assumed/1
+#show _assumed/1.
+
+% no warnings
+#defined _forall'/2.
+#defined _quantify'/2.
 

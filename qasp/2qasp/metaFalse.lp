@@ -2,6 +2,40 @@
 % Reifying False
 %
 
+% options for integrity constraints
+ #const relaxed=0. % constraints have to be proved false
+%#const relaxed=1. % constraints cannot be proved true
+% options for assumables
+ #const assume_unknown=0. % assumed atom cannot be unknown
+%#const assume_unknown=1. % assumed atom can    be unknown
+
+
+%
+% Quantified atoms
+%
+
+% existential atoms have to be assigned
+:- exists(A), not true(atom(A)), not fail(atom(A)).
+
+% universal atoms assumable
+% choose to assume A if is universal assumable
+{ assume(A) } :- quant(forall,1,_,A).
+% forall A if A is universal assumable but it is not assumed
+  forall(A)   :- quant(forall,1,_,A), not assume(A).
+% no: assume_unknown=0 and A is assumed but unknown
+:- assume(A), not true(atom(A)), not fail(atom(A)), assume_unknown=0.
+
+%  universal atoms (not assumable and assumable not assumed)
+% no: for A there is no choice rule whose body is true
+:- forall(A), #false : choice_supp(A,B), true(B).
+% no: for A there is some nonchoice rule whose body is not false
+:- forall(A), supp(A,B), not choice_supp(A,B), not fail(B).
+
+% introspection atoms: A1 iff assume(A2)
+:- assumption(A1,A2), true(atom(A1)), not assume(A2).
+:- assumption(A1,A2), fail(atom(A1)),     assume(A2).
+
+
 %
 % Deterministic Part
 %
@@ -15,20 +49,13 @@ fail(atom(A)) :- atom(A), not supp(A).
 % Nondeterministic Part
 %
 
-% guess exists/1
-1 { true(atom(A)) ; fail(atom(A)) } 1 :- quant(exists,_,A).
-
-% guess as few as possible forall/1
-#const _assumptions=1.
-{ assume(A) } :- quant(forall,_,A),                 _assumptions=1.
-#minimize { 1,A: assume(A),                         _assumptions=1}.
-1 { true(atom(A)) ; fail(atom(A)) } 1 :- assume(A), _assumptions=1.
-
-% make choices
+% choices rules
 1 { true(atom(A)); fail(atom(A)) } 1 :-
-                 choice_supp(A,B), true(B).
+                 choice_supp(A,B), true(B),
+                 not forall(A).
 true(atom(A)) :- choice_supp(A,B), true(B),
-                 not fail(BB), supp(A,BB), not choice_supp(A,BB).
+                 supp(A,BB), not choice_supp(A,BB), not fail(BB),
+                 not forall(A).
 
 % fitting operator
 true(normal(B)) :- literal_tuple(B),
@@ -44,15 +71,17 @@ fail(sum(B,G)) :- sum(B,G,T),
     #sum { W,L : fail(atom(L)), weighted_literal_tuple(B, L,W), L > 0 ;
            W,L : true(atom(L)), weighted_literal_tuple(B,-L,W), L > 0 } >= T-G+1.
 
-              :- rule(disjunction(H),B), true(B), not atom_tuple(H,_).
-true(atom(A)) :- rule(disjunction(H),B), true(B),     atom_tuple(H,A).
+true(atom(A)) :- rule(disjunction(H),B), true(B), atom_tuple(H,A),
+                 not forall(A).
 fail(atom(A)) :- supp(A), fail(B) : supp(A,B), not choice_supp(A,B);
-                      not true(B) :                choice_supp(A,B).
+                      not true(B) :                choice_supp(A,B);
+                 not forall(A).
 
-% uncomment to forbid unknown constraints
-%              :- rule(disjunction(H),B), not fail(B), not atom_tuple(H,_).
+% integrity constraints (select relaxed = 0 or 1)
+:- rule(disjunction(H),B), not fail(B), not atom_tuple(H,_), relaxed=0.
+:- rule(disjunction(H),B), true(B), not atom_tuple(H,_),     relaxed=1.
 
-% extension to well-founded
+% extension to well-founded operator
 internal(C,normal(B)) :- scc(C,A), supp(A,normal(B)), scc(C,A'), literal_tuple(B,A').
 internal(C,sum(B,G))  :- scc(C,A), supp(A,sum(B,G)),  scc(C,A'), weighted_literal_tuple(B,A',W).
 
@@ -61,7 +90,8 @@ external(C,sum(B,G))  :- scc(C,A), supp(A,sum(B,G)),  not internal(C,sum(B,G)).
 
 steps(C,Z) :- scc(C,_), Z = { scc(C,A) : not fact(A) }.
 
-wait(C,atom(A),0)   :- scc(C,A), fail(B) : external(C,B).
+wait(C,atom(A),0)   :- scc(C,A), fail(B) : external(C,B), supp(A,B).
+wait(C,normal(B),I) :- internal(C,normal(B)), fail(normal(B)), steps(C,Z), I = 0..Z-1.
 wait(C,normal(B),I) :- internal(C,normal(B)), literal_tuple(B,A), wait(C,atom(A),I), steps(C,Z), I < Z.
 wait(C,sum(B,G),I)  :- internal(C,sum(B,G)), steps(C,Z), I = 0..Z-1, sum(B,G,T),
     #sum { W,L :   fail(atom(L)),   weighted_literal_tuple(B, L,W), L > 0, not scc(C,L) ;
@@ -70,4 +100,3 @@ wait(C,sum(B,G),I)  :- internal(C,sum(B,G)), steps(C,Z), I = 0..Z-1, sum(B,G,T),
 wait(C,atom(A),I)   :- wait(C,atom(A),0), steps(C,Z), I = 1..Z, wait(C,B,I-1) : supp(A,B), internal(C,B).
 
 fail(atom(A)) :- scc(C,A), wait(C,atom(A),Z), steps(C,Z).
-

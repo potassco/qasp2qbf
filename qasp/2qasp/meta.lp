@@ -1,15 +1,12 @@
 %
-% Requirements:
-% * No disjunctions
-% * Special predicates: exists/1, forall/1, holds/1, query/0
-% * exists/1 and forall/1 are domain predicates
-% * if exists(X) or forall(X) is true, then
-%   - X does not appear in any head, and
-%   - a rule 
-%       X :- holds(X).
-%     is given.
+% Input:
+% * _exists(1,X), _forall(2,X), _quantify(1..2,X) as usual
+% * _exists'(1,X) and _quantify'(1,X) are equivalent to
+%   _exists (1,X) and _quantify (1,X)
+% * _forall'(2,X) and _quantify'(2,X) allow assumptions
 %
-% Special predicates are not shown.
+% Those special atoms and the Xs inside have to be #shown
+% Those special atoms will not be shown at the output
 %
 
 
@@ -21,8 +18,9 @@ sum(B,G,T) :- rule(_,sum(B,G)), T = #sum { W,L : weighted_literal_tuple(B,L,W) }
 
 % extract supports of atoms and facts
 
-supp(A,B) :- rule(     choice(H),B), atom_tuple(H,A).
-supp(A,B) :- rule(disjunction(H),B), atom_tuple(H,A).
+choice_supp(A,B) :- rule(     choice(H),B), atom_tuple(H,A).
+       supp(A,B) :- rule(     choice(H),B), atom_tuple(H,A).
+       supp(A,B) :- rule(disjunction(H),B), atom_tuple(H,A).
 
 supp(A) :- supp(A,_).
 
@@ -33,37 +31,57 @@ atom( A ) :- atom_tuple(_,A).
 fact(A) :- rule(disjunction(H),normal(B)), atom_tuple(H,A), not literal_tuple(B,_).
 
 % gather quantified atoms
-quant(exists,E,A) :- output(exists(E),_), output(holds(E),B), literal_tuple(B,A).
-quant(forall,F,A) :- output(forall(F),_), output(holds(F),B), literal_tuple(B,A).
-
-% the choice support of A is B
-choice_supp(A,B)  :- rule(choice(H),B), atom_tuple(H,A),
-                     not quant(_,_,A).
+quant(exists,0,E,A) :- output(  _exists (1,E),_), output(E,B), literal_tuple(B,A).
+quant(forall,0,F,A) :- output(  _forall (2,F),_), output(F,B), literal_tuple(B,A).
+quant(exists,0,E,A) :- output(_quantify (1,E),_), output(E,B), literal_tuple(B,A).
+quant(forall,0,F,A) :- output(_quantify (2,F),_), output(F,B), literal_tuple(B,A).
+quant(exists,1,E,A) :- output(  _exists'(1,E),_), output(E,B), literal_tuple(B,A).
+quant(forall,1,F,A) :- output(  _forall'(2,F),_), output(F,B), literal_tuple(B,A).
+quant(exists,1,E,A) :- output(_quantify'(1,E),_), output(E,B), literal_tuple(B,A).
+quant(forall,1,F,A) :- output(_quantify'(2,F),_), output(F,B), literal_tuple(B,A).
 %
-% Nondeterministic Part
-%
+exists(A) :- quant(exists,_,_,A).
+forall(A) :- quant(forall,0,_,A).
+% no: F is universal and does not appear (shown) in the program
+:- output(  _forall (2,F),_), #false: output(F,B), literal_tuple(B,A).
+:- output(_quantify (2,F),_), #false: output(F,B), literal_tuple(B,A).
+%:- output(  _forall'(2,F),_), #false: output(F,B), literal_tuple(B,A).
+%:- output(_quantify'(2,F),_), #false: output(F,B), literal_tuple(B,A).
 
-% query must be known true
-:- output(query,B), not true(normal(B)).
 
+% A1 iff assume(A2)
+assumption(A1,A2) :- output(_assumed(F),B1), literal_tuple(B1,A1),
+                     output(         F ,B2), literal_tuple(B2,A2).
 
 %
 % Display
 %
 
-hide(_criteria(J,W,Q)) :- output(_criteria(J,W,Q),_).
-hide(_query)           :- output(_query,_).
-hide(_optimize(J,W,Q)) :- output(_optimize(J,W,Q),_).
-hide(exists(E))        :- output(exists(E),_).
-hide(forall(A))        :- output(forall(A),_).
-hide(holds(X))         :- output(holds(X),_).
-hide(query).
+hide(  _exists (L,E)) :- output(  _exists (L,E),_).
+hide(  _forall (L,A)) :- output(  _forall (L,A),_).
+hide(_quantify (L,A)) :- output(_quantify (L,A),_).
+hide(  _exists'(L,E)) :- output(  _exists'(L,E),_).
+hide(  _forall'(L,A)) :- output(  _forall'(L,A),_).
+hide(_quantify'(L,A)) :- output(_quantify'(L,A),_).
 
 #show.
-#show T : output(T,B), true(normal(B)), not hide(T),                  not error(_,_).
-#show assume(true(N))  : quant(forall,N,A), assume(A), true(atom(A)), not error(_,_).
-#show assume(false(N)) : quant(forall,N,A), assume(A), fail(atom(A)), not error(_,_).
+#show T : output(T,B), true(normal(B)), not hide(T), not error(_).
 
-#show error/2.
-error((twice,Q),Name) :-  quant(Q,Name,A), quant(Q,Name,A2), A > A2.
+#show error/1.
+error((output(T,B))) :- output(T,B), literal_tuple(B,A1), literal_tuple(B,A2), A1 < A2.
+
+% avoid warnings
+#defined rule/2.
+#defined weighted_literal_tuple/3.
+#defined atom_tuple/2.
+#defined literal_tuple/1.
+#defined literal_tuple/2.
+#defined scc/2.
+#defined output/2.
+#defined exists/2.
+#defined exists'/2.
+#defined forall/2.
+#defined forall'/2.
+#defined quantify/2.
+#defined quantify'/2.
 
