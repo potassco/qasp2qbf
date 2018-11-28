@@ -2,10 +2,6 @@
 % conformant planning with assertions and sensing metaencoding
 %
 
-% known fluents are equivalent in h and h'
-:- fluent(F), not unknown(F),
-   { h(F,0); h'(F,0) } = 1.
-
 % universally quantify over h'(F,0) for unknown fluents F
 _forall(2,h'(F,0)) :- unknown(F).
 #show h'/2.

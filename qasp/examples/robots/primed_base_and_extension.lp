@@ -20,7 +20,7 @@ h'(neg(F),0) :- fluent(F), not h'(F,0).
 
 % actual partial initial situation
 h'(    at(1) ,0).
-h'(neg(at(R)),0) :- room(R), R != 1.
+:- h'(at(R),0), room(R), R != 1.
 
 % goal
 bot'(T) :- h'(neg(clean(R)),T), T=n.

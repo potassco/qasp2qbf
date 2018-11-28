@@ -9,8 +9,8 @@
 % * 1<=s<=n, mapping=1..2: conditional planning with at most s sensing actions per branch
 % *     s=n, mapping=3   : conditional planning (corresponds to conditional_planning.lp)
 %
-% * assumptions=1 activates (existential) assumptions over unknown fluents at 0
-% * assumptions=2 activates   (universal) assumptions over action occurrences at all time points
+% * assumptions=1 activates   (universal) assumptions over unknown fluents at 0
+% * assumptions=2 activates (existential) assumptions over action occurrences at all time points
 %
 #const s=0.
 #const mapping=1.
