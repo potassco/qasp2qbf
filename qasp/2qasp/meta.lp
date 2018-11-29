@@ -1,12 +1,22 @@
 %
 % Input:
 % * Special atoms:
-%     _exists (1,X), _forall (2,X), _quantify (1..2,X),
-%     _exists'(1,X), _forall'(2,X), _quantify'(1..2,X)
+%     _exists (1,X), _forall (2,X), _exists (3,X), _quantify (1..3,X),
+%     _exists'(1,X), _forall'(2,X), _exists'(3,X), _quantify'(1..3,X)
 % * Special atoms and the Xs inside have to be #shown, but
 %   the special atoms will not be shown at the output
 % * Atoms _assumed(X) can be used in the body,
 %   and _assumed/1 is #shown by default
+%
+
+%
+% Options for integrity constraints:
+ #const relaxed=0. % constraints have to be proved false
+%#const relaxed=1. % constraints cannot be proved true
+%
+% Options for assumables:
+ #const assumed_unknown=0. % assumed atoms cannot be unknown
+%#const assumed_unknown=1. % assumed atoms can    be unknown
 %
 
 

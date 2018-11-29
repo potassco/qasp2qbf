@@ -2,14 +2,6 @@
 % Metaencoding reifying true and false
 %
 
-% options for integrity constraints
- #const relaxed=0. % constraints have to be proved false
-%#const relaxed=1. % constraints cannot be proved true
-%
-% options for assumables
- #const assumed_unknown=0. % assumed atoms cannot be unknown
-%#const assumed_unknown=1. % assumed atoms can    be unknown
-
 
 %
 % Quantified atoms
