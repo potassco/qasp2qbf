@@ -1,12 +1,12 @@
 %
 % Input:
-% * _exists(1,X), _forall(2,X), _quantify(1..2,X) as usual
-% * _exists'(1,X) and _quantify'(1,X) are equivalent to
-%   _exists (1,X) and _quantify (1,X)
-% * _forall'(2,X) and _quantify'(2,X) allow assumptions
-%
-% Those special atoms and the Xs inside have to be #shown
-% Those special atoms will not be shown at the output
+% * Special atoms:
+%     _exists (1,X), _forall (2,X), _quantify (1..2,X),
+%     _exists'(1,X), _forall'(2,X), _quantify'(1..2,X)
+% * Special atoms and the Xs inside have to be #shown, but
+%   the special atoms will not be shown at the output
+% * Atoms _assumed(X) can be used in the body,
+%   and _assumed/1 is #shown by default
 %
 
 
@@ -30,7 +30,13 @@ atom( A ) :- atom_tuple(_,A).
 
 fact(A) :- rule(disjunction(H),normal(B)), atom_tuple(H,A), not literal_tuple(B,_).
 
-% gather quantified atoms
+
+%
+% Quantification
+%
+
+% gather quantified atoms into quant/4
+%*
 quant(exists,0,E,A) :- output(  _exists (1,E),_), output(E,B), literal_tuple(B,A).
 quant(forall,0,F,A) :- output(  _forall (2,F),_), output(F,B), literal_tuple(B,A).
 quant(exists,0,E,A) :- output(_quantify (1,E),_), output(E,B), literal_tuple(B,A).
@@ -39,19 +45,30 @@ quant(exists,1,E,A) :- output(  _exists'(1,E),_), output(E,B), literal_tuple(B,A
 quant(forall,1,F,A) :- output(  _forall'(2,F),_), output(F,B), literal_tuple(B,A).
 quant(exists,1,E,A) :- output(_quantify'(1,E),_), output(E,B), literal_tuple(B,A).
 quant(forall,1,F,A) :- output(_quantify'(2,F),_), output(F,B), literal_tuple(B,A).
-%
-exists(A) :- quant(exists,_,_,A).
-forall(A) :- quant(forall,0,_,A).
+*%
+
+% map to exists/1, forall/1 and forall'/1
+exists (A) :- output(  _exists (1,E),_), output(E,B), literal_tuple(B,A).
+forall (A) :- output(  _forall (2,F),_), output(F,B), literal_tuple(B,A).
+exists (A) :- output(_quantify (1,E),_), output(E,B), literal_tuple(B,A).
+forall (A) :- output(_quantify (2,F),_), output(F,B), literal_tuple(B,A).
+exists (A) :- output(  _exists'(1,E),_), output(E,B), literal_tuple(B,A).
+forall'(A) :- output(  _forall'(2,F),_), output(F,B), literal_tuple(B,A).
+exists (A) :- output(_quantify'(1,E),_), output(E,B), literal_tuple(B,A).
+forall'(A) :- output(_quantify'(2,F),_), output(F,B), literal_tuple(B,A).
+
 % no: F is universal and does not appear (shown) in the program
 :- output(  _forall (2,F),_), #false: output(F,B), literal_tuple(B,A).
 :- output(_quantify (2,F),_), #false: output(F,B), literal_tuple(B,A).
-%:- output(  _forall'(2,F),_), #false: output(F,B), literal_tuple(B,A).
-%:- output(_quantify'(2,F),_), #false: output(F,B), literal_tuple(B,A).
 
+% no: F is universal assumable, does not appear, and is not assumed
+:- output(  _forall'(2,F),X); #false: output(F,B), literal_tuple(B,A); literal_tuple(X,Y); not true(atom(Y)).
+:- output(_quantify'(2,F),X); #false: output(F,B), literal_tuple(B,A); literal_tuple(X,Y); not true(atom(Y)).
 
-% A1 iff assume(A2)
-assumption(A1,A2) :- output(_assumed(F),B1), literal_tuple(B1,A1),
-                     output(         F ,B2), literal_tuple(B2,A2).
+% _assumed atoms: A1 is assumed if A2 is true
+assumption(A1,A2) :- output(         F ,B1), literal_tuple(B1,A1),
+                     output(_assumed(F),B2), literal_tuple(B2,A2).
+
 
 %
 % Display

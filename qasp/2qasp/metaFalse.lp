@@ -1,13 +1,14 @@
 %
-% Reifying False
+% Metaencoding reifying true and false
 %
 
 % options for integrity constraints
  #const relaxed=0. % constraints have to be proved false
 %#const relaxed=1. % constraints cannot be proved true
+%
 % options for assumables
- #const assume_unknown=0. % assumed atom cannot be unknown
-%#const assume_unknown=1. % assumed atom can    be unknown
+ #const assumed_unknown=0. % assumed atoms cannot be unknown
+%#const assumed_unknown=1. % assumed atoms can    be unknown
 
 
 %
@@ -17,23 +18,19 @@
 % existential atoms have to be assigned
 :- exists(A), not true(atom(A)), not fail(atom(A)).
 
-% universal atoms assumable
-% choose to assume A if is universal assumable
-{ assume(A) } :- quant(forall,1,_,A).
+% universal atoms: assumable
+% A1 is assumed if A2 is true
+assumed(A1) :- assumption(A1,A2), true(atom(A2)).
 % forall A if A is universal assumable but it is not assumed
-  forall(A)   :- quant(forall,1,_,A), not assume(A).
-% no: assume_unknown=0 and A is assumed but unknown
-:- assume(A), not true(atom(A)), not fail(atom(A)), assume_unknown=0.
+forall(A)  :- forall'(A), not assumed(A).
+% no: assumed_unknown=0 and A is assumed but unknown
+:- assumed(A), not true(atom(A)), not fail(atom(A)), assumed_unknown=0.
 
-%  universal atoms (not assumable and assumable not assumed)
+%  universal atoms: not assumable, and assumable but not assumed
 % no: for A there is no choice rule whose body is true
 :- forall(A), #false : choice_supp(A,B), true(B).
 % no: for A there is some nonchoice rule whose body is not false
 :- forall(A), supp(A,B), not choice_supp(A,B), not fail(B).
-
-% introspection atoms: A1 iff assume(A2)
-:- assumption(A1,A2), true(atom(A1)), not assume(A2).
-:- assumption(A1,A2), fail(atom(A1)),     assume(A2).
 
 
 %
@@ -100,3 +97,4 @@ wait(C,sum(B,G),I)  :- internal(C,sum(B,G)), steps(C,Z), I = 0..Z-1, sum(B,G,T),
 wait(C,atom(A),I)   :- wait(C,atom(A),0), steps(C,Z), I = 1..Z, wait(C,B,I-1) : supp(A,B), internal(C,B).
 
 fail(atom(A)) :- scc(C,A), wait(C,atom(A),Z), steps(C,Z).
+
