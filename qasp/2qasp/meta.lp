@@ -62,8 +62,10 @@ forall'(A) :- output(_quantify'(2,F),_), output(F,B), literal_tuple(B,A).
 :- output(_quantify (2,F),_), #false: output(F,B), literal_tuple(B,A).
 
 % no: F is universal assumable, does not appear, and is not assumed
-:- output(  _forall'(2,F),X); #false: output(F,B), literal_tuple(B,A); literal_tuple(X,Y); not true(atom(Y)).
-:- output(_quantify'(2,F),X); #false: output(F,B), literal_tuple(B,A); literal_tuple(X,Y); not true(atom(Y)).
+:- output(  _forall'(2,F),_); #false: output(F,B), literal_tuple(B,A);
+   output(    _assumed(F),X); literal_tuple(X,Y); not true(atom(Y)).
+:- output(_quantify'(2,F),_); #false: output(F,B), literal_tuple(B,A);
+   output(    _assumed(F),X); literal_tuple(X,Y); not true(atom(Y)).
 
 % _assumed atoms: A1 is assumed if A2 is true
 assumption(A1,A2) :- output(         F ,B1), literal_tuple(B1,A1),
