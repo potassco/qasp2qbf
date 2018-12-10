@@ -28,7 +28,7 @@ clingo ../examples/robots/ex06.lp -c r=2 -c n=7 metaExtra.lp --output=reify --re
 Approximation to conformant planning with assertions and sensing actions (the approximation solves it):
 ```bash
 clingo ../examples/robots/ex07.lp -c r=2 -c n=4 metaExtra.lp --output=reify --reify-sccs | clingo - meta.lp metaFalse.lp
-clingo ../examples/robots/ex07.lp -c r=2 -c n=7 metaExtra.lp --output=reify --reify-sccs | clingo - meta.lp metaFalse.lp
+clingo ../examples/robots/ex07.lp -c r=3 -c n=7 metaExtra.lp --output=reify --reify-sccs | clingo - meta.lp metaFalse.lp
 ```
 
 Comparison of both approaches to planning with assertions and sensing actions:
