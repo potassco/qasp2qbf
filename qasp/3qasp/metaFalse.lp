@@ -7,22 +7,30 @@
 % Quantified atoms
 %
 
-% existential atoms have to be assigned
-:- exists(A), not true(atom(A)), not fail(atom(A)).
-
-% universal atoms: assumable
-% A1 is assumed if A2 is true
+% assumed: A1 is assumed if A2 is true
 assumed(A1) :- assumption(A1,A2), true(atom(A2)).
-% forall A if A is universal assumable but it is not assumed
-forall(A)  :- forall'(A), not assumed(A).
-% no: assumed_unknown=0 and A is assumed but unknown
-:- assumed(A), not true(atom(A)), not fail(atom(A)), assumed_unknown=0.
 
-%  universal atoms: not assumable, and assumable but not assumed
-% no: for A there is no choice rule whose body is true
+% exists(1,A): A must be proved true or false
+:- exists(1,A), not true(atom(A)), not fail(atom(A)).
+
+% forall(A): a choice rule for A must be proved, and
+%            all normal rules for A must be proved false
 :- forall(A), #false : choice_supp(A,B), true(B).
-% no: for A there is some nonchoice rule whose body is not false
 :- forall(A), supp(A,B), not choice_supp(A,B), not fail(B).
+
+% exists(3,A): has no effect
+
+% exists'(1,A): same as exists(1,A), but _assumed(A) may be true
+exists(1,A) :- exists'(1,A).
+
+% forall'(A): either assumed(A) is  true and A is treated as by exists(1,A), or
+%                    assumed(A) is false and A is treated as by forall(  A)
+exists(1,A) :- forall'(A),     assumed(A).
+forall(  A) :- forall'(A), not assumed(A).
+
+% exists'(3,A): either assumed(A) is  true and A is treated as by exists(1,A), or
+%                      assumed(A) is false and A is treated as by exists(3,A)
+exists(1,A) :- exists'(3,A),   assumed(A).
 
 
 %
