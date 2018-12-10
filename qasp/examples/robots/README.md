@@ -69,8 +69,8 @@ qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex04.lp -c method=1
 qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex05.lp -c method=0
 qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex05.lp -c method=1
 qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex06.lp -c method=0
-qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex06.lp -c method=0
-qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex07.lp -c method=1
+qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex06.lp -c method=1
+qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex07.lp -c method=0
 qasp2qbf.py --pipe -c n=2 comparison.lp comparison_ex07.lp -c method=1
 ```
 
