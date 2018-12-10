@@ -31,7 +31,7 @@ clingo ../examples/robots/ex07.lp -c r=2 -c n=4 metaExtra.lp --output=reify --re
 clingo ../examples/robots/ex07.lp -c r=3 -c n=7 metaExtra.lp --output=reify --reify-sccs | clingo - meta.lp metaFalse.lp
 ```
 
-Comparison of both approaches to planning with assertions and sensing actions:
+Comparison of approaches to planning with assertions and sensing actions:
 ```bash
 clingo metaExtra.lp --output=reify --reify-sccs -c n=2 ../examples/robots/comparison_3qasp.lp ../examples/robots/comparison_ex01.lp -c method=1 | clingo - meta.lp metaFalse.lp
 clingo metaExtra.lp --output=reify --reify-sccs -c n=2 ../examples/robots/comparison_3qasp.lp ../examples/robots/comparison_ex02.lp -c method=1 | clingo - meta.lp metaFalse.lp
