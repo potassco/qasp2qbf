@@ -54,7 +54,7 @@ Default command-line:
 clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2sat | \
 qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
 
-qasp2qbf is part of plasp in Potassco: https://potassco.org/
+qasp2qbf is part of Potassco: https://potassco.org/
 Get help/report bugs via : https://potassco.org/support
     """
 
