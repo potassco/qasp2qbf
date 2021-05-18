@@ -1,0 +1,5 @@
+lparse -c h=5  -c w=1 ring_2.smo  | smodels
+lparse -c h=11 -c w=1 ring_4.smo  | smodels
+lparse -c h=17 -c w=1 ring_6.smo  | smodels
+lparse -c h=23 -c w=1 ring_8.smo  | smodels
+lparse -c h=29 -c w=1 ring_10.smo | smodels

@@ -1,0 +1,952 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:                              
+%     lparse -c h=<height> -c w=<width> | smodels
+% The program consists of the following main predicates
+%	holds(L,T,P) - if literal L holds at (T,P)
+%	poss(A,T,P) - if action A is executable at (T,P)
+%	occ(A,T,P) - if action A occurs at (T,P)
+%	used(T,P) - if starting from T, the path P is 
+%		used in constructing the plan.
+%	br(g,T,P,P_1) - if there exists a branch from (T,P)
+%		to (T+1,P_1)
+%	goal(T,P) - if the goal is satisified at (T,P)
+%	pc(L,T,P) - if L may change in the next state
+%	e(L,T,P) - if literal L is an effect of some action
+%		occuring at (T,P).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#domain fluent(F).
+#domain literal(L;L1).
+#domain sense(G;G1;G2).
+#domain time(T).
+#domain time1(T1).
+#domain path(P;P1;P2).
+#domain action(A).
+
+% Input parameters
+time(1..h).
+time1(1..h+1).
+path(1..w).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Action declarations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+action(dunk(p1)).
+action(dunk(p2)).
+action(dunk(p3)).
+action(dunk(p4)).
+action(dunk(p5)).
+action(dunk(p6)).
+action(detect_metal(p1)).
+action(detect_metal(p2)).
+action(detect_metal(p3)).
+action(detect_metal(p4)).
+action(detect_metal(p5)).
+action(detect_metal(p6)).
+action(sniff(p1)).
+action(sniff(p2)).
+action(sniff(p3)).
+action(sniff(p4)).
+action(sniff(p5)).
+action(sniff(p6)).
+action(xray(p1)).
+action(xray(p2)).
+action(xray(p3)).
+action(xray(p4)).
+action(xray(p5)).
+action(xray(p6)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fluent declarations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fluent(armed(p1)).
+fluent(armed(p2)).
+fluent(armed(p3)).
+fluent(armed(p4)).
+fluent(armed(p5)).
+fluent(armed(p6)).
+fluent(clogged).
+fluent(dunked(p1)).
+fluent(dunked(p2)).
+fluent(dunked(p3)).
+fluent(dunked(p4)).
+fluent(dunked(p5)).
+fluent(dunked(p6)).
+fluent(disarmed).
+sense(armed(p1)).
+sense(neg(armed(p1))).
+sense(armed(p2)).
+sense(neg(armed(p2))).
+sense(armed(p3)).
+sense(neg(armed(p3))).
+sense(armed(p4)).
+sense(neg(armed(p4))).
+sense(armed(p5)).
+sense(neg(armed(p5))).
+sense(armed(p6)).
+sense(neg(armed(p6))).
+sense(armed(p1)).
+sense(neg(armed(p1))).
+sense(armed(p2)).
+sense(neg(armed(p2))).
+sense(armed(p3)).
+sense(neg(armed(p3))).
+sense(armed(p4)).
+sense(neg(armed(p4))).
+sense(armed(p5)).
+sense(neg(armed(p5))).
+sense(armed(p6)).
+sense(neg(armed(p6))).
+sense(armed(p1)).
+sense(neg(armed(p1))).
+sense(armed(p2)).
+sense(neg(armed(p2))).
+sense(armed(p3)).
+sense(neg(armed(p3))).
+sense(armed(p4)).
+sense(neg(armed(p4))).
+sense(armed(p5)).
+sense(neg(armed(p5))).
+sense(armed(p6)).
+sense(neg(armed(p6))).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DOMAIN INDEPENDENT RULES 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Auxiliary Rules
+literal(F).
+
+literal(neg(F)).
+
+
+contrary(F,neg(F)).
+
+contrary(neg(F),F).
+
+
+used(1,1).
+
+used(T+1,P) :-
+	used(T,P).
+
+% Goal representation
+
+:- used(h+1,P),
+	not goal(h+1,P).
+
+% Inertial rules for non-sensing actions
+holds(L,T+1,P) :-
+	e(L,T+1,P).
+
+holds(L,T+1,P) :-
+	holds(L,T,P),
+	contrary(L,L1),
+	not pc(L1,T+1,P).
+
+% Inertial rules for sensing actions
+new_br(P,P1) :-
+	P <= P1.
+
+% Cannot branch to the same path
+:- P1 < P2,
+	P2 < P,
+	br(G1,T,P1,P),
+	br(G2,T,P2,P).
+
+:- G1 != G2,
+	P <= P1,
+	br(G1,T,P,P1),
+	br(G2,T,P,P1).
+
+:- P1 < P,
+	br(G,T,P1,P),
+	used(T,P).
+
+used(T+1,P) :-
+	P1 < P,
+	br(G,T,P1,P).
+
+holds(G,T+1,P) :-
+	P1 <= P,
+	br(G,T,P1,P).
+
+holds(L,T+1,P) :-
+	P1 < P,
+	br(G,T,P1,P),
+	holds(L,T,P1).
+
+% Rules for generating action occurrences
+1{occ(X,T,P):action(X)}1 :-
+	used(T,P),
+	not goal(T,P).
+
+:- occ(A,T,P),
+	not poss(A,T,P).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DOMAIN DEPENDENT RULES 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Executability conditions 
+poss(dunk(p1),T,P) :-
+	holds(neg(clogged),T,P),
+	holds(neg(dunked(p1)),T,P).
+poss(dunk(p2),T,P) :-
+	holds(neg(clogged),T,P),
+	holds(neg(dunked(p2)),T,P).
+poss(dunk(p3),T,P) :-
+	holds(neg(clogged),T,P),
+	holds(neg(dunked(p3)),T,P).
+poss(dunk(p4),T,P) :-
+	holds(neg(clogged),T,P),
+	holds(neg(dunked(p4)),T,P).
+poss(dunk(p5),T,P) :-
+	holds(neg(clogged),T,P),
+	holds(neg(dunked(p5)),T,P).
+poss(dunk(p6),T,P) :-
+	holds(neg(clogged),T,P),
+	holds(neg(dunked(p6)),T,P).
+poss(detect_metal(p1),T,P) :-
+	holds(neg(dunked(p1)),T,P).
+poss(detect_metal(p2),T,P) :-
+	holds(neg(dunked(p2)),T,P).
+poss(detect_metal(p3),T,P) :-
+	holds(neg(dunked(p3)),T,P).
+poss(detect_metal(p4),T,P) :-
+	holds(neg(dunked(p4)),T,P).
+poss(detect_metal(p5),T,P) :-
+	holds(neg(dunked(p5)),T,P).
+poss(detect_metal(p6),T,P) :-
+	holds(neg(dunked(p6)),T,P).
+poss(sniff(p1),T,P) :-
+	holds(neg(dunked(p1)),T,P).
+poss(sniff(p2),T,P) :-
+	holds(neg(dunked(p2)),T,P).
+poss(sniff(p3),T,P) :-
+	holds(neg(dunked(p3)),T,P).
+poss(sniff(p4),T,P) :-
+	holds(neg(dunked(p4)),T,P).
+poss(sniff(p5),T,P) :-
+	holds(neg(dunked(p5)),T,P).
+poss(sniff(p6),T,P) :-
+	holds(neg(dunked(p6)),T,P).
+poss(xray(p1),T,P) :-
+	holds(neg(dunked(p1)),T,P).
+poss(xray(p2),T,P) :-
+	holds(neg(dunked(p2)),T,P).
+poss(xray(p3),T,P) :-
+	holds(neg(dunked(p3)),T,P).
+poss(xray(p4),T,P) :-
+	holds(neg(dunked(p4)),T,P).
+poss(xray(p5),T,P) :-
+	holds(neg(dunked(p5)),T,P).
+poss(xray(p6),T,P) :-
+	holds(neg(dunked(p6)),T,P).
+
+% Static laws 
+holds(disarmed,T1,P) :-
+	holds(neg(armed(p1)),T1,P),
+	holds(neg(armed(p2)),T1,P),
+	holds(neg(armed(p3)),T1,P),
+	holds(neg(armed(p4)),T1,P),
+	holds(neg(armed(p5)),T1,P),
+	holds(neg(armed(p6)),T1,P).
+
+e(disarmed,T+1,P) :-
+	e(neg(armed(p1)),T+1,P),
+	e(neg(armed(p2)),T+1,P),
+	e(neg(armed(p3)),T+1,P),
+	e(neg(armed(p4)),T+1,P),
+	e(neg(armed(p5)),T+1,P),
+	e(neg(armed(p6)),T+1,P).
+
+pc(disarmed,T+1,P) :-
+	pc(neg(armed(p1)),T+1,P),
+	not holds(disarmed,T,P),
+	not e(armed(p1),T+1,P),
+	not e(armed(p2),T+1,P),
+	not e(armed(p3),T+1,P),
+	not e(armed(p4),T+1,P),
+	not e(armed(p5),T+1,P),
+	not e(armed(p6),T+1,P).
+pc(disarmed,T+1,P) :-
+	pc(neg(armed(p2)),T+1,P),
+	not holds(disarmed,T,P),
+	not e(armed(p1),T+1,P),
+	not e(armed(p2),T+1,P),
+	not e(armed(p3),T+1,P),
+	not e(armed(p4),T+1,P),
+	not e(armed(p5),T+1,P),
+	not e(armed(p6),T+1,P).
+pc(disarmed,T+1,P) :-
+	pc(neg(armed(p3)),T+1,P),
+	not holds(disarmed,T,P),
+	not e(armed(p1),T+1,P),
+	not e(armed(p2),T+1,P),
+	not e(armed(p3),T+1,P),
+	not e(armed(p4),T+1,P),
+	not e(armed(p5),T+1,P),
+	not e(armed(p6),T+1,P).
+pc(disarmed,T+1,P) :-
+	pc(neg(armed(p4)),T+1,P),
+	not holds(disarmed,T,P),
+	not e(armed(p1),T+1,P),
+	not e(armed(p2),T+1,P),
+	not e(armed(p3),T+1,P),
+	not e(armed(p4),T+1,P),
+	not e(armed(p5),T+1,P),
+	not e(armed(p6),T+1,P).
+pc(disarmed,T+1,P) :-
+	pc(neg(armed(p5)),T+1,P),
+	not holds(disarmed,T,P),
+	not e(armed(p1),T+1,P),
+	not e(armed(p2),T+1,P),
+	not e(armed(p3),T+1,P),
+	not e(armed(p4),T+1,P),
+	not e(armed(p5),T+1,P),
+	not e(armed(p6),T+1,P).
+pc(disarmed,T+1,P) :-
+	pc(neg(armed(p6)),T+1,P),
+	not holds(disarmed,T,P),
+	not e(armed(p1),T+1,P),
+	not e(armed(p2),T+1,P),
+	not e(armed(p3),T+1,P),
+	not e(armed(p4),T+1,P),
+	not e(armed(p5),T+1,P),
+	not e(armed(p6),T+1,P).
+
+holds(neg(armed(p1)),T1,P) :-
+	holds(armed(p2),T1,P).
+
+e(neg(armed(p1)),T+1,P) :-
+	e(armed(p2),T+1,P).
+
+pc(neg(armed(p1)),T+1,P) :-
+	pc(armed(p2),T+1,P),
+	not holds(neg(armed(p1)),T,P),
+	not e(neg(armed(p2)),T+1,P).
+
+holds(neg(armed(p1)),T1,P) :-
+	holds(armed(p3),T1,P).
+
+e(neg(armed(p1)),T+1,P) :-
+	e(armed(p3),T+1,P).
+
+pc(neg(armed(p1)),T+1,P) :-
+	pc(armed(p3),T+1,P),
+	not holds(neg(armed(p1)),T,P),
+	not e(neg(armed(p3)),T+1,P).
+
+holds(neg(armed(p1)),T1,P) :-
+	holds(armed(p4),T1,P).
+
+e(neg(armed(p1)),T+1,P) :-
+	e(armed(p4),T+1,P).
+
+pc(neg(armed(p1)),T+1,P) :-
+	pc(armed(p4),T+1,P),
+	not holds(neg(armed(p1)),T,P),
+	not e(neg(armed(p4)),T+1,P).
+
+holds(neg(armed(p1)),T1,P) :-
+	holds(armed(p5),T1,P).
+
+e(neg(armed(p1)),T+1,P) :-
+	e(armed(p5),T+1,P).
+
+pc(neg(armed(p1)),T+1,P) :-
+	pc(armed(p5),T+1,P),
+	not holds(neg(armed(p1)),T,P),
+	not e(neg(armed(p5)),T+1,P).
+
+holds(neg(armed(p1)),T1,P) :-
+	holds(armed(p6),T1,P).
+
+e(neg(armed(p1)),T+1,P) :-
+	e(armed(p6),T+1,P).
+
+pc(neg(armed(p1)),T+1,P) :-
+	pc(armed(p6),T+1,P),
+	not holds(neg(armed(p1)),T,P),
+	not e(neg(armed(p6)),T+1,P).
+
+holds(neg(armed(p2)),T1,P) :-
+	holds(armed(p1),T1,P).
+
+e(neg(armed(p2)),T+1,P) :-
+	e(armed(p1),T+1,P).
+
+pc(neg(armed(p2)),T+1,P) :-
+	pc(armed(p1),T+1,P),
+	not holds(neg(armed(p2)),T,P),
+	not e(neg(armed(p1)),T+1,P).
+
+holds(neg(armed(p2)),T1,P) :-
+	holds(armed(p3),T1,P).
+
+e(neg(armed(p2)),T+1,P) :-
+	e(armed(p3),T+1,P).
+
+pc(neg(armed(p2)),T+1,P) :-
+	pc(armed(p3),T+1,P),
+	not holds(neg(armed(p2)),T,P),
+	not e(neg(armed(p3)),T+1,P).
+
+holds(neg(armed(p2)),T1,P) :-
+	holds(armed(p4),T1,P).
+
+e(neg(armed(p2)),T+1,P) :-
+	e(armed(p4),T+1,P).
+
+pc(neg(armed(p2)),T+1,P) :-
+	pc(armed(p4),T+1,P),
+	not holds(neg(armed(p2)),T,P),
+	not e(neg(armed(p4)),T+1,P).
+
+holds(neg(armed(p2)),T1,P) :-
+	holds(armed(p5),T1,P).
+
+e(neg(armed(p2)),T+1,P) :-
+	e(armed(p5),T+1,P).
+
+pc(neg(armed(p2)),T+1,P) :-
+	pc(armed(p5),T+1,P),
+	not holds(neg(armed(p2)),T,P),
+	not e(neg(armed(p5)),T+1,P).
+
+holds(neg(armed(p2)),T1,P) :-
+	holds(armed(p6),T1,P).
+
+e(neg(armed(p2)),T+1,P) :-
+	e(armed(p6),T+1,P).
+
+pc(neg(armed(p2)),T+1,P) :-
+	pc(armed(p6),T+1,P),
+	not holds(neg(armed(p2)),T,P),
+	not e(neg(armed(p6)),T+1,P).
+
+holds(neg(armed(p3)),T1,P) :-
+	holds(armed(p1),T1,P).
+
+e(neg(armed(p3)),T+1,P) :-
+	e(armed(p1),T+1,P).
+
+pc(neg(armed(p3)),T+1,P) :-
+	pc(armed(p1),T+1,P),
+	not holds(neg(armed(p3)),T,P),
+	not e(neg(armed(p1)),T+1,P).
+
+holds(neg(armed(p3)),T1,P) :-
+	holds(armed(p2),T1,P).
+
+e(neg(armed(p3)),T+1,P) :-
+	e(armed(p2),T+1,P).
+
+pc(neg(armed(p3)),T+1,P) :-
+	pc(armed(p2),T+1,P),
+	not holds(neg(armed(p3)),T,P),
+	not e(neg(armed(p2)),T+1,P).
+
+holds(neg(armed(p3)),T1,P) :-
+	holds(armed(p4),T1,P).
+
+e(neg(armed(p3)),T+1,P) :-
+	e(armed(p4),T+1,P).
+
+pc(neg(armed(p3)),T+1,P) :-
+	pc(armed(p4),T+1,P),
+	not holds(neg(armed(p3)),T,P),
+	not e(neg(armed(p4)),T+1,P).
+
+holds(neg(armed(p3)),T1,P) :-
+	holds(armed(p5),T1,P).
+
+e(neg(armed(p3)),T+1,P) :-
+	e(armed(p5),T+1,P).
+
+pc(neg(armed(p3)),T+1,P) :-
+	pc(armed(p5),T+1,P),
+	not holds(neg(armed(p3)),T,P),
+	not e(neg(armed(p5)),T+1,P).
+
+holds(neg(armed(p3)),T1,P) :-
+	holds(armed(p6),T1,P).
+
+e(neg(armed(p3)),T+1,P) :-
+	e(armed(p6),T+1,P).
+
+pc(neg(armed(p3)),T+1,P) :-
+	pc(armed(p6),T+1,P),
+	not holds(neg(armed(p3)),T,P),
+	not e(neg(armed(p6)),T+1,P).
+
+holds(neg(armed(p4)),T1,P) :-
+	holds(armed(p1),T1,P).
+
+e(neg(armed(p4)),T+1,P) :-
+	e(armed(p1),T+1,P).
+
+pc(neg(armed(p4)),T+1,P) :-
+	pc(armed(p1),T+1,P),
+	not holds(neg(armed(p4)),T,P),
+	not e(neg(armed(p1)),T+1,P).
+
+holds(neg(armed(p4)),T1,P) :-
+	holds(armed(p2),T1,P).
+
+e(neg(armed(p4)),T+1,P) :-
+	e(armed(p2),T+1,P).
+
+pc(neg(armed(p4)),T+1,P) :-
+	pc(armed(p2),T+1,P),
+	not holds(neg(armed(p4)),T,P),
+	not e(neg(armed(p2)),T+1,P).
+
+holds(neg(armed(p4)),T1,P) :-
+	holds(armed(p3),T1,P).
+
+e(neg(armed(p4)),T+1,P) :-
+	e(armed(p3),T+1,P).
+
+pc(neg(armed(p4)),T+1,P) :-
+	pc(armed(p3),T+1,P),
+	not holds(neg(armed(p4)),T,P),
+	not e(neg(armed(p3)),T+1,P).
+
+holds(neg(armed(p4)),T1,P) :-
+	holds(armed(p5),T1,P).
+
+e(neg(armed(p4)),T+1,P) :-
+	e(armed(p5),T+1,P).
+
+pc(neg(armed(p4)),T+1,P) :-
+	pc(armed(p5),T+1,P),
+	not holds(neg(armed(p4)),T,P),
+	not e(neg(armed(p5)),T+1,P).
+
+holds(neg(armed(p4)),T1,P) :-
+	holds(armed(p6),T1,P).
+
+e(neg(armed(p4)),T+1,P) :-
+	e(armed(p6),T+1,P).
+
+pc(neg(armed(p4)),T+1,P) :-
+	pc(armed(p6),T+1,P),
+	not holds(neg(armed(p4)),T,P),
+	not e(neg(armed(p6)),T+1,P).
+
+holds(neg(armed(p5)),T1,P) :-
+	holds(armed(p1),T1,P).
+
+e(neg(armed(p5)),T+1,P) :-
+	e(armed(p1),T+1,P).
+
+pc(neg(armed(p5)),T+1,P) :-
+	pc(armed(p1),T+1,P),
+	not holds(neg(armed(p5)),T,P),
+	not e(neg(armed(p1)),T+1,P).
+
+holds(neg(armed(p5)),T1,P) :-
+	holds(armed(p2),T1,P).
+
+e(neg(armed(p5)),T+1,P) :-
+	e(armed(p2),T+1,P).
+
+pc(neg(armed(p5)),T+1,P) :-
+	pc(armed(p2),T+1,P),
+	not holds(neg(armed(p5)),T,P),
+	not e(neg(armed(p2)),T+1,P).
+
+holds(neg(armed(p5)),T1,P) :-
+	holds(armed(p3),T1,P).
+
+e(neg(armed(p5)),T+1,P) :-
+	e(armed(p3),T+1,P).
+
+pc(neg(armed(p5)),T+1,P) :-
+	pc(armed(p3),T+1,P),
+	not holds(neg(armed(p5)),T,P),
+	not e(neg(armed(p3)),T+1,P).
+
+holds(neg(armed(p5)),T1,P) :-
+	holds(armed(p4),T1,P).
+
+e(neg(armed(p5)),T+1,P) :-
+	e(armed(p4),T+1,P).
+
+pc(neg(armed(p5)),T+1,P) :-
+	pc(armed(p4),T+1,P),
+	not holds(neg(armed(p5)),T,P),
+	not e(neg(armed(p4)),T+1,P).
+
+holds(neg(armed(p5)),T1,P) :-
+	holds(armed(p6),T1,P).
+
+e(neg(armed(p5)),T+1,P) :-
+	e(armed(p6),T+1,P).
+
+pc(neg(armed(p5)),T+1,P) :-
+	pc(armed(p6),T+1,P),
+	not holds(neg(armed(p5)),T,P),
+	not e(neg(armed(p6)),T+1,P).
+
+holds(neg(armed(p6)),T1,P) :-
+	holds(armed(p1),T1,P).
+
+e(neg(armed(p6)),T+1,P) :-
+	e(armed(p1),T+1,P).
+
+pc(neg(armed(p6)),T+1,P) :-
+	pc(armed(p1),T+1,P),
+	not holds(neg(armed(p6)),T,P),
+	not e(neg(armed(p1)),T+1,P).
+
+holds(neg(armed(p6)),T1,P) :-
+	holds(armed(p2),T1,P).
+
+e(neg(armed(p6)),T+1,P) :-
+	e(armed(p2),T+1,P).
+
+pc(neg(armed(p6)),T+1,P) :-
+	pc(armed(p2),T+1,P),
+	not holds(neg(armed(p6)),T,P),
+	not e(neg(armed(p2)),T+1,P).
+
+holds(neg(armed(p6)),T1,P) :-
+	holds(armed(p3),T1,P).
+
+e(neg(armed(p6)),T+1,P) :-
+	e(armed(p3),T+1,P).
+
+pc(neg(armed(p6)),T+1,P) :-
+	pc(armed(p3),T+1,P),
+	not holds(neg(armed(p6)),T,P),
+	not e(neg(armed(p3)),T+1,P).
+
+holds(neg(armed(p6)),T1,P) :-
+	holds(armed(p4),T1,P).
+
+e(neg(armed(p6)),T+1,P) :-
+	e(armed(p4),T+1,P).
+
+pc(neg(armed(p6)),T+1,P) :-
+	pc(armed(p4),T+1,P),
+	not holds(neg(armed(p6)),T,P),
+	not e(neg(armed(p4)),T+1,P).
+
+holds(neg(armed(p6)),T1,P) :-
+	holds(armed(p5),T1,P).
+
+e(neg(armed(p6)),T+1,P) :-
+	e(armed(p5),T+1,P).
+
+pc(neg(armed(p6)),T+1,P) :-
+	pc(armed(p5),T+1,P),
+	not holds(neg(armed(p6)),T,P),
+	not e(neg(armed(p5)),T+1,P).
+
+
+% Effects of non-sensing actions 
+e(neg(armed(p1)),T+1,P) :-
+	occ(dunk(p1),T,P).
+pc(neg(armed(p1)),T+1,P) :-
+	occ(dunk(p1),T,P).
+e(neg(armed(p2)),T+1,P) :-
+	occ(dunk(p2),T,P).
+pc(neg(armed(p2)),T+1,P) :-
+	occ(dunk(p2),T,P).
+e(neg(armed(p3)),T+1,P) :-
+	occ(dunk(p3),T,P).
+pc(neg(armed(p3)),T+1,P) :-
+	occ(dunk(p3),T,P).
+e(neg(armed(p4)),T+1,P) :-
+	occ(dunk(p4),T,P).
+pc(neg(armed(p4)),T+1,P) :-
+	occ(dunk(p4),T,P).
+e(neg(armed(p5)),T+1,P) :-
+	occ(dunk(p5),T,P).
+pc(neg(armed(p5)),T+1,P) :-
+	occ(dunk(p5),T,P).
+e(neg(armed(p6)),T+1,P) :-
+	occ(dunk(p6),T,P).
+pc(neg(armed(p6)),T+1,P) :-
+	occ(dunk(p6),T,P).
+e(dunked(p1),T+1,P) :-
+	occ(dunk(p1),T,P).
+pc(dunked(p1),T+1,P) :-
+	occ(dunk(p1),T,P).
+e(dunked(p2),T+1,P) :-
+	occ(dunk(p2),T,P).
+pc(dunked(p2),T+1,P) :-
+	occ(dunk(p2),T,P).
+e(dunked(p3),T+1,P) :-
+	occ(dunk(p3),T,P).
+pc(dunked(p3),T+1,P) :-
+	occ(dunk(p3),T,P).
+e(dunked(p4),T+1,P) :-
+	occ(dunk(p4),T,P).
+pc(dunked(p4),T+1,P) :-
+	occ(dunk(p4),T,P).
+e(dunked(p5),T+1,P) :-
+	occ(dunk(p5),T,P).
+pc(dunked(p5),T+1,P) :-
+	occ(dunk(p5),T,P).
+e(dunked(p6),T+1,P) :-
+	occ(dunk(p6),T,P).
+pc(dunked(p6),T+1,P) :-
+	occ(dunk(p6),T,P).
+e(clogged,T+1,P) :-
+	occ(dunk(p1),T,P).
+pc(clogged,T+1,P) :-
+	occ(dunk(p1),T,P).
+e(clogged,T+1,P) :-
+	occ(dunk(p2),T,P).
+pc(clogged,T+1,P) :-
+	occ(dunk(p2),T,P).
+e(clogged,T+1,P) :-
+	occ(dunk(p3),T,P).
+pc(clogged,T+1,P) :-
+	occ(dunk(p3),T,P).
+e(clogged,T+1,P) :-
+	occ(dunk(p4),T,P).
+pc(clogged,T+1,P) :-
+	occ(dunk(p4),T,P).
+e(clogged,T+1,P) :-
+	occ(dunk(p5),T,P).
+pc(clogged,T+1,P) :-
+	occ(dunk(p5),T,P).
+e(clogged,T+1,P) :-
+	occ(dunk(p6),T,P).
+pc(clogged,T+1,P) :-
+	occ(dunk(p6),T,P).
+
+% Effects of sensing actions 
+:- occ(detect_metal(p1),T,P),
+	not br(armed(p1),T,P,P),
+	not br(neg(armed(p1)),T,P,P).
+1{br(armed(p1),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p1),T,P).
+1{br(neg(armed(p1)),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p1),T,P).
+:- occ(detect_metal(p1),T,P),
+	holds(armed(p1),T,P).
+:- occ(detect_metal(p1),T,P),
+	holds(neg(armed(p1)),T,P).
+:- occ(detect_metal(p2),T,P),
+	not br(armed(p2),T,P,P),
+	not br(neg(armed(p2)),T,P,P).
+1{br(armed(p2),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p2),T,P).
+1{br(neg(armed(p2)),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p2),T,P).
+:- occ(detect_metal(p2),T,P),
+	holds(armed(p2),T,P).
+:- occ(detect_metal(p2),T,P),
+	holds(neg(armed(p2)),T,P).
+:- occ(detect_metal(p3),T,P),
+	not br(armed(p3),T,P,P),
+	not br(neg(armed(p3)),T,P,P).
+1{br(armed(p3),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p3),T,P).
+1{br(neg(armed(p3)),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p3),T,P).
+:- occ(detect_metal(p3),T,P),
+	holds(armed(p3),T,P).
+:- occ(detect_metal(p3),T,P),
+	holds(neg(armed(p3)),T,P).
+:- occ(detect_metal(p4),T,P),
+	not br(armed(p4),T,P,P),
+	not br(neg(armed(p4)),T,P,P).
+1{br(armed(p4),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p4),T,P).
+1{br(neg(armed(p4)),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p4),T,P).
+:- occ(detect_metal(p4),T,P),
+	holds(armed(p4),T,P).
+:- occ(detect_metal(p4),T,P),
+	holds(neg(armed(p4)),T,P).
+:- occ(detect_metal(p5),T,P),
+	not br(armed(p5),T,P,P),
+	not br(neg(armed(p5)),T,P,P).
+1{br(armed(p5),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p5),T,P).
+1{br(neg(armed(p5)),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p5),T,P).
+:- occ(detect_metal(p5),T,P),
+	holds(armed(p5),T,P).
+:- occ(detect_metal(p5),T,P),
+	holds(neg(armed(p5)),T,P).
+:- occ(detect_metal(p6),T,P),
+	not br(armed(p6),T,P,P),
+	not br(neg(armed(p6)),T,P,P).
+1{br(armed(p6),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p6),T,P).
+1{br(neg(armed(p6)),T,P,X):new_br(P,X)}1 :-
+	occ(detect_metal(p6),T,P).
+:- occ(detect_metal(p6),T,P),
+	holds(armed(p6),T,P).
+:- occ(detect_metal(p6),T,P),
+	holds(neg(armed(p6)),T,P).
+:- occ(sniff(p1),T,P),
+	not br(armed(p1),T,P,P),
+	not br(neg(armed(p1)),T,P,P).
+1{br(armed(p1),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p1),T,P).
+1{br(neg(armed(p1)),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p1),T,P).
+:- occ(sniff(p1),T,P),
+	holds(armed(p1),T,P).
+:- occ(sniff(p1),T,P),
+	holds(neg(armed(p1)),T,P).
+:- occ(sniff(p2),T,P),
+	not br(armed(p2),T,P,P),
+	not br(neg(armed(p2)),T,P,P).
+1{br(armed(p2),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p2),T,P).
+1{br(neg(armed(p2)),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p2),T,P).
+:- occ(sniff(p2),T,P),
+	holds(armed(p2),T,P).
+:- occ(sniff(p2),T,P),
+	holds(neg(armed(p2)),T,P).
+:- occ(sniff(p3),T,P),
+	not br(armed(p3),T,P,P),
+	not br(neg(armed(p3)),T,P,P).
+1{br(armed(p3),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p3),T,P).
+1{br(neg(armed(p3)),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p3),T,P).
+:- occ(sniff(p3),T,P),
+	holds(armed(p3),T,P).
+:- occ(sniff(p3),T,P),
+	holds(neg(armed(p3)),T,P).
+:- occ(sniff(p4),T,P),
+	not br(armed(p4),T,P,P),
+	not br(neg(armed(p4)),T,P,P).
+1{br(armed(p4),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p4),T,P).
+1{br(neg(armed(p4)),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p4),T,P).
+:- occ(sniff(p4),T,P),
+	holds(armed(p4),T,P).
+:- occ(sniff(p4),T,P),
+	holds(neg(armed(p4)),T,P).
+:- occ(sniff(p5),T,P),
+	not br(armed(p5),T,P,P),
+	not br(neg(armed(p5)),T,P,P).
+1{br(armed(p5),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p5),T,P).
+1{br(neg(armed(p5)),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p5),T,P).
+:- occ(sniff(p5),T,P),
+	holds(armed(p5),T,P).
+:- occ(sniff(p5),T,P),
+	holds(neg(armed(p5)),T,P).
+:- occ(sniff(p6),T,P),
+	not br(armed(p6),T,P,P),
+	not br(neg(armed(p6)),T,P,P).
+1{br(armed(p6),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p6),T,P).
+1{br(neg(armed(p6)),T,P,X):new_br(P,X)}1 :-
+	occ(sniff(p6),T,P).
+:- occ(sniff(p6),T,P),
+	holds(armed(p6),T,P).
+:- occ(sniff(p6),T,P),
+	holds(neg(armed(p6)),T,P).
+:- occ(xray(p1),T,P),
+	not br(armed(p1),T,P,P),
+	not br(neg(armed(p1)),T,P,P).
+1{br(armed(p1),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p1),T,P).
+1{br(neg(armed(p1)),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p1),T,P).
+:- occ(xray(p1),T,P),
+	holds(armed(p1),T,P).
+:- occ(xray(p1),T,P),
+	holds(neg(armed(p1)),T,P).
+:- occ(xray(p2),T,P),
+	not br(armed(p2),T,P,P),
+	not br(neg(armed(p2)),T,P,P).
+1{br(armed(p2),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p2),T,P).
+1{br(neg(armed(p2)),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p2),T,P).
+:- occ(xray(p2),T,P),
+	holds(armed(p2),T,P).
+:- occ(xray(p2),T,P),
+	holds(neg(armed(p2)),T,P).
+:- occ(xray(p3),T,P),
+	not br(armed(p3),T,P,P),
+	not br(neg(armed(p3)),T,P,P).
+1{br(armed(p3),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p3),T,P).
+1{br(neg(armed(p3)),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p3),T,P).
+:- occ(xray(p3),T,P),
+	holds(armed(p3),T,P).
+:- occ(xray(p3),T,P),
+	holds(neg(armed(p3)),T,P).
+:- occ(xray(p4),T,P),
+	not br(armed(p4),T,P,P),
+	not br(neg(armed(p4)),T,P,P).
+1{br(armed(p4),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p4),T,P).
+1{br(neg(armed(p4)),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p4),T,P).
+:- occ(xray(p4),T,P),
+	holds(armed(p4),T,P).
+:- occ(xray(p4),T,P),
+	holds(neg(armed(p4)),T,P).
+:- occ(xray(p5),T,P),
+	not br(armed(p5),T,P,P),
+	not br(neg(armed(p5)),T,P,P).
+1{br(armed(p5),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p5),T,P).
+1{br(neg(armed(p5)),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p5),T,P).
+:- occ(xray(p5),T,P),
+	holds(armed(p5),T,P).
+:- occ(xray(p5),T,P),
+	holds(neg(armed(p5)),T,P).
+:- occ(xray(p6),T,P),
+	not br(armed(p6),T,P,P),
+	not br(neg(armed(p6)),T,P,P).
+1{br(armed(p6),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p6),T,P).
+1{br(neg(armed(p6)),T,P,X):new_br(P,X)}1 :-
+	occ(xray(p6),T,P).
+:- occ(xray(p6),T,P),
+	holds(armed(p6),T,P).
+:- occ(xray(p6),T,P),
+	holds(neg(armed(p6)),T,P).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INITIAL STATE 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+holds(neg(dunked(p1)),1,1).
+
+holds(neg(dunked(p2)),1,1).
+
+holds(neg(dunked(p3)),1,1).
+
+holds(neg(dunked(p4)),1,1).
+
+holds(neg(dunked(p5)),1,1).
+
+holds(neg(dunked(p6)),1,1).
+
+holds(neg(disarmed),1,1).
+
+holds(neg(clogged),1,1).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GOAL SPECIFICATION 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+goal(T1,P) :-
+	holds(disarmed,T1,P).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% HIDE THE FOLLOWING ATOMS 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+hide.
+show occ(A,T,P).
+show br(G,T,P,P1).
