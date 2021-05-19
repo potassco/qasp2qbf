@@ -1,5 +1,0 @@
-lparse -c h=4  -c w=1 btuc_2.smo  | smodels
-lparse -c h=8  -c w=1 btuc_4.smo  | smodels
-lparse -c h=12 -c w=1 btuc_6.smo  | smodels
-lparse -c h=16 -c w=1 btuc_8.smo  | smodels
-lparse -c h=20 -c w=1 btuc_10.smo | smodels

@@ -1,5 +1,0 @@
-lparse -c h=3  -c w=1 btc_2.smo  | smodels
-lparse -c h=7  -c w=1 btc_4.smo  | smodels
-lparse -c h=11 -c w=1 btc_6.smo  | smodels
-lparse -c h=15 -c w=1 btc_8.smo  | smodels
-lparse -c h=19 -c w=1 btc_10.smo | smodels
