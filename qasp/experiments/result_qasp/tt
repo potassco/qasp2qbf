@@ -1,0 +1,27 @@
+#!/bin/sh
+
+TIMEOUT=1200
+
+check_timeout() {
+    if [ $? -eq 124 ]
+    then
+        echo "**************TIMEOUT*******************"
+        echo "-> EXIT"
+        exit 0
+    else
+        echo "**TERMINATE**"
+    fi
+}
+
+run(){
+    echo $0 > $OUT
+    i=0
+    for INST in "${INSTANCES[@]}"
+    do
+        echo "---------$i: $INST--------------"
+        echo "---------$i: $INST--------------" >> $OUT
+        { time timeout $TIMEOUT bash -c "qasp2qbf.py --pipe $META $QUANT $INST" ; } >> $OUT 2>&1
+        check_timeout >> $OUT
+        i=$((i+1))
+    done
+}
