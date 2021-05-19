@@ -14,7 +14,7 @@ check_timeout() {
 }
 
 run(){
-    echo $0 > $OUT
+    echo $PB > $OUT
     LEN=${#INSTANCES[@]}
     for ((i=0; i<$LEN; i++))
     do
@@ -23,7 +23,7 @@ run(){
         W=${!INSTANCES[i]:2:1}
         echo "---------$i: $FILE--------------"
         echo "---------$i: $FILE--------------" >> $OUT
-        { time -p timeout $TIMEOUT bash -c "lparse -c h=$H  -c w=$W $DIR$FILE  | smodels" ; } >> $OUT 2>&1
+        { time timeout $TIMEOUT bash -c "lparse -c h=$H  -c w=$W $DIR$FILE  | smodels" ; } >> $OUT 2>&1
         check_timeout >> $OUT
     done
 }
