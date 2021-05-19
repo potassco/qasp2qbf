@@ -1,5 +1,0 @@
-lparse -c h=2  -c w=1 bt_2.smo  | smodels
-lparse -c h=4  -c w=1 bt_4.smo  | smodels
-lparse -c h=6  -c w=1 bt_6.smo  | smodels
-lparse -c h=8  -c w=1 bt_8.smo  | smodels
-lparse -c h=10 -c w=1 bt_10.smo | smodels
