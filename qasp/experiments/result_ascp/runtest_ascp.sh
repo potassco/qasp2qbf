@@ -21,8 +21,8 @@ run(){
         FILE=${!INSTANCES[i]:0:1}
         H=${!INSTANCES[i]:1:1}
         W=${!INSTANCES[i]:2:1}
-        echo "---------$i: $FILE--------------"
-        echo "---------$i: $FILE--------------" >> $OUT
+        echo "---------$(($i + 1)): $FILE--------------"
+        echo "---------$(($i + 1)): $FILE--------------" >> $OUT
         { time timeout $TIMEOUT bash -c "lparse -c h=$H  -c w=$W $DIR$FILE  | smodels" ; } >> $OUT 2>&1
         check_timeout >> $OUT
     done

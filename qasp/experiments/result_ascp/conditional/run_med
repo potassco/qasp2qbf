@@ -1,0 +1,24 @@
+#!/bin/sh
+TEST="../runtest_ascp.sh"
+source $TEST
+
+PB="med"
+DIR="../../ascp_conditional/"$PB"/"
+OUT="result_"$PB
+
+#    FILE | H | W
+I_1=("med1.smo"  1  1)
+I_2=("med2.smo"  5  5)
+I_3=("med3.smo"  5  5)
+I_4=("med4.smo"  5  5)
+I_5=("med5.smo"  5  5)
+
+INSTANCES=(
+    I_1[@]
+    I_2[@]
+    I_3[@]
+    I_4[@]
+    I_5[@]
+)
+
+run
