@@ -3,8 +3,8 @@ time(1..n).
 { occ(A,T) : action(A) } = 1 :- time(T).
 
 % inertia
-h(F,T)      :- h(F,T-1), not h(neg(F),T), inertial(F), time(T).
-h(neg(F),T) :- h(neg(F),T-1), not h(F,T), inertial(F), time(T).
+h(F,T)      :- h(F,T-1), not h(neg(F),T), fluent(F), time(T).
+h(neg(F),T) :- h(neg(F),T-1), not h(F,T), fluent(F), time(T).
 
 % actions (direct and indirect) effects
 h(E,T) :- occ(A,T), effect(A,E,C), h(F,T-1): condition(A,E,C,F).

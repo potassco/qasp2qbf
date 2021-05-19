@@ -1,6 +1,6 @@
-#const r=1.
-room(0..r-1).
-num_rooms(r).
+#const p=1.
+room(0..p-1).
+num_rooms(p).
 
 fluent(at(R))         :- room(R).
 fluent(win_open(R))   :- room(R).

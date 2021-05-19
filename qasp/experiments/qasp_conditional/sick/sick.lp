@@ -2,8 +2,8 @@
 % the sick domain from (Weld et al 1998)
 
 % kinds of illnesses
-#const i=2.
-ill(1..i).
+#const p=2.
+ill(1..p).
 
 % fluents
 fluent(infected(I)) :- ill(I).

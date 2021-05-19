@@ -1,6 +1,6 @@
-#const d=1.
-domino(1..d).
-num_dominos(d).
+#const p=1.
+domino(1..p).
+num_dominos(p).
 
 % fluent declarations
 fluent(fall(D))    :- domino(D).

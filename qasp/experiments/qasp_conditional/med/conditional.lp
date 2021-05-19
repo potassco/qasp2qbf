@@ -1,8 +1,7 @@
 % fix sensing results
 %{ sensed_true(F,T) } :- unknown(F), time(T).
 { sensed_true(F,T) } :- sensible(F), time(T).
-%top(T) :- h(sense(F),T), { sensed_true(F,T); h(F,T) } = 1.
-top(T) :- h(sense(F),T), sensed_true(F,T), not h(F,T).
+top(T) :- h(sense(F),T), { sensed_true(F,T); h(F,T) } = 1.
 top(T) :- top(T-1), time(T).
 :- bot(T), not top(T-1).
 
