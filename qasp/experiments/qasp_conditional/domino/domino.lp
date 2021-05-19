@@ -29,3 +29,5 @@ unknown(glued(D)):- domino(D).
 
 % goal
 goal(fall(D)) :- domino(D).
+
+top(0):-h(down(D),0), not h(down(D+1),0), domino(D).
