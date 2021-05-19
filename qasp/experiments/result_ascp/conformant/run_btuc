@@ -2,16 +2,16 @@
 TEST="../runtest_ascp.sh"
 source $TEST
 
-PB="bmtc"
+PB="btuc"
 DIR="../../ascp_conformant/"$PB"/"
 OUT="result_"$PB
 
 #    FILE | H | W
-I_1=("bmtc_2_2.smo"  2  1)
-I_2=("bmtc_4_2.smo"  6  1)
-I_3=("bmtc_6_2.smo"  10 1)
-I_4=("bmtc_8_4.smo"  12 1)
-I_5=("bmtc_10_4.smo" 16 1)
+I_1=("btuc_2.smo"  4  1)
+I_2=("btuc_4.smo"  8  1)
+I_3=("btuc_6.smo"  12 1)
+I_4=("btuc_8.smo"  16 1)
+I_5=("btuc_10.smo" 20 1)
 
 INSTANCES=(
     I_1[@]
