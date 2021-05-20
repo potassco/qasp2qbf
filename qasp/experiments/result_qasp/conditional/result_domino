@@ -1,0 +1,40 @@
+run_domino
+---------1: domino.lp -c n=3 -c p=1 --------------
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/domino/meta.lp ../../qasp_conditional/domino/conditional.lp ../../qasp_conditional/domino/domino.lp -c n=3 -c p=1 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.066s
+user	0m0.074s
+sys	0m0.014s
+**TERMINATE**
+---------2: domino.lp -c n=5 -c p=2 --------------
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/domino/meta.lp ../../qasp_conditional/domino/conditional.lp ../../qasp_conditional/domino/domino.lp -c n=5 -c p=2 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.540s
+user	0m0.525s
+sys	0m0.037s
+**TERMINATE**
+---------3: domino.lp -c n=7 -c p=3 --------------
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/domino/meta.lp ../../qasp_conditional/domino/conditional.lp ../../qasp_conditional/domino/domino.lp -c n=7 -c p=3 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m11.754s
+user	0m11.602s
+sys	0m0.174s
+**TERMINATE**
+---------4: domino.lp -c n=9 -c p=4 --------------
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/domino/meta.lp ../../qasp_conditional/domino/conditional.lp ../../qasp_conditional/domino/domino.lp -c n=9 -c p=4 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	20m48.252s
+user	20m46.081s
+sys	0m2.090s
+**TERMINATE**
+---------5: domino.lp -c n=11 -c p=5 --------------
+
+real	30m0.001s
+user	0m0.004s
+sys	0m0.008s
+**************TIMEOUT*******************
+-> EXIT

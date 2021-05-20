@@ -1,0 +1,61 @@
+run_bts5
+---------1: bts5.lp -c n=2 -c p=2 --------------
+*** ERROR: (clingo): '../../qasp_conditional/bts/bts5.lp': could not open input file!
+*** Info : (clingo): Try '--help' for usage information
+lp2normal2: unknown rule type
+lp2sat: unknown rule type
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts5.lp -c n=2 -c p=2 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.047s
+user	0m0.026s
+sys	0m0.027s
+**TERMINATE**
+---------2: bts5.lp -c n=4 -c p=4 --------------
+*** ERROR: (clingo): '../../qasp_conditional/bts/bts5.lp': could not open input file!
+*** Info : (clingo): Try '--help' for usage information
+lp2normal2: unknown rule type
+lp2sat: unknown rule type
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts5.lp -c n=4 -c p=4 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.029s
+user	0m0.050s
+sys	0m0.000s
+**TERMINATE**
+---------3: bts5.lp -c n=6 -c p=6 --------------
+*** ERROR: (clingo): '../../qasp_conditional/bts/bts5.lp': could not open input file!
+*** Info : (clingo): Try '--help' for usage information
+lp2normal2: unknown rule type
+lp2sat: unknown rule type
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts5.lp -c n=6 -c p=6 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.030s
+user	0m0.035s
+sys	0m0.017s
+**TERMINATE**
+---------4: bts5.lp -c n=8 -c p=8 --------------
+*** ERROR: (clingo): '../../qasp_conditional/bts/bts5.lp': could not open input file!
+*** Info : (clingo): Try '--help' for usage information
+lp2normal2: unknown rule type
+lp2sat: unknown rule type
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts5.lp -c n=8 -c p=8 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.031s
+user	0m0.043s
+sys	0m0.011s
+**TERMINATE**
+---------5: bts5.lp -c n=10 -c p=10 --------------
+*** ERROR: (clingo): '../../qasp_conditional/bts/bts5.lp': could not open input file!
+*** Info : (clingo): Try '--help' for usage information
+lp2normal2: unknown rule type
+lp2sat: unknown rule type
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts5.lp -c n=10 -c p=10 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.029s
+user	0m0.039s
+sys	0m0.011s
+**TERMINATE**

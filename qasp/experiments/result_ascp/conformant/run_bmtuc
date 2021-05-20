@@ -1,0 +1,24 @@
+#!/bin/sh
+TEST="../runtest_ascp.sh"
+source $TEST
+
+PB="bmtuc"
+DIR="../../ascp_conformant/"$PB"/"
+OUT="result_"$PB
+
+#    FILE | H | W
+I_1=("bmtuc_2_2.smo"  4  1)
+I_2=("bmtuc_4_2.smo"  8  1)
+I_3=("bmtuc_6_2.smo"  12 1)
+I_4=("bmtuc_8_4.smo"  16 1)
+I_5=("bmtuc_10_4.smo" 20 1)
+
+INSTANCES=(
+    I_1[@]
+    I_2[@]
+    I_3[@]
+    I_4[@]
+    I_5[@]
+)
+
+run

@@ -1,0 +1,121 @@
+btuc
+---------1: btuc_2.smo--------------
+smodels version 2.34. Reading...110: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+153: Warning: predicate 'br/4' doesn't occur in any rule head.
+154: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
+279: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
+297: Warning: predicate 'sense/1' doesn't occur in any rule head.
+done
+Answer: 1
+Stable Model: occ(flush,1,1) occ(flush,3,1) occ(dunk(p1),4,1) occ(dunk(p2),2,1) 
+True
+Duration: 0.001
+Number of choice points: 1
+Number of wrong choices: 0
+Number of atoms: 290
+Number of rules: 321
+Number of picked atoms: 63
+Number of forced atoms: 20
+Number of truth assignments: 2716
+Size of searchspace (removed): 4 (22)
+
+real	0m0.009s
+user	0m0.007s
+sys	0m0.001s
+**TERMINATE**
+---------2: btuc_4.smo--------------
+smodels version 2.34. Reading...116: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+159: Warning: predicate 'br/4' doesn't occur in any rule head.
+160: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
+369: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
+389: Warning: predicate 'sense/1' doesn't occur in any rule head.
+done
+Answer: 1
+Stable Model: occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(dunk(p1),4,1) occ(dunk(p2),8,1) occ(dunk(p3),6,1) occ(dunk(p4),2,1) 
+True
+Duration: 0.002
+Number of choice points: 5
+Number of wrong choices: 1
+Number of atoms: 848
+Number of rules: 961
+Number of picked atoms: 847
+Number of forced atoms: 51
+Number of truth assignments: 49528
+Size of searchspace (removed): 34 (194)
+
+real	0m0.018s
+user	0m0.016s
+sys	0m0.003s
+**TERMINATE**
+---------3: btuc_6.smo--------------
+smodels version 2.34. Reading...122: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+165: Warning: predicate 'br/4' doesn't occur in any rule head.
+166: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
+467: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
+489: Warning: predicate 'sense/1' doesn't occur in any rule head.
+done
+Answer: 1
+Stable Model: occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(dunk(p1),8,1) occ(dunk(p2),2,1) occ(dunk(p3),6,1) occ(dunk(p4),10,1) occ(dunk(p5),12,1) occ(dunk(p6),4,1) 
+True
+Duration: 0.012
+Number of choice points: 12
+Number of wrong choices: 2
+Number of atoms: 1694
+Number of rules: 1937
+Number of picked atoms: 3319
+Number of forced atoms: 96
+Number of truth assignments: 225508
+Size of searchspace (removed): 76 (442)
+
+real	0m0.038s
+user	0m0.039s
+sys	0m0.000s
+**TERMINATE**
+---------4: btuc_8.smo--------------
+smodels version 2.34. Reading...128: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+171: Warning: predicate 'br/4' doesn't occur in any rule head.
+172: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
+573: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
+597: Warning: predicate 'sense/1' doesn't occur in any rule head.
+done
+Answer: 1
+Stable Model: occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(flush,13,1) occ(flush,15,1) occ(dunk(p1),8,1) occ(dunk(p2),6,1) occ(dunk(p3),14,1) occ(dunk(p4),2,1) occ(dunk(p5),10,1) occ(dunk(p6),12,1) occ(dunk(p7),16,1) occ(dunk(p8),4,1) 
+True
+Duration: 0.032
+Number of choice points: 22
+Number of wrong choices: 4
+Number of atoms: 2828
+Number of rules: 3249
+Number of picked atoms: 6813
+Number of forced atoms: 104
+Number of truth assignments: 608446
+Size of searchspace (removed): 134 (786)
+
+real	0m0.076s
+user	0m0.078s
+sys	0m0.000s
+**TERMINATE**
+---------5: btuc_10.smo--------------
+smodels version 2.34. Reading...131: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+174: Warning: predicate 'br/4' doesn't occur in any rule head.
+175: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
+629: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
+654: Warning: predicate 'sense/1' doesn't occur in any rule head.
+done
+Answer: 1
+Stable Model: occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(flush,12,1) occ(flush,14,1) occ(flush,16,1) occ(flush,18,1) occ(flush,19,1) occ(dunk(p1),13,1) occ(dunk(p2),20,1) occ(dunk(p3),8,1) occ(dunk(p4),4,1) occ(dunk(p5),10,1) occ(dunk(p6),6,1) occ(dunk(p7),17,1) occ(dunk(p8),15,1) occ(dunk(p10),2,1) 
+True
+Duration: 1.886
+Number of choice points: 6086
+Number of wrong choices: 6064
+Number of atoms: 3875
+Number of rules: 4465
+Number of picked atoms: 905897
+Number of forced atoms: 38824
+Number of truth assignments: 37167867
+Size of searchspace (removed): 189 (1116)
+
+real	0m1.944s
+user	0m1.947s
+sys	0m0.000s
+**TERMINATE**

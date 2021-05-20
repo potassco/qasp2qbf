@@ -1,0 +1,24 @@
+#!/bin/sh
+TEST="../runtest_ascp.sh"
+source $TEST
+
+PB="ring"
+DIR="../../ascp_conformant/"$PB"/"
+OUT="result_"$PB
+
+#    FILE | H | W
+I_1=("ring_2.smo"  5  1)
+I_2=("ring_4.smo"  11 1)
+I_3=("ring_6.smo"  17 1)
+I_4=("ring_8.smo"  23 1)
+I_5=("ring_10.smo" 29 1)
+
+INSTANCES=(
+    I_1[@]
+    I_2[@]
+    I_3[@]
+    I_4[@]
+    I_5[@]
+)
+
+run

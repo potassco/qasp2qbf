@@ -1,0 +1,27 @@
+#!/bin/sh
+TEST="../runtest_qasp.sh"
+source $TEST
+
+PB="ring"
+CONF="../../qasp_conformant/"
+DIR=$CONF$PB"/"
+META=$CONF"meta.lp"
+QUANT=$CONF"conformant.lp"
+OUT="result_"$PB
+
+#    FILE | N | P
+I_1=("ring.lp"  5  2)
+I_2=("ring.lp"  11 4)
+I_3=("ring.lp"  17 6)
+I_4=("ring.lp"  23 8)
+I_5=("ring.lp" 29 10)
+
+INSTANCES=(
+    I_1[@]
+    I_2[@]
+    I_3[@]
+    I_4[@]
+    I_5[@]
+)
+
+run

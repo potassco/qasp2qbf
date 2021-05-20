@@ -1,0 +1,27 @@
+#!/bin/sh
+TEST="../runtest_qasp.sh"
+source $TEST
+
+PB="btc"
+CONF="../../qasp_conformant/"
+DIR=$CONF$PB"/"
+META=$CONF"meta.lp"
+QUANT=$CONF"conformant.lp"
+OUT="result_"$PB
+
+#    FILE | N | P
+I_1=("btc.lp"  3  2)
+I_2=("btc.lp"  7  4)
+I_3=("btc.lp"  11 6)
+I_4=("btc.lp"  15 8)
+I_5=("btc.lp"  19 10)
+
+INSTANCES=(
+    I_1[@]
+    I_2[@]
+    I_3[@]
+    I_4[@]
+    I_5[@]
+)
+
+run

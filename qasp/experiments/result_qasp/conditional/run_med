@@ -1,0 +1,27 @@
+#!/bin/sh
+TEST="../runtest_qasp.sh"
+source $TEST
+
+PB="med"
+CONF="../../qasp_conditional/"
+DIR=$CONF$PB"/"
+META=$DIR"meta.lp"
+QUANT=$DIR"conditional.lp"
+OUT="result_"$PB
+
+#    FILE | N | P
+I_1=("med1.lp"  1  0)
+I_2=("med2.lp"  5  0)
+I_3=("med3.lp"  5  0)
+I_4=("med4.lp"  5  0)
+I_5=("med5.lp"  5  0)
+
+INSTANCES=(
+    I_1[@]
+    I_2[@]
+    I_3[@]
+    I_4[@]
+    I_5[@]
+)
+
+run
