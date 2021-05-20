@@ -1,0 +1,16 @@
+run_sick
+---------1: sick.lp -c n=3 -c p=2 --------------
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/sick/meta.lp ../../qasp_conditional/sick/conditional.lp ../../qasp_conditional/sick/sick.lp -c n=3 -c p=2 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.662s
+user	0m0.640s
+sys	0m0.038s
+**TERMINATE**
+---------2: sick.lp -c n=3 -c p=4 --------------
+
+real	30m0.001s
+user	0m0.011s
+sys	0m0.000s
+**************TIMEOUT*******************
+-> EXIT

@@ -1,0 +1,44 @@
+run_bmtc
+---------1: bmtc.lp -c n=2 -c p=2 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+UNSAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/bmtc/bmtc.lp -c n=2 -c p=2 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.137s
+user	0m0.151s
+sys	0m0.008s
+**TERMINATE**
+---------2: bmtc.lp -c n=6 -c p=4 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+UNSAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/bmtc/bmtc.lp -c n=6 -c p=4 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m10.050s
+user	0m9.907s
+sys	0m0.167s
+**TERMINATE**
+---------3: bmtc.lp -c n=10 -c p=6 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+UNSAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/bmtc/bmtc.lp -c n=10 -c p=6 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	4m23.591s
+user	4m22.457s
+sys	0m1.146s
+**TERMINATE**
+---------4: bmtc.lp -c n=12 -c p=8 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+
+real	30m0.001s
+user	0m0.012s
+sys	0m0.000s
+**************TIMEOUT*******************
+-> EXIT

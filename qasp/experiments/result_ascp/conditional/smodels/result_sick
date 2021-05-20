@@ -1,0 +1,96 @@
+sick
+---------1: sick_2.smo--------------
+smodels version 2.34. Reading...done
+Answer: 1
+Stable Model: br(color(2),2,1,1) br(color(1),2,1,2) occ(stain,1,1) occ(inspect,2,1) occ(medicate(2),3,1) occ(medicate(1),3,2) 
+True
+Duration: 0.002
+Number of choice points: 2
+Number of wrong choices: 0
+Number of atoms: 452
+Number of rules: 833
+Number of picked atoms: 397
+Number of forced atoms: 32
+Number of truth assignments: 8912
+Size of searchspace (removed): 19 (67)
+
+real	0m0.020s
+user	0m0.019s
+sys	0m0.000s
+**TERMINATE**
+---------2: sick_4.smo--------------
+smodels version 2.34. Reading...done
+Answer: 1
+Stable Model: br(color(2),2,1,3) br(color(3),2,1,4) br(color(1),2,1,1) br(color(4),2,1,2) occ(stain,1,1) occ(inspect,2,1) occ(medicate(1),3,1) occ(medicate(4),3,2) occ(medicate(2),3,3) occ(medicate(3),3,4) 
+True
+Duration: 0.016
+Number of choice points: 4
+Number of wrong choices: 0
+Number of atoms: 1383
+Number of rules: 5338
+Number of picked atoms: 1770
+Number of forced atoms: 109
+Number of truth assignments: 61419
+Size of searchspace (removed): 59 (211)
+
+real	0m0.113s
+user	0m0.117s
+sys	0m0.000s
+**TERMINATE**
+---------3: sick_6.smo--------------
+smodels version 2.34. Reading...done
+Answer: 1
+Stable Model: br(color(1),2,1,5) br(color(2),2,1,4) br(color(3),2,1,6) br(color(4),2,1,3) br(color(5),2,1,2) br(color(6),2,1,1) occ(stain,1,1) occ(inspect,2,1) occ(medicate(6),3,1) occ(medicate(5),3,2) occ(medicate(4),3,3) occ(medicate(2),3,4) occ(medicate(1),3,5) occ(medicate(3),3,6) 
+True
+Duration: 0.059
+Number of choice points: 6
+Number of wrong choices: 0
+Number of atoms: 2890
+Number of rules: 20719
+Number of picked atoms: 4234
+Number of forced atoms: 263
+Number of truth assignments: 214319
+Size of searchspace (removed): 123 (427)
+
+real	0m0.478s
+user	0m0.493s
+sys	0m0.004s
+**TERMINATE**
+---------4: sick_8.smo--------------
+smodels version 2.34. Reading...done
+Answer: 1
+Stable Model: br(color(2),2,1,3) br(color(3),2,1,8) br(color(4),2,1,6) br(color(5),2,1,4) br(color(7),2,1,5) br(color(8),2,1,7) br(color(1),2,1,1) br(color(6),2,1,2) occ(stain,1,1) occ(inspect,2,1) occ(medicate(1),3,1) occ(medicate(6),3,2) occ(medicate(2),3,3) occ(medicate(5),3,4) occ(medicate(7),3,5) occ(medicate(4),3,6) occ(medicate(8),3,7) occ(medicate(3),3,8) 
+True
+Duration: 0.214
+Number of choice points: 8
+Number of wrong choices: 0
+Number of atoms: 5045
+Number of rules: 60296
+Number of picked atoms: 8235
+Number of forced atoms: 570
+Number of truth assignments: 576871
+Size of searchspace (removed): 211 (715)
+
+real	0m1.711s
+user	0m1.756s
+sys	0m0.011s
+**TERMINATE**
+---------5: sick_10.smo--------------
+smodels version 2.34. Reading...done
+Answer: 1
+Stable Model: br(color(2),2,1,3) br(color(3),2,1,10) br(color(5),2,1,8) br(color(6),2,1,7) br(color(7),2,1,5) br(color(8),2,1,6) br(color(9),2,1,9) br(color(10),2,1,4) br(color(1),2,1,2) br(color(4),2,1,1) occ(stain,1,1) occ(inspect,2,1) occ(medicate(4),3,1) occ(medicate(1),3,2) occ(medicate(2),3,3) occ(medicate(10),3,4) occ(medicate(7),3,5) occ(medicate(8),3,6) occ(medicate(6),3,7) occ(medicate(5),3,8) occ(medicate(9),3,9) occ(medicate(3),3,10) 
+True
+Duration: 0.645
+Number of choice points: 10
+Number of wrong choices: 0
+Number of atoms: 7920
+Number of rules: 145453
+Number of picked atoms: 14945
+Number of forced atoms: 1067
+Number of truth assignments: 1275455
+Size of searchspace (removed): 323 (1075)
+
+real	0m5.537s
+user	0m5.645s
+sys	0m0.028s
+**TERMINATE**

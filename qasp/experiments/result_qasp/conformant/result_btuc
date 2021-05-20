@@ -1,0 +1,56 @@
+run_btuc
+---------1: btuc.lp -c n=4 -c p=2 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+SAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/btuc/btuc.lp -c n=4 -c p=2 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.077s
+user	0m0.089s
+sys	0m0.004s
+**TERMINATE**
+---------2: btuc.lp -c n=8 -c p=4 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+SAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/btuc/btuc.lp -c n=8 -c p=4 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.416s
+user	0m0.381s
+sys	0m0.058s
+**TERMINATE**
+---------3: btuc.lp -c n=12 -c p=6 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+SAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/btuc/btuc.lp -c n=12 -c p=6 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m7.023s
+user	0m6.927s
+sys	0m0.120s
+**TERMINATE**
+---------4: btuc.lp -c n=16 -c p=8 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+SAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/btuc/btuc.lp -c n=16 -c p=8 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	1m23.627s
+user	1m23.292s
+sys	0m0.354s
+**TERMINATE**
+---------5: btuc.lp -c n=20 -c p=10 --------------
+../../qasp_conformant/meta.lp:10:46-64: info: atom does not occur in any rule head:
+  condition(A,E,C,F)
+
+SAT
+Running: clingo --output=smodels ../../qasp_conformant/meta.lp ../../qasp_conformant/conformant.lp ../../qasp_conformant/btuc/btuc.lp -c n=20 -c p=10 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	16m19.392s
+user	16m17.812s
+sys	0m1.559s
+**TERMINATE**

@@ -1,0 +1,28 @@
+run_ring
+---------1: ring.lp -c n=3 -c p=1 --------------
+../../qasp_conditional/ring/meta.lp:16:12-26: info: atom does not occur in any rule head:
+  caused(#X0,#X1,#P2)
+
+../../qasp_conditional/ring/meta.lp:16:46-61: info: atom does not occur in any rule head:
+  caused(F1,C,F2)
+
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/ring/meta.lp ../../qasp_conditional/ring/conditional.lp ../../qasp_conditional/ring/ring.lp -c n=3 -c p=1 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m1.790s
+user	0m1.765s
+sys	0m0.044s
+**TERMINATE**
+---------2: ring.lp -c n=7 -c p=2 --------------
+../../qasp_conditional/ring/meta.lp:16:12-26: info: atom does not occur in any rule head:
+  caused(#X0,#X1,#P2)
+
+../../qasp_conditional/ring/meta.lp:16:46-61: info: atom does not occur in any rule head:
+  caused(F1,C,F2)
+
+
+real	30m0.001s
+user	0m0.004s
+sys	0m0.007s
+**************TIMEOUT*******************
+-> EXIT

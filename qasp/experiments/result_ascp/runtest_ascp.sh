@@ -23,7 +23,7 @@ run(){
         W=${!INSTANCES[i]:2:1}
         echo "---------$(($i + 1)): $FILE--------------"
         echo "---------$(($i + 1)): $FILE--------------" >> $OUT
-        { time timeout $TIMEOUT bash -c "lparse -c h=$H  -c w=$W $DIR$FILE  | smodels" ; } >> $OUT 2>&1
+        { time timeout $TIMEOUT bash -c "lparse -c h=$H  -c w=$W $DIR$FILE  | cmodels" ; } >> $OUT 2>&1
         check_timeout >> $OUT
     done
 }

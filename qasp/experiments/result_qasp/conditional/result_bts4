@@ -1,0 +1,24 @@
+run_bts4
+---------1: bts4.lp -c n=2 -c p=2 --------------
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts4.lp -c n=2 -c p=2 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.153s
+user	0m0.154s
+sys	0m0.017s
+**TERMINATE**
+---------2: bts4.lp -c n=4 -c p=4 --------------
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts4.lp -c n=4 -c p=4 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m34.504s
+user	0m34.280s
+sys	0m0.244s
+**TERMINATE**
+---------3: bts4.lp -c n=6 -c p=6 --------------
+
+real	30m0.001s
+user	0m0.011s
+sys	0m0.000s
+**************TIMEOUT*******************
+-> EXIT

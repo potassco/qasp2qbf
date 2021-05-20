@@ -1,0 +1,66 @@
+ring
+---------1: ring_2.smo--------------
+cmodels version 3.86 Reading...20: Warning: predicate 'sense/1' doesn't occur in any rule head.
+235: Warning: predicate 'br/4' doesn't occur in any rule head.
+done
+Passed this pointProgram is tight.
+Calling SAT solver Minisat 2.0 beta ...
+Answer: 1 
+ Answer set: occ(lock,2,1) occ(lock,5,1) occ(close,1,1) occ(close,4,1) occ(fwd,3,1) 
+
+real	0m0.011s
+user	0m0.009s
+sys	0m0.001s
+**TERMINATE**
+---------2: ring_4.smo--------------
+cmodels version 3.86 Reading...20: Warning: predicate 'sense/1' doesn't occur in any rule head.
+321: Warning: predicate 'br/4' doesn't occur in any rule head.
+done
+Passed this pointProgram is tight.
+Calling SAT solver Minisat 2.0 beta ...
+Answer: 1 
+ Answer set: occ(lock,2,1) occ(lock,5,1) occ(lock,8,1) occ(lock,11,1) occ(close,1,1) occ(close,4,1) occ(close,7,1) occ(close,10,1) occ(back,3,1) occ(back,6,1) occ(back,9,1) 
+
+real	0m0.027s
+user	0m0.027s
+sys	0m0.001s
+**TERMINATE**
+---------3: ring_6.smo--------------
+cmodels version 3.86 Reading...20: Warning: predicate 'sense/1' doesn't occur in any rule head.
+407: Warning: predicate 'br/4' doesn't occur in any rule head.
+done
+Passed this pointProgram is tight.
+Calling SAT solver Minisat 2.0 beta ...
+Answer: 1 
+ Answer set: occ(lock,2,1) occ(lock,5,1) occ(lock,8,1) occ(lock,11,1) occ(lock,14,1) occ(lock,17,1) occ(close,1,1) occ(close,4,1) occ(close,7,1) occ(close,10,1) occ(close,13,1) occ(close,16,1) occ(back,3,1) occ(back,6,1) occ(back,9,1) occ(back,12,1) occ(back,15,1) 
+
+real	0m0.214s
+user	0m0.215s
+sys	0m0.000s
+**TERMINATE**
+---------4: ring_8.smo--------------
+cmodels version 3.86 Reading...20: Warning: predicate 'sense/1' doesn't occur in any rule head.
+493: Warning: predicate 'br/4' doesn't occur in any rule head.
+done
+Passed this pointProgram is tight.
+Calling SAT solver Minisat 2.0 beta ...
+Answer: 1 
+ Answer set: occ(lock,2,1) occ(lock,5,1) occ(lock,8,1) occ(lock,11,1) occ(lock,14,1) occ(lock,17,1) occ(lock,20,1) occ(lock,23,1) occ(close,1,1) occ(close,4,1) occ(close,7,1) occ(close,10,1) occ(close,13,1) occ(close,16,1) occ(close,19,1) occ(close,22,1) occ(fwd,3,1) occ(fwd,6,1) occ(fwd,9,1) occ(fwd,12,1) occ(fwd,15,1) occ(fwd,18,1) occ(fwd,21,1) 
+
+real	0m6.947s
+user	0m6.945s
+sys	0m0.004s
+**TERMINATE**
+---------5: ring_10.smo--------------
+cmodels version 3.86 Reading...20: Warning: predicate 'sense/1' doesn't occur in any rule head.
+579: Warning: predicate 'br/4' doesn't occur in any rule head.
+done
+Passed this pointProgram is tight.
+Calling SAT solver Minisat 2.0 beta ...
+Answer: 1 
+ Answer set: occ(lock,2,1) occ(lock,5,1) occ(lock,8,1) occ(lock,11,1) occ(lock,14,1) occ(lock,17,1) occ(lock,20,1) occ(lock,23,1) occ(lock,26,1) occ(lock,29,1) occ(close,1,1) occ(close,4,1) occ(close,7,1) occ(close,10,1) occ(close,13,1) occ(close,16,1) occ(close,19,1) occ(close,22,1) occ(close,25,1) occ(close,28,1) occ(fwd,3,1) occ(fwd,6,1) occ(fwd,9,1) occ(fwd,12,1) occ(fwd,15,1) occ(fwd,18,1) occ(fwd,21,1) occ(fwd,24,1) occ(fwd,27,1) 
+
+real	1m1.226s
+user	1m1.210s
+sys	0m0.016s
+**TERMINATE**
