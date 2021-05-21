@@ -1,81 +1,111 @@
 bmt
 ---------1: bmt_2_2.smo--------------
-cmodels version 3.86 Reading...110: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+110: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 153: Warning: predicate 'br/4' doesn't occur in any rule head.
 154: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 290: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 309: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(dunk(p1,t2),1,1) occ(dunk(p2,t1),2,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(dunk(p1,t1),1,1) occ(dunk(p2,t2),2,1)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 0.001s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.000s
 
 real	0m0.008s
-user	0m0.007s
-sys	0m0.000s
+user	0m0.006s
+sys	0m0.001s
 **TERMINATE**
 ---------2: bmt_4_2.smo--------------
-cmodels version 3.86 Reading...118: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+118: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 161: Warning: predicate 'br/4' doesn't occur in any rule head.
 162: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 404: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 425: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(dunk(p1,t2),1,1) occ(dunk(p2,t1),2,1) occ(dunk(p4,t1),3,1) occ(dunk(p3,t1),4,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(dunk(p4,t2),1,1) occ(dunk(p2,t1),2,1) occ(dunk(p3,t1),3,1) occ(dunk(p1,t2),4,1)
+SATISFIABLE
 
-real	0m0.015s
-user	0m0.015s
-sys	0m0.000s
+Models       : 1+
+Calls        : 1
+Time         : 0.003s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.001s
+
+real	0m0.014s
+user	0m0.010s
+sys	0m0.004s
 **TERMINATE**
 ---------3: bmt_6_2.smo--------------
-cmodels version 3.86 Reading...126: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+126: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 169: Warning: predicate 'br/4' doesn't occur in any rule head.
 170: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 526: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 549: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(dunk(p2,t1),1,1) occ(dunk(p3,t1),2,1) occ(dunk(p1,t1),3,1) occ(dunk(p6,t1),4,1) occ(dunk(p4,t2),5,1) occ(dunk(p5,t1),6,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(dunk(p1,t1),1,1) occ(dunk(p5,t1),2,1) occ(dunk(p2,t1),3,1) occ(dunk(p3,t2),4,1) occ(dunk(p4,t1),5,1) occ(dunk(p6,t1),6,1)
+SATISFIABLE
 
-real	0m0.029s
-user	0m0.029s
-sys	0m0.000s
+Models       : 1+
+Calls        : 1
+Time         : 0.009s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.001s
+
+real	0m0.026s
+user	0m0.025s
+sys	0m0.001s
 **TERMINATE**
 ---------4: bmt_8_4.smo--------------
-cmodels version 3.86 Reading...150: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+150: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 193: Warning: predicate 'br/4' doesn't occur in any rule head.
 194: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 992: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 1017: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(dunk(p1,t1),1,1) occ(dunk(p5,t3),2,1) occ(dunk(p6,t4),3,1) occ(dunk(p2,t3),4,1) occ(dunk(p4,t1),5,1) occ(dunk(p3,t1),6,1) occ(dunk(p7,t1),7,1) occ(dunk(p8,t4),8,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(dunk(p8,t4),1,1) occ(dunk(p3,t4),2,1) occ(dunk(p2,t3),3,1) occ(dunk(p1,t4),4,1) occ(dunk(p7,t1),5,1) occ(dunk(p4,t1),6,1) occ(dunk(p5,t4),7,1) occ(dunk(p6,t1),8,1)
+SATISFIABLE
 
-real	0m0.118s
-user	0m0.119s
-sys	0m0.000s
+Models       : 1+
+Calls        : 1
+Time         : 0.029s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.003s
+
+real	0m0.075s
+user	0m0.071s
+sys	0m0.004s
 **TERMINATE**
 ---------5: bmt_10_4.smo--------------
-cmodels version 3.86 Reading...162: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+162: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 205: Warning: predicate 'br/4' doesn't occur in any rule head.
 206: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 1214: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 1241: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(dunk(p2,t2),1,1) occ(dunk(p10,t1),2,1) occ(dunk(p8,t1),3,1) occ(dunk(p6,t4),4,1) occ(dunk(p1,t3),5,1) occ(dunk(p5,t1),6,1) occ(dunk(p7,t2),7,1) occ(dunk(p3,t4),8,1) occ(dunk(p4,t3),9,1) occ(dunk(p9,t1),10,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(dunk(p6,t1),1,1) occ(dunk(p1,t3),2,1) occ(dunk(p4,t3),3,1) occ(dunk(p3,t4),4,1) occ(dunk(p7,t4),5,1) occ(dunk(p2,t1),6,1) occ(dunk(p5,t4),7,1) occ(dunk(p8,t4),8,1) occ(dunk(p9,t1),9,1) occ(dunk(p10,t3),10,1)
+SATISFIABLE
 
-real	0m0.243s
-user	0m0.240s
-sys	0m0.005s
+Models       : 1+
+Calls        : 1
+Time         : 0.048s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.004s
+
+real	0m0.104s
+user	0m0.101s
+sys	0m0.004s
 **TERMINATE**

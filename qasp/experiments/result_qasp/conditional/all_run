@@ -1,1 +1,1 @@
-bash run_bts1; bash run_bts2; bash run_bts3; bash run_bts4; bash run_bts5; bash run_domino; bash run_med; bash run_ring; bash run_sick 
+bash run_bts1; bash run_bts2; bash run_bts3; bash run_bts4; bash run_domino; bash run_med; bash run_ring; bash run_sick 

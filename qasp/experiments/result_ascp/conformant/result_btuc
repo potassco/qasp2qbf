@@ -1,81 +1,111 @@
 btuc
 ---------1: btuc_2.smo--------------
-cmodels version 3.86 Reading...110: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+110: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 153: Warning: predicate 'br/4' doesn't occur in any rule head.
 154: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 279: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 297: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(flush,1,1) occ(flush,3,1) occ(dunk(p1),2,1) occ(dunk(p2),4,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(flush,1,1) occ(flush,3,1) occ(dunk(p1),4,1) occ(dunk(p2),2,1)
+SATISFIABLE
 
-real	0m0.009s
-user	0m0.008s
-sys	0m0.000s
+Models       : 1+
+Calls        : 1
+Time         : 0.001s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.000s
+
+real	0m0.010s
+user	0m0.005s
+sys	0m0.003s
 **TERMINATE**
 ---------2: btuc_4.smo--------------
-cmodels version 3.86 Reading...116: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+116: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 159: Warning: predicate 'br/4' doesn't occur in any rule head.
 160: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 369: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 389: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(dunk(p1),4,1) occ(dunk(p2),2,1) occ(dunk(p3),6,1) occ(dunk(p4),8,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(dunk(p1),8,1) occ(dunk(p2),6,1) occ(dunk(p3),2,1) occ(dunk(p4),4,1)
+SATISFIABLE
 
-real	0m0.019s
-user	0m0.018s
-sys	0m0.001s
+Models       : 1+
+Calls        : 1
+Time         : 0.007s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.001s
+
+real	0m0.017s
+user	0m0.016s
+sys	0m0.000s
 **TERMINATE**
 ---------3: btuc_6.smo--------------
-cmodels version 3.86 Reading...122: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+122: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 165: Warning: predicate 'br/4' doesn't occur in any rule head.
 166: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 467: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 489: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(dunk(p1),4,1) occ(dunk(p2),2,1) occ(dunk(p3),6,1) occ(dunk(p4),8,1) occ(dunk(p5),12,1) occ(dunk(p6),10,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(dunk(p1),2,1) occ(dunk(p2),12,1) occ(dunk(p3),4,1) occ(dunk(p4),6,1) occ(dunk(p5),10,1) occ(dunk(p6),8,1)
+SATISFIABLE
 
-real	0m0.035s
-user	0m0.035s
-sys	0m0.000s
+Models       : 1+
+Calls        : 1
+Time         : 0.018s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.002s
+
+real	0m0.029s
+user	0m0.027s
+sys	0m0.003s
 **TERMINATE**
 ---------4: btuc_8.smo--------------
-cmodels version 3.86 Reading...128: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+128: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 171: Warning: predicate 'br/4' doesn't occur in any rule head.
 172: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 573: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 597: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(flush,13,1) occ(flush,15,1) occ(dunk(p1),4,1) occ(dunk(p2),14,1) occ(dunk(p3),12,1) occ(dunk(p4),10,1) occ(dunk(p5),2,1) occ(dunk(p6),8,1) occ(dunk(p7),16,1) occ(dunk(p8),6,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(flush,13,1) occ(flush,15,1) occ(dunk(p1),10,1) occ(dunk(p2),6,1) occ(dunk(p3),8,1) occ(dunk(p4),2,1) occ(dunk(p5),12,1) occ(dunk(p6),16,1) occ(dunk(p7),14,1) occ(dunk(p8),4,1)
+SATISFIABLE
 
-real	0m0.060s
-user	0m0.061s
-sys	0m0.000s
+Models       : 1+
+Calls        : 1
+Time         : 0.033s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.004s
+
+real	0m0.051s
+user	0m0.047s
+sys	0m0.004s
 **TERMINATE**
 ---------5: btuc_10.smo--------------
-cmodels version 3.86 Reading...131: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+131: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 174: Warning: predicate 'br/4' doesn't occur in any rule head.
 175: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 629: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
 654: Warning: predicate 'sense/1' doesn't occur in any rule head.
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(flush,1,1) occ(flush,3,1) occ(flush,4,1) occ(flush,5,1) occ(flush,7,1) occ(flush,9,1) occ(flush,11,1) occ(flush,13,1) occ(flush,15,1) occ(flush,17,1) occ(flush,19,1) occ(dunk(p1),18,1) occ(dunk(p2),8,1) occ(dunk(p3),2,1) occ(dunk(p4),12,1) occ(dunk(p5),6,1) occ(dunk(p6),16,1) occ(dunk(p7),14,1) occ(dunk(p8),20,1) occ(dunk(p10),10,1) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(flush,1,1) occ(flush,3,1) occ(flush,5,1) occ(flush,6,1) occ(flush,8,1) occ(flush,10,1) occ(flush,12,1) occ(flush,14,1) occ(flush,15,1) occ(flush,17,1) occ(flush,19,1) occ(dunk(p1),11,1) occ(dunk(p2),20,1) occ(dunk(p3),18,1) occ(dunk(p4),4,1) occ(dunk(p5),7,1) occ(dunk(p6),13,1) occ(dunk(p7),16,1) occ(dunk(p8),2,1) occ(dunk(p10),9,1)
+SATISFIABLE
 
-real	0m0.081s
-user	0m0.084s
+Models       : 1+
+Calls        : 1
+Time         : 0.048s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.005s
+
+real	0m0.067s
+user	0m0.068s
 sys	0m0.000s
 **TERMINATE**

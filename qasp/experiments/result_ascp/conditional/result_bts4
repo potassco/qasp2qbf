@@ -1,57 +1,101 @@
 bts
 ---------1: bts4_2.smo--------------
-cmodels version 3.86 Reading...112: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+112: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 134: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 333: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(neg(armed(p2)),1,1,1) br(armed(p2),1,1,2) occ(listen_for_ticking(p2),1,1) occ(dunk(p1),2,1) occ(dunk(p2),2,2) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(neg(armed(p2)),1,1,1) br(armed(p2),1,1,2) occ(detect_metal(p2),1,1) occ(dunk(p1),2,1) occ(dunk(p2),2,2)
+SATISFIABLE
 
-real	0m0.025s
-user	0m0.019s
-sys	0m0.006s
+Models       : 1+
+Calls        : 1
+Time         : 0.008s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.001s
+
+real	0m0.024s
+user	0m0.022s
+sys	0m0.000s
 **TERMINATE**
 ---------2: bts4_4.smo--------------
-cmodels version 3.86 Reading...142: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+142: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 164: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 629: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(armed(p1),1,1,4) br(armed(p4),2,1,3) br(neg(armed(p1)),1,1,1) br(neg(armed(p4)),2,1,1) br(armed(p2),3,1,1) br(neg(armed(p2)),3,1,2) occ(detect_metal(p1),1,1) occ(sniff(p4),2,1) occ(dunk(p1),2,4) occ(sniff(p2),3,1) occ(dunk(p4),3,3) occ(dunk(p2),4,1) occ(dunk(p3),4,2) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(armed(p3),2,1,4) br(armed(p4),3,1,3) br(neg(armed(p1)),1,1,1) br(armed(p1),1,1,2) br(neg(armed(p3)),2,1,1) br(neg(armed(p4)),3,1,1) occ(listen_for_ticking(p1),1,1) occ(detect_metal(p3),2,1) occ(dunk(p1),2,2) occ(detect_metal(p4),3,1) occ(dunk(p3),3,4) occ(dunk(p2),4,1) occ(dunk(p4),4,3)
+SATISFIABLE
 
-real	0m0.306s
-user	0m0.313s
+Models       : 1+
+Calls        : 1
+Time         : 0.152s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.014s
+
+real	0m0.206s
+user	0m0.210s
 sys	0m0.001s
 **TERMINATE**
 ---------3: bts4_6.smo--------------
-cmodels version 3.86 Reading...172: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+172: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 194: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 1021: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(armed(p1),1,1,3) br(armed(p5),2,1,4) br(armed(p2),3,1,6) br(armed(p4),5,1,5) br(neg(armed(p1)),1,1,1) br(neg(armed(p5)),2,1,1) br(neg(armed(p2)),3,1,1) br(neg(armed(p3)),4,1,1) br(armed(p3),4,1,2) br(neg(armed(p4)),5,1,1) occ(xray(p1),1,1) occ(detect_metal(p5),2,1) occ(dunk(p1),2,3) occ(xray(p2),3,1) occ(dunk(p5),3,4) occ(detect_metal(p3),4,1) occ(dunk(p2),4,6) occ(detect_metal(p4),5,1) occ(dunk(p3),5,2) occ(dunk(p6),6,1) occ(dunk(p4),6,5) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(armed(p1),1,1,3) br(armed(p5),2,1,6) br(armed(p2),4,2,5) br(neg(armed(p6)),5,2,4) br(neg(armed(p1)),1,1,1) br(neg(armed(p5)),2,1,1) br(armed(p4),3,1,1) br(neg(armed(p4)),3,1,2) br(neg(armed(p2)),4,2,2) br(armed(p6),5,2,2) occ(listen_for_ticking(p1),1,1) occ(listen_for_ticking(p5),2,1) occ(dunk(p1),2,3) occ(xray(p4),3,1) occ(dunk(p5),3,6) occ(dunk(p4),4,1) occ(xray(p2),4,2) occ(detect_metal(p6),5,2) occ(dunk(p2),5,5) occ(dunk(p6),6,2) occ(dunk(p3),6,4)
+SATISFIABLE
 
-real	0m2.661s
-user	0m2.680s
-sys	0m0.032s
+Models       : 1+
+Calls        : 1
+Time         : 1.048s (Solving: 0.02s 1st Model: 0.02s Unsat: 0.00s)
+CPU Time     : 0.097s
+
+real	0m1.193s
+user	0m1.230s
+sys	0m0.009s
 **TERMINATE**
 ---------4: bts4_8.smo--------------
-cmodels version 3.86 Reading...202: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+202: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
 224: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
 1509: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
-done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(armed(p2),1,1,3) br(armed(p7),2,1,6) br(armed(p4),3,1,7) br(armed(p3),5,1,4) br(armed(p1),6,1,8) br(armed(p8),7,1,5) br(neg(armed(p2)),1,1,1) br(neg(armed(p7)),2,1,1) br(neg(armed(p4)),3,1,1) br(neg(armed(p6)),4,1,1) br(armed(p6),4,1,2) br(neg(armed(p3)),5,1,1) br(neg(armed(p1)),6,1,1) br(neg(armed(p8)),7,1,1) occ(sniff(p2),1,1) occ(xray(p7),2,1) occ(dunk(p2),2,3) occ(listen_for_ticking(p4),3,1) occ(dunk(p7),3,6) occ(detect_metal(p6),4,1) occ(dunk(p4),4,7) occ(detect_metal(p3),5,1) occ(dunk(p6),5,2) occ(xray(p1),6,1) occ(dunk(p3),6,4) occ(sniff(p8),7,1) occ(dunk(p1),7,8) occ(dunk(p5),8,1) occ(dunk(p8),8,5) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(armed(p3),1,1,4) br(neg(armed(p6)),3,1,3) br(neg(armed(p1)),4,3,5) br(armed(p7),5,5,8) br(armed(p4),6,5,7) br(armed(p2),7,5,6) br(neg(armed(p3)),1,1,1) br(neg(armed(p8)),2,1,1) br(armed(p8),2,1,2) br(armed(p6),3,1,1) br(armed(p1),4,3,3) br(neg(armed(p7)),5,5,5) br(neg(armed(p4)),6,5,5) br(neg(armed(p2)),7,5,5) occ(detect_metal(p3),1,1) occ(listen_for_ticking(p8),2,1) occ(dunk(p3),2,4) occ(xray(p6),3,1) occ(dunk(p8),3,2) occ(dunk(p6),4,1) occ(sniff(p1),4,3) occ(dunk(p1),5,3) occ(xray(p7),5,5) occ(sniff(p4),6,5) occ(dunk(p7),6,8) occ(sniff(p2),7,5) occ(dunk(p4),7,7) occ(dunk(p5),8,5) occ(dunk(p2),8,6)
+SATISFIABLE
 
-real	0m23.075s
-user	0m23.154s
-sys	0m0.145s
+Models       : 1+
+Calls        : 1
+Time         : 5.058s (Solving: 0.26s 1st Model: 0.26s Unsat: 0.00s)
+CPU Time     : 0.691s
+
+real	0m5.280s
+user	0m5.422s
+sys	0m0.071s
+**TERMINATE**
+---------5: bts4_10.smo--------------
+232: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
+254: Warning: variable 'P1' is similar to constant 'p1' (other occurrences of 'P1' are not checked)
+2093: Warning: constant 'p1' is similar to variable 'P1' (other occurrences of 'p1' are not checked)
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(armed(p6),2,2,4) br(armed(p4),3,2,10) br(armed(p8),4,2,8) br(armed(p5),5,2,6) br(neg(armed(p1)),6,2,3) br(armed(p9),7,3,9) br(neg(armed(p7)),8,3,5) br(neg(armed(p10)),9,5,7) br(armed(p2),1,1,1) br(neg(armed(p2)),1,1,2) br(neg(armed(p6)),2,2,2) br(neg(armed(p4)),3,2,2) br(neg(armed(p8)),4,2,2) br(neg(armed(p5)),5,2,2) br(armed(p1),6,2,2) br(neg(armed(p9)),7,3,3) br(armed(p7),8,3,3) br(armed(p10),9,5,5) occ(xray(p2),1,1) occ(dunk(p2),2,1) occ(listen_for_ticking(p6),2,2) occ(detect_metal(p4),3,2) occ(dunk(p6),3,4) occ(detect_metal(p8),4,2) occ(dunk(p4),4,10) occ(sniff(p5),5,2) occ(dunk(p8),5,8) occ(listen_for_ticking(p1),6,2) occ(dunk(p5),6,6) occ(dunk(p1),7,2) occ(listen_for_ticking(p9),7,3) occ(listen_for_ticking(p7),8,3) occ(dunk(p9),8,9) occ(dunk(p7),9,3) occ(detect_metal(p10),9,5) occ(dunk(p10),10,5) occ(dunk(p3),10,7)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 21.135s (Solving: 4.27s 1st Model: 4.27s Unsat: 0.00s)
+CPU Time     : 5.872s
+
+real	0m21.654s
+user	0m22.319s
+sys	0m0.107s
 **TERMINATE**

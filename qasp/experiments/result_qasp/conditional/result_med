@@ -1,16 +1,48 @@
-run_med
+ll
 ---------1: med1.lp -c n=1 -c p=0 --------------
 SAT
 Running: clingo --output=smodels ../../qasp_conditional/med/meta.lp ../../qasp_conditional/med/conditional.lp ../../qasp_conditional/med/med1.lp -c n=1 -c p=0 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
 
-real	0m5.800s
-user	0m5.734s
-sys	0m0.070s
+real	0m5.638s
+user	0m5.616s
+sys	0m0.043s
 **TERMINATE**
----------2: med2.lp -c n=5 -c p=0 --------------
+---------2: med1.lp -c n=0 -c p= --------------
+<p=>:2:1-2: error: syntax error, unexpected EOF
 
-real	30m0.001s
+<p=>:3:1-2: error: lexer error, unexpected 
+<p=>:3:1-3: error: lexer error, unexpected 
+<p=>:3:1-4: error: lexer error, unexpected 
+<p=>:3:1-5: error: lexer error, unexpected 
+<p=>:3:1-6: error: lexer error, unexpected 
+<p=>:3:1-7: error: lexer error, unexpected 
+<p=>:3:1-8: error: lexer error, unexpected 
+<p=>:3:1-9: error: lexer error, unexpected 
+<p=>:3:1-10: error: lexer error, unexpected 
+<p=>:3:1-11: error: lexer error, unexpected 
+<p=>:3:1-12: error: lexer error, unexpected 
+<p=>:3:1-13: error: lexer error, unexpected 
+<p=>:3:1-14: error: lexer error, unexpected 
+<p=>:3:1-15: error: lexer error, unexpected 
+<p=>:3:1-16: error: lexer error, unexpected 
+<p=>:3:1-17: error: lexer error, unexpected 
+<p=>:3:1-18: error: lexer error, unexpected 
+<p=>:3:1-19: error: lexer error, unexpected 
+<p=>:3:1-20: error: lexer error, unexpected 
+*** ERROR: (clingo): too many messages.
+lp2normal2: unknown rule type
+lp2sat: unknown rule type
+SAT
+Running: clingo --output=smodels ../../qasp_conditional/med/meta.lp ../../qasp_conditional/med/conditional.lp ../../qasp_conditional/med/med1.lp -c n=0 -c p= | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
+
+real	0m0.034s
+user	0m0.049s
+sys	0m0.005s
+**TERMINATE**
+---------3: med3.lp -c n=5 -c p=0 --------------
+
+real	20m0.001s
 user	0m0.008s
-sys	0m0.004s
+sys	0m0.003s
 **************TIMEOUT*******************
 -> EXIT

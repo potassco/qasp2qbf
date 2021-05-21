@@ -1,43 +1,84 @@
 domino
 ---------1: domino_1.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-No Answer Set
+clasp version 3.3.6
+Reading from stdin
+Solving...
+UNSATISFIABLE
 
-real	0m0.008s
-user	0m0.006s
+Models       : 0
+Calls        : 1
+Time         : 0.001s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.000s
+
+real	0m0.006s
+user	0m0.005s
 sys	0m0.000s
 **TERMINATE**
 ---------2: domino_2.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(neg(glued(2)),4,3,4) br(neg(glued(1)),1,1,3) br(glued(1),1,1,1) br(glued(2),2,1,2) br(glued(2),4,3,3) br(neg(glued(2)),2,1,1) occ(observe_domino(1),1,1) occ(observe_domino(2),2,1) occ(swing,3,1) occ(unglue(1),4,1) occ(swing,5,1) occ(unglue(2),3,2) occ(unglue(1),4,2) occ(swing,5,2) occ(swing,2,3) occ(swing,3,3) occ(observe_domino(2),4,3) occ(unglue(2),5,3) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(neg(glued(1)),2,2,4) br(neg(glued(1)),2,1,3) br(glued(1),2,1,1) br(glued(1),2,2,2) br(glued(2),1,1,2) br(neg(glued(2)),1,1,1) occ(observe_domino(2),1,1) occ(observe_domino(1),2,1) occ(swing,3,1) occ(unglue(1),4,1) occ(swing,5,1) occ(observe_domino(1),2,2) occ(unglue(2),3,2) occ(unglue(1),4,2) occ(swing,5,2) occ(swing,3,3) occ(swing,3,4) occ(swing,4,4) occ(unglue(2),5,4)
+SATISFIABLE
 
-real	0m0.055s
-user	0m0.051s
-sys	0m0.007s
+Models       : 1+
+Calls        : 1
+Time         : 0.034s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.004s
+
+real	0m0.041s
+user	0m0.033s
+sys	0m0.008s
 **TERMINATE**
 ---------3: domino_3.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(neg(glued(1)),3,3,4) br(neg(glued(1)),4,2,5) br(neg(glued(2)),4,3,6) br(neg(glued(2)),6,4,8) br(neg(glued(1)),4,1,7) br(neg(glued(3)),1,1,3) br(glued(1),3,3,3) br(glued(1),4,1,1) br(glued(1),4,2,2) br(glued(2),3,1,1) br(glued(2),4,3,3) br(glued(2),6,4,4) br(neg(glued(2)),3,1,2) br(glued(3),1,1,1) occ(observe_domino(3),1,1) occ(swing,2,3) occ(unglue(3),2,1) occ(observe_domino(1),3,3) occ(observe_domino(2),3,1) occ(swing,4,4) occ(observe_domino(1),4,1) occ(observe_domino(1),4,2) occ(observe_domino(2),4,3) occ(swing,5,2) occ(swing,5,4) occ(swing,5,5) occ(swing,5,6) occ(unglue(1),5,1) occ(unglue(2),5,3) occ(unglue(2),5,7) occ(swing,6,1) occ(swing,6,7) occ(observe_domino(2),6,4) occ(unglue(1),6,2) occ(unglue(1),6,3) occ(unglue(1),6,6) occ(swing,7,2) occ(swing,7,3) occ(swing,7,6) occ(unglue(2),7,1) occ(unglue(2),7,4) 
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(glued(1),3,1,4) br(neg(glued(1)),4,2,7) br(neg(glued(1)),4,3,8) br(neg(glued(3)),2,2,3) br(neg(glued(3)),4,4,5) br(neg(glued(3)),6,1,6) br(neg(glued(1)),3,1,1) br(glued(1),4,2,2) br(glued(1),4,3,3) br(glued(2),1,1,2) br(neg(glued(2)),1,1,1) br(glued(3),2,2,2) br(glued(3),4,4,4) br(glued(3),6,1,1) occ(observe_domino(2),1,1) occ(swing,2,1) occ(observe_domino(3),2,2) occ(swing,3,3) occ(observe_domino(1),3,1) occ(unglue(2),3,2) occ(swing,4,1) occ(observe_domino(1),4,2) occ(observe_domino(1),4,3) occ(observe_domino(3),4,4) occ(swing,5,1) occ(swing,5,5) occ(unglue(1),5,3) occ(unglue(2),5,8) occ(unglue(3),5,2) occ(unglue(3),5,4) occ(unglue(3),5,7) occ(swing,6,7) occ(swing,6,8) occ(observe_domino(3),6,1) occ(unglue(1),6,2) occ(unglue(1),6,4) occ(unglue(1),6,5) occ(unglue(2),6,3) occ(swing,7,2) occ(swing,7,3) occ(swing,7,4) occ(swing,7,5) occ(unglue(3),7,1)
+SATISFIABLE
 
-real	0m2.278s
-user	0m2.293s
-sys	0m0.008s
+Models       : 1+
+Calls        : 1
+Time         : 0.423s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
+CPU Time     : 0.045s
+
+real	0m0.434s
+user	0m0.447s
+sys	0m0.009s
 **TERMINATE**
 ---------4: domino_4.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is tight.
-Calling SAT solver Minisat 2.0 beta ...
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(glued(1),2,1,4) br(glued(1),3,6,8) br(glued(1),3,5,15) br(glued(2),5,2,9) br(glued(2),5,15,16) br(glued(2),8,8,14) br(neg(glued(2)),4,4,7) br(neg(glued(2)),4,6,11) br(neg(glued(2)),4,5,12) br(glued(3),2,5,6) br(neg(glued(3)),5,7,10) br(neg(glued(3)),8,4,13) br(glued(2),7,1,3) br(neg(glued(4)),1,1,5) br(neg(glued(1)),2,1,1) br(neg(glued(1)),3,5,5) br(neg(glued(1)),3,6,6) br(glued(2),4,4,4) br(glued(2),4,5,5) br(glued(2),4,6,6) br(neg(glued(2)),5,2,2) br(neg(glued(2)),5,15,15) br(neg(glued(2)),7,1,1) br(neg(glued(2)),8,8,8) br(glued(3),3,1,2) br(glued(3),5,7,7) br(glued(3),8,4,4) br(neg(glued(3)),2,5,5) br(neg(glued(3)),3,1,1) br(glued(4),1,1,1) occ(observe_domino(4),1,1) occ(observe_domino(1),2,1) occ(observe_domino(3),2,5) occ(observe_domino(1),3,5) occ(observe_domino(1),3,6) occ(observe_domino(3),3,1) occ(unglue(1),3,4) occ(swing,4,2) occ(swing,4,15) occ(observe_domino(2),4,4) occ(observe_domino(2),4,5) occ(observe_domino(2),4,6) occ(unglue(1),4,8) occ(unglue(4),4,1) occ(swing,5,1) occ(swing,5,5) occ(swing,5,8) occ(swing,5,12) occ(observe_domino(2),5,2) occ(observe_domino(2),5,15) occ(observe_domino(3),5,7) occ(unglue(2),5,6) occ(unglue(3),5,11) occ(unglue(4),5,4) occ(swing,6,1) occ(swing,6,4) occ(swing,6,5) occ(swing,6,6) occ(swing,6,11) occ(swing,6,16) occ(unglue(1),6,15) occ(unglue(2),6,9) occ(unglue(3),6,7) occ(unglue(3),6,8) occ(unglue(4),6,2) occ(unglue(4),6,10) occ(swing,7,2) occ(swing,7,6) occ(swing,7,8) occ(swing,7,10) occ(swing,7,15) occ(observe_domino(2),7,1) occ(unglue(2),7,4) occ(unglue(2),7,5) occ(unglue(2),7,16) occ(unglue(4),7,7) occ(unglue(4),7,9) occ(swing,8,2) occ(swing,8,3) occ(swing,8,6) occ(swing,8,7) occ(observe_domino(2),8,8) occ(observe_domino(3),8,4) occ(unglue(1),8,16) occ(unglue(3),8,9) occ(swing,9,16) occ(unglue(2),9,3) occ(unglue(2),9,14) occ(unglue(3),9,2) occ(unglue(3),9,4) occ(unglue(3),9,6)
+SATISFIABLE
 
-real	20m0.001s
-user	0m5.126s
-sys	0m0.008s
-**************TIMEOUT*******************
--> EXIT
+Models       : 1+
+Calls        : 1
+Time         : 5.603s (Solving: 0.19s 1st Model: 0.19s Unsat: 0.00s)
+CPU Time     : 0.935s
+
+real	0m5.624s
+user	0m5.921s
+sys	0m0.051s
+**TERMINATE**
+---------5: domino_5.smo--------------
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(glued(1),3,2,3) br(glued(1),7,15,19) br(glued(1),8,4,30) br(neg(glued(1)),2,5,8) br(glued(2),5,9,12) br(glued(2),5,7,31) br(neg(glued(2)),4,8,10) br(neg(glued(2)),5,20,29) br(neg(glued(2)),6,5,17) br(glued(4),6,31,32) br(glued(4),8,7,25) br(neg(glued(4)),3,8,9) br(neg(glued(4)),4,3,6) br(neg(glued(4)),7,11,18) br(neg(glued(4)),7,17,24) br(neg(glued(4)),7,2,27) br(neg(glued(4)),9,5,22) br(glued(5),3,5,7) br(glued(5),5,6,23) br(glued(5),6,4,15) br(glued(5),6,3,21) br(glued(5),7,14,26) br(neg(glued(5)),4,9,20) br(neg(glued(5)),5,2,11) br(neg(glued(5)),5,8,16) br(neg(glued(5)),10,10,28) br(neg(glued(1)),5,1,14) br(neg(glued(3)),1,1,5) br(glued(4),3,1,4) br(neg(glued(5)),6,1,13) br(glued(1),2,5,5) br(neg(glued(1)),3,2,2) br(glued(1),5,1,1) br(neg(glued(1)),7,15,15) br(neg(glued(1)),8,4,4) br(glued(2),2,1,2) br(glued(2),4,8,8) br(glued(2),5,20,20) br(glued(2),6,5,5) br(neg(glued(2)),2,1,1) br(neg(glued(2)),5,7,7) br(neg(glued(2)),5,9,9) br(glued(3),1,1,1) br(glued(4),3,8,8) br(glued(4),4,3,3) br(glued(4),7,2,2) br(glued(4),7,11,11) br(glued(4),7,17,17) br(glued(4),9,5,5) br(neg(glued(4)),3,1,1) br(neg(glued(4)),6,31,31) br(neg(glued(4)),8,7,7) br(glued(5),4,9,9) br(glued(5),5,2,2) br(glued(5),5,8,8) br(glued(5),6,1,1) br(glued(5),10,10,10) br(neg(glued(5)),3,5,5) br(neg(glued(5)),5,6,6) br(neg(glued(5)),6,3,3) br(neg(glued(5)),6,4,4) br(neg(glued(5)),7,14,14) occ(observe_domino(3),1,1) occ(observe_domino(1),2,5) occ(observe_domino(2),2,1) occ(observe_domino(1),3,2) occ(observe_domino(4),3,1) occ(observe_domino(4),3,8) occ(observe_domino(5),3,5) occ(observe_domino(2),4,8) occ(observe_domino(4),4,3) occ(observe_domino(5),4,9) occ(unglue(1),4,5) occ(unglue(1),4,7) occ(unglue(2),4,2) occ(unglue(3),4,1) occ(unglue(3),4,4) occ(swing,5,4) occ(swing,5,5) occ(swing,5,10) occ(observe_domino(1),5,1) occ(observe_domino(2),5,7) occ(observe_domino(2),5,9) occ(observe_domino(2),5,20) occ(observe_domino(5),5,2) occ(observe_domino(5),5,6) occ(observe_domino(5),5,8) occ(unglue(2),5,3) occ(swing,6,9) occ(swing,6,14) occ(swing,6,29) occ(observe_domino(2),6,5) occ(observe_domino(4),6,31) occ(observe_domino(5),6,1) occ(observe_domino(5),6,3) occ(observe_domino(5),6,4) occ(unglue(1),6,6) occ(unglue(2),6,12) occ(unglue(2),6,20) occ(unglue(2),6,23) occ(unglue(3),6,2) occ(unglue(3),6,11) occ(unglue(4),6,8) occ(unglue(4),6,10) occ(unglue(4),6,16) occ(unglue(5),6,7) occ(swing,7,5) occ(swing,7,6) occ(swing,7,7) occ(swing,7,10) occ(swing,7,12) occ(swing,7,13) occ(swing,7,20) occ(swing,7,31) occ(observe_domino(1),7,15) occ(observe_domino(4),7,2) occ(observe_domino(4),7,11) occ(observe_domino(4),7,17) occ(observe_domino(5),7,14) occ(unglue(1),7,1) occ(unglue(1),7,3) occ(unglue(1),7,23) occ(unglue(2),7,16) occ(unglue(2),7,32) occ(unglue(4),7,4) occ(unglue(5),7,8) occ(unglue(5),7,9) occ(unglue(5),7,21) occ(swing,8,1) occ(swing,8,3) occ(swing,8,8) occ(swing,8,10) occ(swing,8,11) occ(swing,8,16) occ(swing,8,18) occ(swing,8,23) occ(swing,8,26) occ(swing,8,27) occ(swing,8,31) occ(observe_domino(1),8,4) occ(observe_domino(4),8,7) occ(unglue(1),8,13) occ(unglue(2),8,5) occ(unglue(2),8,6) occ(unglue(4),8,2) occ(unglue(4),8,15) occ(unglue(4),8,17) occ(unglue(4),8,21) occ(unglue(5),8,12) occ(unglue(5),8,19) occ(unglue(5),8,32) occ(swing,9,1) occ(swing,9,2) occ(swing,9,4) occ(swing,9,10) occ(swing,9,13) occ(swing,9,15) occ(swing,9,32) occ(observe_domino(4),9,5) occ(unglue(1),9,21) occ(unglue(1),9,30) occ(unglue(2),9,8) occ(unglue(3),9,6) occ(unglue(4),9,3) occ(unglue(4),9,11) occ(unglue(4),9,19) occ(unglue(4),9,25) occ(unglue(5),9,23) occ(unglue(5),9,26) occ(unglue(5),9,27) occ(unglue(5),9,31) occ(swing,10,3) occ(swing,10,30) occ(swing,10,32) occ(observe_domino(5),10,10) occ(unglue(1),10,19) occ(unglue(2),10,31) occ(unglue(3),10,21) occ(unglue(3),10,23) occ(unglue(4),10,5) occ(unglue(5),10,1) occ(unglue(5),10,2) occ(unglue(5),10,15) occ(swing,11,19) occ(swing,11,21) occ(unglue(3),11,3) occ(unglue(4),11,32) occ(unglue(5),11,10)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 87.590s (Solving: 13.75s 1st Model: 13.75s Unsat: 0.00s)
+CPU Time     : 26.566s
+
+real	1m27.681s
+user	1m32.115s
+sys	0m0.436s
+**TERMINATE**

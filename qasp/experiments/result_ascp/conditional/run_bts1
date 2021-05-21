@@ -4,7 +4,7 @@ source $TEST
 
 PB="bts"
 DIR="../../ascp_conditional/"$PB"/"
-OUT="cmodels_result_"$PB"1"
+OUT="result_"$PB"1"
 
 #    FILE | H | W
 I_1=("bts1_2.smo"  2  2 )

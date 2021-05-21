@@ -15,9 +15,9 @@ Calls        : 1
 Time         : 0.004s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
 CPU Time     : 0.001s
 
-real	0m0.015s
-user	0m0.013s
-sys	0m0.001s
+real	0m0.017s
+user	0m0.011s
+sys	0m0.003s
 **TERMINATE**
 ---------2: bts1_4.smo--------------
 106: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
@@ -32,12 +32,12 @@ SATISFIABLE
 
 Models       : 1+
 Calls        : 1
-Time         : 0.102s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+Time         : 0.103s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
 CPU Time     : 0.010s
 
-real	0m0.122s
-user	0m0.127s
-sys	0m0.000s
+real	0m0.123s
+user	0m0.124s
+sys	0m0.003s
 **TERMINATE**
 ---------3: bts1_6.smo--------------
 118: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
@@ -52,12 +52,12 @@ SATISFIABLE
 
 Models       : 1+
 Calls        : 1
-Time         : 0.788s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
-CPU Time     : 0.081s
+Time         : 0.764s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
+CPU Time     : 0.077s
 
-real	0m0.839s
-user	0m0.863s
-sys	0m0.016s
+real	0m0.814s
+user	0m0.834s
+sys	0m0.015s
 **TERMINATE**
 ---------4: bts1_8.smo--------------
 130: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
@@ -72,12 +72,12 @@ SATISFIABLE
 
 Models       : 1+
 Calls        : 1
-Time         : 3.952s (Solving: 0.31s 1st Model: 0.31s Unsat: 0.00s)
-CPU Time     : 0.692s
+Time         : 3.932s (Solving: 0.31s 1st Model: 0.31s Unsat: 0.00s)
+CPU Time     : 0.691s
 
-real	0m4.081s
-user	0m4.236s
-sys	0m0.035s
+real	0m4.060s
+user	0m4.221s
+sys	0m0.022s
 **TERMINATE**
 ---------5: bts1_10.smo--------------
 142: Warning: variable 'P2' is similar to constant 'p2' (other occurrences of 'P2' are not checked)
@@ -92,10 +92,10 @@ SATISFIABLE
 
 Models       : 1+
 Calls        : 1
-Time         : 16.309s (Solving: 3.20s 1st Model: 3.20s Unsat: 0.00s)
-CPU Time     : 4.637s
+Time         : 15.986s (Solving: 3.25s 1st Model: 3.25s Unsat: 0.00s)
+CPU Time     : 4.687s
 
-real	0m16.514s
-user	0m17.148s
-sys	0m0.091s
+real	0m16.188s
+user	0m16.779s
+sys	0m0.119s
 **TERMINATE**

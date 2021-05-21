@@ -1,61 +1,86 @@
 med
 ---------1: med1.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: occ(medicate(1),1,1) 
-Number of loops 3
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+occ(medicate(1),1,1)
+SATISFIABLE
 
-real	0m0.113s
-user	0m0.100s
-sys	0m0.012s
+Models       : 1
+Calls        : 1
+Time         : 0.007s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.000s
+
+real	0m0.114s
+user	0m0.107s
+sys	0m0.006s
 **TERMINATE**
 ---------2: med2.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(hc,4,3,5) br(neg(hc),4,2,4) br(color(blue),2,1,3) br(color(red),2,1,2) br(hc,4,2,2) br(color(white),2,1,1) br(neg(hc),4,3,3) occ(stain,1,1) occ(inspect,2,1) occ(stain,3,1) occ(blood_sample,3,2) occ(blood_sample,3,3) occ(stain,4,1) occ(analyze_blood,4,2) occ(analyze_blood,4,3) occ(medicate(5),5,1) occ(medicate(1),5,2) occ(medicate(4),5,3) occ(medicate(2),5,4) occ(medicate(3),5,5) 
-Number of loops 112
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(hc,4,4,5) br(neg(hc),4,2,3) br(color(red),3,1,4) br(hc,4,2,2) br(color(blue),3,1,2) br(color(white),3,1,1) br(neg(hc),4,4,4) occ(blood_sample,1,1) occ(stain,2,1) occ(inspect,3,1) occ(medicate(5),4,1) occ(analyze_blood,4,2) occ(analyze_blood,4,4) occ(medicate(3),5,2) occ(medicate(4),5,3) occ(medicate(2),5,4) occ(medicate(1),5,5)
+SATISFIABLE
 
-real	0m0.760s
-user	0m0.762s
-sys	0m0.008s
+Models       : 1+
+Calls        : 1
+Time         : 0.302s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.021s
+
+real	0m0.413s
+user	0m0.413s
+sys	0m0.009s
 **TERMINATE**
 ---------3: med3.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(neg(hc),4,2,3) br(color(white),3,1,5) br(neg(hc),4,1,4) br(color(red),3,1,2) br(hc,4,1,1) br(hc,4,2,2) br(color(blue),3,1,1) occ(blood_sample,1,1) occ(stain,2,1) occ(inspect,3,1) occ(analyze_blood,4,1) occ(analyze_blood,4,2) occ(blood_sample,4,5) occ(medicate(3),5,1) occ(medicate(1),5,2) occ(medicate(2),5,3) occ(medicate(4),5,4) occ(medicate(5),5,5) 
-Number of loops 100
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(hc,4,4,5) br(color(red),3,1,4) br(neg(hc),4,1,3) br(hc,4,1,1) br(color(blue),3,1,1) br(color(white),3,1,2) br(neg(hc),4,4,4) occ(stain,1,1) occ(blood_sample,2,1) occ(inspect,3,1) occ(analyze_blood,4,1) occ(blood_sample,4,2) occ(analyze_blood,4,4) occ(medicate(3),5,1) occ(medicate(5),5,2) occ(medicate(4),5,3) occ(medicate(2),5,4) occ(medicate(1),5,5)
+SATISFIABLE
 
-real	0m0.737s
-user	0m0.737s
-sys	0m0.012s
-**TERMINATE**
----------4: med4.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(neg(hc),4,2,4) br(color(white),2,1,5) br(neg(hc),4,1,3) br(color(red),2,1,2) br(hc,4,1,1) br(hc,4,2,2) br(color(blue),2,1,1) occ(stain,1,1) occ(inspect,2,1) occ(blood_sample,3,1) occ(blood_sample,3,2) occ(stain,3,5) occ(analyze_blood,4,1) occ(analyze_blood,4,2) occ(stain,4,5) occ(medicate(3),5,1) occ(medicate(1),5,2) occ(medicate(4),5,3) occ(medicate(2),5,4) occ(medicate(5),5,5) 
-Number of loops 72
+Models       : 1+
+Calls        : 1
+Time         : 0.296s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
+CPU Time     : 0.025s
 
-real	0m0.634s
-user	0m0.642s
+real	0m0.406s
+user	0m0.411s
 sys	0m0.004s
 **TERMINATE**
----------5: med5.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(hc,4,2,3) br(hc,4,1,4) br(color(white),3,1,5) br(color(red),3,1,2) br(color(blue),3,1,1) br(neg(hc),4,1,1) br(neg(hc),4,2,2) occ(blood_sample,1,1) occ(stain,2,1) occ(inspect,3,1) occ(analyze_blood,4,1) occ(analyze_blood,4,2) occ(stain,4,5) occ(medicate(4),5,1) occ(medicate(2),5,2) occ(medicate(1),5,3) occ(medicate(3),5,4) occ(medicate(5),5,5) 
-Number of loops 130
+---------4: med4.smo--------------
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(neg(hc),4,2,3) br(neg(hc),4,4,5) br(color(red),2,1,4) br(hc,4,2,2) br(hc,4,4,4) br(color(blue),2,1,2) br(color(white),2,1,1) occ(stain,1,1) occ(inspect,2,1) occ(medicate(5),3,1) occ(blood_sample,3,2) occ(blood_sample,3,4) occ(analyze_blood,4,2) occ(analyze_blood,4,4) occ(medicate(3),5,2) occ(medicate(4),5,3) occ(medicate(1),5,4) occ(medicate(2),5,5)
+SATISFIABLE
 
-real	0m0.791s
-user	0m0.786s
-sys	0m0.016s
+Models       : 1+
+Calls        : 1
+Time         : 0.292s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.023s
+
+real	0m0.401s
+user	0m0.410s
+sys	0m0.000s
+**TERMINATE**
+---------5: med5.smo--------------
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(neg(hc),4,4,5) br(color(blue),3,1,4) br(color(white),3,1,3) br(color(red),3,1,1) br(hc,4,1,1) br(hc,4,4,4) br(neg(hc),4,1,2) occ(stain,1,1) occ(blood_sample,2,1) occ(inspect,3,1) occ(analyze_blood,4,1) occ(stain,4,3) occ(analyze_blood,4,4) occ(medicate(1),5,1) occ(medicate(2),5,2) occ(medicate(5),5,3) occ(medicate(3),5,4) occ(medicate(4),5,5)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 0.289s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.021s
+
+real	0m0.398s
+user	0m0.407s
+sys	0m0.001s
 **TERMINATE**

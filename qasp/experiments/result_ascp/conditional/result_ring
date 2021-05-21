@@ -1,35 +1,53 @@
 ring
 ---------1: ring_1.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(win_locked(0),1,1,3) br(win_closed(0),1,1,1) br(win_open(0),1,1,2) occ(check_window(0),1,1) occ(fwd,2,1) occ(close,2,2) occ(lock,3,1) occ(lock,3,2) 
-Number of loops 28
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(win_locked(0),1,1,3) br(win_closed(0),1,1,1) br(win_open(0),1,1,2) occ(check_window(0),1,1) occ(fwd,2,1) occ(close,2,2) occ(lock,3,1) occ(lock,3,2)
+SATISFIABLE
 
-real	0m0.032s
-user	0m0.027s
-sys	0m0.003s
+Models       : 1+
+Calls        : 1
+Time         : 0.014s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.002s
+
+real	0m0.024s
+user	0m0.023s
+sys	0m0.000s
 **TERMINATE**
 ---------2: ring_2.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
-Answer: 1 
- Answer set: br(win_open(0),1,1,3) br(win_open(1),4,2,6) br(win_closed(1),5,3,9) br(win_locked(1),4,2,8) br(win_locked(1),5,3,7) br(win_open(1),3,1,4) br(win_locked(1),3,1,5) br(win_closed(0),1,1,2) br(win_locked(0),1,1,1) br(win_open(1),5,3,3) br(win_closed(1),3,1,1) br(win_closed(1),4,2,2) occ(lock,2,2) occ(lock,3,3) occ(lock,6,1) occ(lock,6,6) occ(lock,6,9) occ(lock,7,2) occ(lock,7,3) occ(lock,7,4) occ(close,2,3) occ(close,4,4) occ(close,5,6) occ(close,6,3) occ(back,5,1) occ(back,5,2) occ(back,5,4) occ(back,6,4) occ(fwd,2,1) occ(fwd,3,2) occ(fwd,4,1) occ(fwd,4,3) occ(fwd,6,2) occ(check_window(0),1,1) occ(check_window(1),3,1) occ(check_window(1),4,2) occ(check_window(1),5,3) 
-Number of loops 254
+clasp version 3.3.6
+Reading from stdin
+Solving...
+Answer: 1
+br(win_open(1),5,4,7) br(win_closed(1),5,2,3) br(win_locked(1),5,4,5) br(win_locked(1),5,2,6) br(win_locked(0),1,1,4) br(win_closed(1),3,1,8) br(win_locked(1),3,1,9) br(win_closed(0),1,1,1) br(win_open(0),1,1,2) br(win_open(1),3,1,1) br(win_open(1),5,2,2) br(win_closed(1),5,4,4) occ(lock,3,2) occ(lock,5,1) occ(lock,5,8) occ(lock,6,3) occ(lock,6,4) occ(lock,7,1) occ(lock,7,2) occ(lock,7,7) occ(lock,7,8) occ(lock,7,9) occ(close,2,2) occ(close,4,1) occ(close,6,2) occ(close,6,7) occ(back,2,1) occ(back,2,4) occ(back,3,4) occ(back,4,4) occ(back,6,1) occ(back,6,8) occ(fwd,4,2) occ(fwd,4,8) occ(fwd,4,9) occ(fwd,5,9) occ(fwd,6,9) occ(check_window(0),1,1) occ(check_window(1),3,1) occ(check_window(1),5,2) occ(check_window(1),5,4)
+SATISFIABLE
 
-real	1m10.550s
-user	1m10.510s
-sys	0m0.076s
+Models       : 1+
+Calls        : 1
+Time         : 1.305s (Solving: 0.53s 1st Model: 0.53s Unsat: 0.00s)
+CPU Time     : 0.596s
+
+real	0m1.328s
+user	0m1.353s
+sys	0m0.013s
 **TERMINATE**
 ---------3: ring_3.smo--------------
-cmodels version 3.86 Reading...done
-Passed this pointProgram is not tight.
-Calling SAT solver Minisat 2.0 beta ...
+clasp version 3.3.6
+Reading from stdin
+Solving...
+*** Info : (clasp): INTERRUPTED by signal!
+UNKNOWN
+
+INTERRUPTED  : 1
+Models       : 0+
+Calls        : 1
+Time         : 1199.997s (Solving: 1147.02s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 1153.191s
 
 real	20m0.001s
-user	0m49.567s
-sys	0m0.032s
+user	0m49.447s
+sys	0m0.017s
 **************TIMEOUT*******************
 -> EXIT

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TIMEOUT=1800
+TIMEOUT=1200
 
 check_timeout() {
     if [ $? -eq 124 ]

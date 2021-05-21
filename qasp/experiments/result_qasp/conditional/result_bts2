@@ -3,22 +3,22 @@ run_bts2
 SAT
 Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts2.lp -c n=2 -c p=2 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
 
-real	0m0.095s
-user	0m0.093s
-sys	0m0.018s
+real	0m0.094s
+user	0m0.104s
+sys	0m0.006s
 **TERMINATE**
 ---------2: bts2.lp -c n=4 -c p=4 --------------
 SAT
 Running: clingo --output=smodels ../../qasp_conditional/bts/meta.lp ../../qasp_conditional/bts/conditional.lp ../../qasp_conditional/bts/bts2.lp -c n=4 -c p=4 | qasp2qbf.py --no-warnings | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe | qasp2qbf.py --interpret
 
-real	0m8.394s
-user	0m8.306s
-sys	0m0.110s
+real	0m8.563s
+user	0m8.452s
+sys	0m0.134s
 **TERMINATE**
 ---------3: bts2.lp -c n=6 -c p=6 --------------
 
-real	30m0.001s
-user	0m0.012s
-sys	0m0.000s
+real	20m0.001s
+user	0m0.004s
+sys	0m0.007s
 **************TIMEOUT*******************
 -> EXIT
