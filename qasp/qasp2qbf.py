@@ -300,7 +300,7 @@ class Translator:
 
             # show COMMENTS
             if state == COMMENTS:
-                match = re.match(r"c (\d+) (.*)\((\d+)(,.*)?\)$", line)
+                match = re.match(r"c (\d+) (\w*)\((\d+)(,.*)?\)$", line)
                 if match:
                     number = match.group(1)
                     level = match.group(3)
