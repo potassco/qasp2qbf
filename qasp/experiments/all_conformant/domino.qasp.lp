@@ -23,5 +23,3 @@ h(neg(fall(D),0)) :- not h(fall(D),0), % CWA
 
 % goal
 goal(fall(D)) :- domino(D).
-
-#show h/2.
