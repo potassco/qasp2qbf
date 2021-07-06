@@ -102,3 +102,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# tempfile
+qasp/experiments/test/*.qasp2qbf
+qasp/experiments/test/result.ascp
