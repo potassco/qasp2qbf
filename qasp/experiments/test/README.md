@@ -1,6 +1,8 @@
 # Usage
 
-Test all domain:
+The commands must be run in this directory.
+
+Test all domains:
 ```bash
 $ python -m unittest
 ```
