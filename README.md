@@ -5,6 +5,9 @@
 `qasp2qbf` is a translator from quantified answer set programming (QASP) 
 to quantified boolean formulas (QBF) in [QDIMACS](http://www.qbflib.org/qdimacs.html) format.
 
+In our paper [paper](https://arxiv.org/abs/2108.06405) we present a formal description of QASP, and
+describe some preliminary benchmarks with `qasp2qbf` on conformant and conditional planning problems.
+
 The input to `qasp2qbf` is a [`clingo`](https://potassco.org/clingo/) program, 
 where the atoms of predicates `_exists/2`, `_forall/2`, and `_quantify/2` are given a special meaning.
 We have different levels of quantifiers, and we assume that odd levels are existentially quantified, 
@@ -28,6 +31,8 @@ for all `X2'` subset of `X2` there is a subset `X3'` of `X3` such that
 for all `...` there is an answer set of `P`
 where `M`, `X2'`, `X3'`, `...` are true, 
 and the rest of the atoms in `X1`, `X2`, `X3`, `...`, are false.
+
+
 
 ## Usage
 ```bash
