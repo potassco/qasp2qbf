@@ -5,7 +5,7 @@
 `qasp2qbf` is a translator from quantified answer set programming (QASP) 
 to quantified boolean formulas (QBF) in [QDIMACS](http://www.qbflib.org/qdimacs.html) format.
 
-In our paper [paper](https://arxiv.org/abs/2108.06405) we present a formal description of QASP, and
+In our [paper](https://arxiv.org/abs/2108.06405) we present a formal description of QASP, and
 describe some preliminary benchmarks with `qasp2qbf` on conformant and conditional planning problems.
 
 The input to `qasp2qbf` is a [`clingo`](https://potassco.org/clingo/) program, 
