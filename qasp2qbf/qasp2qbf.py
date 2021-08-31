@@ -24,9 +24,9 @@ Please ignore the next messages."""
 OUTPUT_FILE = "out.qasp2qbf"
 PIPE_OPTION = "--pipe"
 PIPE_CMD = """clingo --output=smodels {} | qasp2qbf.py --no-warnings | \
-lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | \
+lp2normal2 | lp2acyc | lp2sat | qasp2qbf.py --cnf2qdimacs | \
 caqe-linux --partial-assignments | qasp2qbf.py --interpret"""
-PIPE_MESSAGE = """Run the pipeline calling clingo, lp2normal2, lp2sat \
+PIPE_MESSAGE = """Run the pipeline calling clingo, lp2normal2, lp2acyc, lp2sat \
 and caqe-linux"""
 CNF_MESSAGE = """Translate from cnf to qdimacs. \
 Print show information to {}""".format(OUTPUT_FILE)
@@ -51,7 +51,7 @@ class QaspArgumentParser:
 
     epilog = """
 Default command-line:
-clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2sat | \
+clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | \
 qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
 
 qasp2qbf is part of Potassco: https://potassco.org/
