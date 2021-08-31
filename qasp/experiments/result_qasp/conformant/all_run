@@ -1,2 +1,0 @@
-#!/bin/sh
-bash run_bt; bash run_btc; bash run_btuc; bash run_bmt; bash run_bmtc; bash run_bmtuc; bash run_ring
