@@ -1,0 +1,1 @@
+bt -c p=8 -c t=2 -c h=16 -c clogging=1 -c unknown_clogging=1

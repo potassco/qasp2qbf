@@ -1,0 +1,1 @@
+ring -c r=6 -c unknown_at=1 -c h=17

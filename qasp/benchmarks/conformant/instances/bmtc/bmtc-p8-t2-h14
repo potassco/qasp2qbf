@@ -1,0 +1,1 @@
+bt -c p=8 -c t=2 -c h=14 -c clogging=1
