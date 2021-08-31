@@ -31,7 +31,7 @@ and the rest of the atoms in `X1`, `X2`, `X3`, `...`, are false.
 
 ## Usage
 ```bash
-$ clingo --output=smodels <files> <options> | qasp2qbf.py | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
+$ clingo --output=smodels <files> <options> | qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
 ```
 
 Option `--pipe` together with `<files>` and `<options>` executes the whole pipeline:
@@ -40,7 +40,8 @@ $ qasp2qbf.py --pipe <files> <options>
 ```
 
 `qasp2qbf` must be used with translators from ASP to CNF, like
-[lp2normal](http://research.ics.aalto.fi/software/asp/lp2normal/) and
+[lp2normal](http://research.ics.aalto.fi/software/asp/lp2normal/),
+[lp2acyc](http://research.ics.aalto.fi/software/asp/lp2acyc/) and
 [lp2sat](http://research.ics.aalto.fi/software/asp/lp2sat/), 
 developed by Tomi Janhunen and his group.
 
@@ -71,7 +72,7 @@ _exists(3,c).
 :-     b,     c, not a.
 :-     b, not c, not a.
 
-$ clingo --output=smodels examples/example1.lp | qasp2qbf.py | lp2normal2 | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe-linux --partial-assignments | qasp2qbf.py --interpret
+$ clingo --output=smodels examples/example1.lp | qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | qasp2qbf.py --cnf2qdimacs | caqe-linux --partial-assignments | qasp2qbf.py --interpret
 V 5 -11 0
 Answer:
 a
