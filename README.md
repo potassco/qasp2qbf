@@ -12,9 +12,9 @@ The input to `qasp2qbf` is a [`clingo`](https://potassco.org/clingo/) program,
 where the atoms of predicates `_exists/2`, `_forall/2`, and `_quantify/2` are given a special meaning.
 We have different levels of quantifiers, and we assume that odd levels are existentially quantified, 
 and even levels are universally quantified:
-* `_exists(n,a)` represents that atom `a` is existentially quantified at level `n`, for some positive even integer `n`
-* `_forall(n,a)` represents that atom `a` is universally quantified at level `n`, for some positive odd integer `n`
-* `_quantify(n,a)` represents that atom `a` is quantified at level `n` (existentially if `n` is even, universally if `n` is odd), for some positive integer `n`
+* `_exists(n,a)` represents that atom `a` is existentially quantified at level `n`, for some positive odd integer `n`
+* `_forall(n,a)` represents that atom `a` is universally quantified at level `n`, for some positive even integer `n`
+* `_quantify(n,a)` represents that atom `a` is quantified at level `n` (existentially if `n` is odd, universally if `n` is even), for some positive integer `n`
 
 These must be domain predicates, i.e., they must be decided by the grounder.
 Moreover, they and the atoms `a` inside them must be `#shown`. 
