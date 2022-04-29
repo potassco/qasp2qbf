@@ -8,5 +8,5 @@ _quantify(5,b).
 _quantify(5,e).
 _quantify(5,d).
 _quantify(5,c).
-_quantify(7,a).
+_quantify(6,a).
 
