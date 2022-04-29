@@ -6,13 +6,24 @@
 from __future__ import print_function
 import argparse
 import re
-import sys
+import os, sys
+from io import StringIO
 import logging
-import os
+import subprocess
+import ctypes
+import io, _io
+
+from typing import cast, Any
+from clingo.ast import AST, ProgramBuilder, Transformer, parse_files, SymbolicAtom, Literal
+from clingo.application import clingo_main, Application
+from clingo.symbol import SymbolType
+from stdout_redirector import stdout_redirector
+
 
 #
 # DEFINES
 #
+
 
 ERROR = "*** ERROR: (qasp2qbf): {}\n"
 WARNING = "*** WARNING: (qasp2qbf): {}\n"
@@ -21,16 +32,6 @@ WARNING_SHOWN_NOT_QUANTIFIED = """Atom #shown but not quantified, \
 it will not be shown: {}."""
 UNSAT = """The Quantified Logic Program is UNSAT. \
 Please ignore the next messages."""
-OUTPUT_FILE = "out.qasp2qbf"
-PIPE_OPTION = "--pipe"
-PIPE_CMD = """clingo --output=smodels {} | qasp2qbf.py --no-warnings | \
-lp2normal2 | lp2acyc | lp2sat | qasp2qbf.py --cnf2qdimacs | \
-caqe-linux --partial-assignments | qasp2qbf.py --interpret"""
-PIPE_MESSAGE = """Run the pipeline calling clingo, lp2normal2, lp2acyc, lp2sat \
-and caqe-linux"""
-CNF_MESSAGE = """Translate from cnf to qdimacs. \
-Print show information to {}""".format(OUTPUT_FILE)
-INTERPRET_MESSAGE = "Interpret qbf solver output using {}".format(OUTPUT_FILE)
 MAX_MESSAGES = 10
 START = 0
 SHOW = 1
@@ -47,12 +48,11 @@ VERSION = "0.0.1"
 
 class QaspArgumentParser:
 
-    usage = "qasp2qbf.py [options] [file]"
+    usage = "qasp2qbf.py [pipe options] [clingo options]"
 
     epilog = """
 Default command-line:
-clingo --output=smodels <files> | qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | \
-qasp2qbf.py --cnf2qdimacs | caqe-linux | qasp2qbf.py --interpret
+qasp2qbf <files> 
 
 qasp2qbf is part of Potassco: https://potassco.org/
 Get help/report bugs via : https://potassco.org/support
@@ -70,7 +70,8 @@ Get help/report bugs via : https://potassco.org/support
             usage=self.usage,
             epilog=_epilog,
             formatter_class=argparse.RawDescriptionHelpFormatter,
-            add_help=False
+            add_help=False,
+            allow_abbrev=False
         )
 
         # basic
@@ -90,18 +91,6 @@ Get help/report bugs via : https://potassco.org/support
         #    help="Print statistics"
         #)
         basic.add_argument(
-            PIPE_OPTION, dest='pipe', action="store_true",
-            help=PIPE_MESSAGE
-        )
-        basic.add_argument(
-            '--cnf2qdimacs', dest='cnf', action="store_true",
-            help=CNF_MESSAGE
-        )
-        basic.add_argument(
-            '--interpret', dest='interpret', action="store_true",
-            help=INTERPRET_MESSAGE
-        )
-        basic.add_argument(
             '--warnings-as-errors', dest='warn2err', action="store_true",
             help="Consider warnings as errors"
         )
@@ -109,10 +98,35 @@ Get help/report bugs via : https://potassco.org/support
             '--no-warnings', dest='no_warnings', action="store_true",
             help="Do not print warnings"
         )
+        basic.add_argument(
+            '--pre', help="Take command for invoking a preprocessor"
+        )
+        basic.add_argument(
+            '--qbf', help="Specify the qbf solver to be used with arguments"
+        )
+        basic.add_argument(
+            '--interpret', help="Name of package containing interpret method"
+        )
+        
+        clingo_parser = argparse.ArgumentParser()
+        clingo_parser.add_argument(
+            '-c', '--const', metavar='<id>=<term>', action="append", 
+            help="Store const arguments that will be passed to clingo_main"
+        )
+        clingo_parser.add_argument(
+            '-w', '--warn', dest='warn', action="store_true", 
+            help="Clingo warnings"
+        )
+        
 
         # parse
-        options, files = cmd_parser.parse_known_args()
-        options = vars(options)
+        
+        pipe_options, clingo_args = cmd_parser.parse_known_args()
+        
+        clingo_options, files = clingo_parser.parse_known_args(clingo_args)
+        
+        options = vars(pipe_options)
+        
         options['files'] = files
         for i in options['files']:
             if i[0] == "-":
@@ -136,13 +150,92 @@ Get help/report bugs via : https://potassco.org/support
             )
             sys.exit(1)
         # return
-        return options
+        return clingo_args, options
+
+
+#
+# GROUNDER
+#
+
+   
+def count_underscore(files):
+    l = []
+    for file in files:
+        with open(file) as f:
+            l += [' ' if c != '_' else c for c in f.read()]
+    p = ''.join(l).split()
+    return max([len(c) for c in p]) if p else 0
+
+def inc_count_underscore(files):
+    found = True
+    count = 0
+    while(found):
+        found = False
+        u = '_'*(count+1)
+        for file in files:
+            with open(file) as f:
+                if u in f.read():
+                    found = True
+                    break
+        if found:
+            count += 1
+    return count
+    
+class Theory2Symbolic(Transformer):
+    def __init__(self, underscore_bound):
+        self.theory_underscores = underscore_bound + 1
+        
+    def visit_TheoryAtom(self, atom: AST, *args: Any, **kwargs: Any) -> AST:
+        if atom.term.name in ['exists', 'forall', 'quantify']:
+            if len(atom.elements):
+                raise ValueError('Theory atom contains elements.')
+            args = atom.term.arguments
+            if len(args) != 2:
+                raise ValueError('Theory atom has number of arguments different from 2.')
+            ut = atom.term.update(name = '_'*self.theory_underscores + atom.term.name)
+            sa = SymbolicAtom(ut)
+            return Literal(atom.location, False, sa)
+        else:
+            raise Error('Unfamiliar theory atom.')
+            
+class TheoryApp(Application):
+    def main(self, ctl, files):
+        with ProgramBuilder(ctl) as b:
+            bound = inc_count_underscore(files)
+            t2s = Theory2Symbolic(bound) 
+            parse_files(files, lambda stm: b.add(t2s(stm)))
+        ctl.ground([("base", [])])
+        ctl.solve()
 
 
 #
 # TRANSLATOR
 #
 
+
+def input2readlines(input):
+    if type(input) in [_io.TextIOWrapper, io.TextIOWrapper, list]:
+        return input
+    elif type(input) == str:
+        return input.splitlines(True)
+    elif type(input) in [_io.BufferedReader, io.BufferedReader]:
+        return io.TextIOWrapper(input)     
+    else:
+        raise TypeError('Unknown input type.')
+        
+def input2stdin(input):
+    if type(input) in [_io.TextIOWrapper, io.TextIOWrapper]:
+        input = input.read().decode()
+    if type(input) == str:
+        read, write = os.pipe()
+        os.write(write, input.encode())
+        os.close(write)
+        return read
+    return input
+       
+def cmd(command, input):
+    return subprocess.Popen(command, shell=True, stdin=input2stdin(input), stdout=subprocess.PIPE).stdout
+         
 class Translator:
 
     def __init__(self, options):
@@ -171,22 +264,24 @@ class Translator:
         elif self.messages < MAX_MESSAGES:
             print(WARNING.format(string), file=sys.stderr)
             self.messages += 1
-
+    
     def smodels2smodels(self, fd):
+        fd = input2readlines(fd)
+        smodels = ''
         state = START
         atoms = dict()
         for line in fd:
 
             # if at START: print and possibly change to SHOW
             if state == START:
-                print(line, end='')
+                smodels += line
                 if line == SHOW_START:
                     state = SHOW
                 continue
 
             # if at END: print
             if state == END:
-                print(line, end='')
+                smodels += line
                 continue
 
             # if at SHOW with exists or forall atom
@@ -262,10 +357,10 @@ class Translator:
                         key = key.replace("(","({},".format(level),1)
                     else:
                         key = "{}({})".format(key, level)
-                    print("{} {}".format(number, key))
+                    smodels += "{} {}\n".format(number, key)
 
             # print line and change state to END
-            print(line, end='')
+            smodels += line
             state = END
 
             # errors and unsat
@@ -275,15 +370,19 @@ class Translator:
                 print("UNSAT")
                 print(IMPORTANT.format(UNSAT), file=sys.stderr)
                 sys.exit(0)
+                
+        return smodels
 
     def cnf2qdimacs(self, fd):
+        fd = input2readlines(fd)
+        qd_out = ''
+        sh_out = ''
         state = START
         extra_clause = False
         prefix = dict()
         min_level = None
         shown = None
         for line in fd:
-
             # START
             if state == START:
                 match = re.match(r"p cnf (\d+) (\d+)", line)
@@ -322,10 +421,9 @@ class Translator:
                     continue
 
                 # print shown
-                with open(OUTPUT_FILE, 'w') as f:
-                    if shown:
-                        for number, atom in shown.items():
-                            f.write("{} {}\n".format(number, atom))
+                if shown:
+                    for number, atom in shown.items():
+                        sh_out += "{} {}\n".format(number, atom)
                 shown = None
 
                 # after COMMENTS: add non quantified variables
@@ -354,7 +452,7 @@ class Translator:
                     keys.append(max_key)
 
                 # print preamble
-                print("p cnf {} {}".format(nvars, clauses))
+                qd_out += "p cnf {} {}".format(nvars, clauses) + "\n"
 
                 # print prefix
                 string, last_level = "", -1
@@ -367,64 +465,75 @@ class Translator:
                     last_level = level % 2
                 if string != "":
                     string += " 0"
-                    print(string)
+                    qd_out += string + "\n"
                 prefix, keys = None, None
 
                 # change to END
                 state = END
 
             # state == END
-            print(line, end='')
+            qd_out += line
+            
 
         # before return
         if extra_clause:
-            print("-{} 0".format(nvars))
+            qd_out += "-{} 0".format(nvars)
+        
+        return qd_out, sh_out
 
-    def interpret(self, fd):
+    def interpret(self, fd, sh_in):
+        fd = input2readlines(fd)
+        res = ''
         for line in fd:
-            print(line, end='')
+            res += line
             if line[0:2] == "V ":
                 shown = dict()
-                with open(OUTPUT_FILE) as show_fd:
-                    for show_line in show_fd:
-                        match = re.match(r'(.*) (.*)', show_line)
-                        if match:
-                            shown[match.group(1)] = match.group(2)
+                for show_line in sh_in.split('\n'):
+                    match = re.match(r'(.*) (.*)', show_line)
+                    if match:
+                        shown[match.group(1)] = match.group(2)
                 out = "Answer:\n"
                 for number in line[2:].split():
                     atom = shown.get(number)
                     if atom is not None:
                         out += atom + " "
-                print(out)
+                res += out + "\n"
+        return res
+                
+    
+    SAT_PIPE = ['lp2normal2', 'lp2acyc', 'lp2sat']
+    
 
-    def translate(self, fd):
-        if self.options['cnf']:
-            self.cnf2qdimacs(fd)
-        elif self.options['interpret']:
-            self.interpret(fd)
+    def runpipe(self, main_output):
+        smodels = main_output.splitlines(True)[1:]
+        piped_io = self.smodels2smodels(smodels)
+        for command in Translator.SAT_PIPE:
+            piped_io = cmd(command, piped_io)
+        qdimacs, shown = self.cnf2qdimacs(piped_io)
+        if self.options['pre']:
+            qdimacs = cmd(self.options['pre'], qdimacs)
+        if self.options['qbf']:
+            output = cmd(self.options['qbf'], qdimacs)
         else:
-            self.smodels2smodels(fd)
-
-    def run(self):
-        for f in self.options['files']:
-            with open(f) as fd:
-                self.translate(fd)
-        if self.options['read_stdin']:
-            self.translate(sys.stdin)
+            output = cmd('caqe-linux --partial-assignments', qdimacs)
+            output = self.interpret(output, shown)
+        if self.options['interpret']:
+            exec("import " + self.options['interpret'])
+            output = self.options['interpret'].interpret(output, shown)
+        print(output)
 
 #
 # MAIN
 #
 
 if __name__ == "__main__":
-    if PIPE_OPTION in sys.argv:
-        args = sys.argv[1:]
-        args.remove(PIPE_OPTION)
-        call = PIPE_CMD.format(" ".join(args))
-        print("Running: {}".format(call))
-        os.system(call)
-    else:
-        options = QaspArgumentParser().run()
-        Translator(options).run()
-    sys.exit(0)
+    clingo_args, options = QaspArgumentParser().run()
+    
+    f = io.BytesIO()
+
+    with stdout_redirector(f):
+        clingo_main(TheoryApp(), ['--output=smodels'] + clingo_args)
+        
+    translator = Translator(options)
+    translator.runpipe(f.getvalue().decode())
 

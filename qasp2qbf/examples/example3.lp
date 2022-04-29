@@ -7,9 +7,9 @@ dom(1..2).
 :- not b(X),     a(X).
 :-     b(X), not a(X).
 
-_quantify(3,a(X)) :- dom(X).
-_quantify(2,b(X)) :- dom(X).
-_quantify(1,c(X)) :- dom(X).
+&quantify(3,a(X)) :- dom(X).
+&quantify(2,b(X)) :- dom(X).
+&quantify(1,c(X)) :- dom(X).
 
 :- c(1), c(2).
 :- not c(1), not c(2).
@@ -17,4 +17,4 @@ _quantify(1,c(X)) :- dom(X).
 #show a/1.
 #show b/1.
 #show c/1.
-#show _quantify/2.
+#show &quantify/2.

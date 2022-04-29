@@ -4,9 +4,9 @@
 c :- not b.
 d :- c.
 e :- b.
-_quantify(5,b).
-_quantify(5,e).
-_quantify(5,d).
-_quantify(5,c).
-_quantify(7,a).
+&quantify(5,b).
+&quantify(5,e).
+&quantify(5,d).
+&quantify(5,c).
+&quantify(6,a).
 
