@@ -9,4 +9,3 @@ e :- b.
 &quantify(5,d).
 &quantify(5,c).
 &quantify(6,a).
-

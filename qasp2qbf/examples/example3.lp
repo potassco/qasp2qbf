@@ -17,4 +17,3 @@ dom(1..2).
 #show a/1.
 #show b/1.
 #show c/1.
-#show &quantify/2.
