@@ -356,6 +356,7 @@ class Translator:
                         self.unsat = True
                     # nothing happens if existential
                 else:
+                    level = max(level, 1)
                     if "(" in key:
                         key = key.replace("(","({},".format(level),1)
                     else:
