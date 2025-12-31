@@ -11,6 +11,7 @@ from io import StringIO
 import logging
 import subprocess
 import ctypes
+import tempfile
 import io, _io
 
 from typing import cast, Any
@@ -41,6 +42,8 @@ END = 2
 COMMENTS = 1
 SHOW_START = "0\n"
 ERROR_REQUANTIFY = False
+
+STARTUP = "qasp2qbf version 1.1.0\nReading from {}\nSearching..."
 
 #
 # ARGUMENT PARSER
@@ -145,12 +148,12 @@ Get help/report bugs via : https://potassco.org/support
                 file=sys.stderr
             )
             sys.exit(1)
-        if len(options['files']) > 1:
-            print(
-                ERROR.format("Too many input files, at most one is allowed."),
-                file=sys.stderr
-            )
-            sys.exit(1)
+        #if len(options['files']) > 1:
+            #print(
+                #ERROR.format("Too many input files, at most one is allowed."),
+                #file=sys.stderr
+            #)
+            #sys.exit(1)
         # return
         return clingo_args, options
 
@@ -182,7 +185,7 @@ def inc_count_underscore(files):
         if found:
             count += 1
     return count
-    
+
 class Theory2Symbolic(Transformer):
     def __init__(self, underscore_bound):
         self.theory_underscores = underscore_bound + 1
@@ -199,12 +202,13 @@ class Theory2Symbolic(Transformer):
             return Literal(atom.location, False, sa)
         else:
             raise Error('Unfamiliar theory atom.')
-            
+
 class TheoryApp(Application):
     def main(self, ctl, files):
         with ProgramBuilder(ctl) as b:
-            bound = inc_count_underscore(files)
-            t2s = Theory2Symbolic(bound) 
+            global mult
+            mult = inc_count_underscore(files)
+            t2s = Theory2Symbolic(mult) 
             parse_files(files, lambda stm: b.add(t2s(stm)))
         ctl.ground([("base", [])])
         ctl.solve()
@@ -288,7 +292,7 @@ class Translator:
 
             # if at SHOW with exists or forall atom
             match = re.match(
-                r"\d+ _(quantify|exists|forall)\((\d+),(.*)\)",
+                r"\d+ " + mult*"_" + r"_(quantify|exists|forall)\((\d+),(.*)\)",
                 line
             )
             if match:
@@ -346,7 +350,6 @@ class Translator:
                 continue
 
             # if at end of SHOW: print new show
-            levels = dict()
             for key, (level, number) in atoms.items():
                 if number == 0:
                     if level % 2 == 0:
@@ -371,7 +374,7 @@ class Translator:
                 print(IMPORTANT.format(UNSAT), file=sys.stderr)
                 sys.exit(0)
                 
-        return smodels
+        return smodels, atoms
 
     def cnf2qdimacs(self, fd):
         fd = input2readlines(fd)
@@ -482,24 +485,46 @@ class Translator:
 
     def runpipe(self, main_output):
         smodels = main_output.splitlines(True)[1:]
-        piped_io = self.smodels2smodels(smodels)
+        piped_io, atoms = self.smodels2smodels(smodels)
+        with open('atoms.dict', 'w') as h:
+            h.write(str(atoms))
         for command in Translator.SAT_PIPE:
             piped_io = cmd(command, piped_io)
-        app_dir = '/path/to/qbfcert/'
-        run_game(app_dir, qdimacs, shown)
+        qdimacs, shown = self.cnf2qdimacs(piped_io)
+        app_dir = 'qbfcert/'
+        with open('qdimacs1.txt', 'w') as f:
+            f.write(qdimacs)
+        with open('out.qasp2qbf', 'w') as g:
+            g.write(shown)
+        run_game(app_dir, qdimacs, shown, atoms)
 
 #
 # MAIN
 #
 
 if __name__ == "__main__":
+    header =  '#theory quant {\n\
+        particle {};\n\
+        &exists/2 : particle, directive;\n\
+        &forall/2 : particle, directive;\n\
+        &quantify/2 : particle, directive\n\
+    }.\n\n'
+    
     clingo_args, options = QaspArgumentParser().run()
     
-    f = io.BytesIO()
-
-    with stdout_redirector(f):
-        clingo_main(TheoryApp(), ['--output=smodels'] + clingo_args)
+    print(STARTUP.format(' '.join(options['files'])))
         
+    with tempfile.NamedTemporaryFile() as g:
+        g.write(header.encode())
+        g.seek(0)
+        
+        clingo_args.append(g.name)
+    
+        f = io.BytesIO()
+
+        with stdout_redirector(f):
+            clingo_main(TheoryApp(), ['--output=smodels'] + clingo_args)
+
     translator = Translator(options)
     translator.runpipe(f.getvalue().decode())
 
